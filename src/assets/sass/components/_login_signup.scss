@@ -1,0 +1,104 @@
+.signup {
+  &_container {
+    &_section {
+      background-color: #eef1f6;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", sans-serif;
+      &_left {
+        clip-path: polygon(0 0, 70% 0, 100% 100%, 0% 100%);
+        width: 55%;
+        // background: linear-gradient(to bottom left, #212121, #e53d34);
+        background-image: url("../../images/page-title-background.jpg");
+        height: 100vh;
+        color: #fff;
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        flex-direction: column;
+        padding-left: 3vw;
+        img {
+          margin-bottom: 2vw;
+        }
+        h5 {
+          color: #fff;
+        }
+        p {
+          font-size: 14px;
+          width: 85%;
+        }
+      }
+      &_right {
+        height: 100vh;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .form_container {
+          &_heading {
+            h3 {
+              font-size: 1.5rem;
+              text-align: center;
+            }
+            p {
+              text-align: center;
+              padding-bottom: 1vw;
+            }
+            &_section {
+              form {
+                input[type="text"],
+                input[type="password"] {
+                  background: #fff;
+                  width: 20rem;
+                  padding: 13px 14px;
+                  border-bottom: #fff;
+                  border: none;
+                  &::placeholder {
+                    color: #c6c6c6;
+                  }
+                }
+                .input_container,
+                .checkbox_container {
+                  margin-bottom: 1.2rem;
+                  position: relative;
+                  .error-message {
+                    font-size: 10px;
+                    margin-top: 2px;
+                    color: red;
+                    position: absolute;
+                    bottom: -35%;
+                    left: 2%;
+                  }
+                }
+                .checkbox_container {
+                  display: flex;
+                  align-items: center;
+                }
+                button {
+                  width: 100%;
+                  padding: 10px;
+                  border: none;
+                  background: #1e1e1e;
+                  color: #a0a0a0;
+                  font-weight: 600;
+                  font-size: 16px;
+                }
+                .toggle_sentence,
+                .forgot_password {
+                  font-size: 16px;
+                  margin-top: 1vw;
+                }
+                .forgot_password {
+                  text-align: right;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

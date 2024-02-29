@@ -1,0 +1,47 @@
+.topbar {
+  &_container {
+    background-color: #852824;
+    font-family: "Poppins",sans-serif;
+    &_section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &_left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        i {
+          margin-right: 7px;
+        }
+        p {
+          display: flex;
+          align-items: center;
+          border-right: 1.5px solid #ffffff;
+          color: #ffffff;
+          padding: 0 1em;
+        }
+      }
+      &_right {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        i {
+          color: #ffffff;
+          margin: 0 0.5em;
+        }
+        .Book_Demo {
+          button {
+            background-color: #4b1313;
+            border: none;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 20px;
+            cursor: pointer;            
+          }
+        }
+      }
+    }
+  }
+}

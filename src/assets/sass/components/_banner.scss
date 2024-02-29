@@ -1,0 +1,107 @@
+.banner {
+  &_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../../images/page-title-background.jpg);
+    background-position: center;
+    background-size: cover;
+    font-family: "Poppins",sans-serif;
+
+    &_section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      &_left {
+        width: 50%;
+        .heading {
+          font-size: 40px;
+          font-weight: 700;
+          letter-spacing: 0px;
+          text-transform: none;
+          color: #ffffff;
+          font-weight: 800;
+        }
+        .content {
+          font-size: 20px;
+          font-style: normal;
+          letter-spacing: 0px;
+          color: #c5c5c5;
+          margin-top: 20px;
+        }
+        button {
+          font-weight: 800;
+          letter-spacing: 1px;
+          padding: 15px 34px 18px 34px;
+          border-radius: 27px;
+          -moz-border-radius: 27px;
+          -webkit-border-radius: 27px;
+          background: #e53d34;
+          color: #ffffff;
+          cursor: pointer;
+          border: none;
+        }
+      }
+      &_right {
+        width: 40%;
+        padding: 7vw 0;
+        .form-box {
+          background-color: #212121;
+          margin: auto auto;
+          padding: 40px;
+          border-radius: 5px;
+        }
+        .form-box:before {
+          width: 30%;
+          height: 100%;
+          background-size: cover;
+          content: "";
+          position: fixed;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          z-index: -1;
+          display: block;
+          filter: blur(10px);
+        }
+        .form-box .header-text {
+          font-size: 18px;
+          font-weight: 600;
+          color: #ffffff;
+
+          .header-content {
+            color: #c5c5c5;
+            font-size: 14px;
+          }
+        }
+        textarea {
+          height: 120px;
+        }
+        .form-box input,
+        textarea {
+          margin: 10px 0px;
+          border: none;
+          padding: 20px;
+          width: 90%;
+          font-size: 18px;
+          font-family: poppins;
+          background: rgba(49, 49, 49, 0.8);
+          color: #adadad;
+        }
+        .form-box button {
+          background-color: #143369;
+          color: #fff;
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+          width: 100%;
+          font-size: 13px;
+          font-weight: 700;
+          padding: 20px;
+        }
+      }
+    }
+  }
+}
