@@ -129,20 +129,23 @@ const SubmitExcel = () => {
 
   return (
     <div
-      style={{ width: "35%", margin: "50px" }}
+      style={{ width: "50%", margin: "50px" }}
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       <Card
-        sx={{ minWidth: 250, padding: 1 }}
+        sx={{
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          backdropFilter: 'blur(1px)', borderRadius: "15px"
+        }}
         className={isDragOver ? "drag-over" : ""}
       >
         <CardContent>
           <div className="browsefile">
             <div className="browsefile_container">
-              <h4>Upload</h4>
+              <p className="p-text">Upload Files Here</p>
               <div className="browsefile_container_section">
                 <div className="icon">
                   <SlCloudUpload className="upload_icon" />
@@ -156,7 +159,7 @@ const SubmitExcel = () => {
                   tabIndex={-1}
                   className="browse"
                 >
-                  Browse
+                  Browse Files
                   <VisuallyHiddenInput
                     type="file"
                     onChange={handleFileChange}
@@ -165,10 +168,10 @@ const SubmitExcel = () => {
                   />
                 </Button>
                 <p className="supported_formats">
-                  Supported formats: .xlsx,.xls
+                  Supported formats: .xlsx & .xls
                 </p>
               </div>
-              <span>Selected Excel Files:</span>
+              <span style={{ color: "#414142" , fontWeight:"500"}} >Selected Excel Files</span>
               {selectedFiles.length > 0 && (
                 <ul>
                   {selectedFiles.map((file, index) => (
@@ -195,13 +198,13 @@ const SubmitExcel = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-          <Box sx={{ ...modalStyle,textAlign:"center" }}>
-            <CheckCircleIcon className="success_icon"/>
-            <h2 id="modal-modal-title">File Uploaded Successfully!</h2>
-            <p id="modal-modal-description">
-              Your files have been successfully uploaded.
-            </p>
-          </Box>
+        <Box sx={{ ...modalStyle, textAlign: "center" }}>
+          <CheckCircleIcon className="success_icon" />
+          <h2 id="modal-modal-title">File Uploaded Successfully!</h2>
+          <p id="modal-modal-description">
+            Your files have been successfully uploaded.
+          </p>
+        </Box>
       </Modal>
     </div>
   );
