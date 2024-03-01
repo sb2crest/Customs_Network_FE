@@ -17,6 +17,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -126,7 +127,7 @@ const History = () => {
 
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
     setPersonName(
       // On autofill we get a stringified value.
@@ -135,88 +136,99 @@ const History = () => {
   };
 
   return (
-    <div className="history">
-      <div className="history_container">
-        <div className="history_container_top">
-          <FormControl sx={{ m: 1, width: 200, mt: 3 }} size="small">
-            <Select
-              multiple
-              displayEmpty
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput />}
-              renderValue={(selected) => {
-                if (selected.length === 0) {
-                  return <em>Status</em>;
-                }
+    <div className="container">
+      <div className="history">
+        <div className="history_container">
+          <div className="history_container_top">
+            <FormControl sx={{ m: 1, width: 200, mt: 3 }} size="small">
+              <Select
+                multiple
+                displayEmpty
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <em>Status</em>;
+                  }
 
-                return selected.join(", ");
-              }}
-              MenuProps={MenuProps}
-              inputProps={{ "aria-label": "Without label" }}
-            >
-              {names.map((name) => (
-                <MenuItem
-                  key={name}
-                  value={name}
-                  style={getStyles(name, personName, theme)}
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-          />
-
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-        </div>
-
-        <div className="history_container_section">
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">Sl No.</StyledTableCell>
-                  <StyledTableCell align="center">Batch Id</StyledTableCell>
-                  <StyledTableCell align="center">Refrence Id</StyledTableCell>
-                  <StyledTableCell align="center">
-                    Carbs&nbsp;(g)
-                  </StyledTableCell>
-                  <StyledTableCell align="center">Status</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow key={row.name}>
-                    <StyledTableCell component="th" scope="row" align="center">
-                      {row.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.calories}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">{row.fat}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.carbs}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.protein}
-                    </StyledTableCell>
-                  </StyledTableRow>
+                  return selected.join(", ");
+                }}
+                MenuProps={MenuProps}
+                inputProps={{ "aria-label": "Without label" }}
+                style={{ backgroundColor: "#E8E8E8", marginTop: "-15px" }}
+              >
+                {names.map((name) => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
                 ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+              </Select>
+            </FormControl>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              className="datePickerCalendar"
+              placeholderText="Start Date"
+            />
+
+            <Search style={{ width: '30%' }}>
+              <SearchIconWrapper>
+                <SearchIcon className="icon" />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search"
+                inputProps={{ "aria-label": "search" }}
+                className="search"
+              />
+            </Search>
+          </div>
+
+          <div className="history_container_section">
+
+            <TableContainer component={Paper} style={{ background: "transparent" }}>
+              <Table sx={{
+                minWidth: 700,
+              }}
+                aria-label="customized table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Sl No.</StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Batch Id</StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Refrence Id</StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>
+                      Carbs&nbsp;(g)
+                    </StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Status</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <StyledTableRow key={row.name} >
+                      <StyledTableCell component="th" scope="row" align="center" style={{fontWeight:"900", color:"#404040"}}>
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>
+                        {row.calories}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>{row.fat}</StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>
+                        {row.carbs}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>
+                        {row.protein}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
         </div>
       </div>
     </div>
