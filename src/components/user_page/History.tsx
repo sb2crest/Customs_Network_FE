@@ -11,11 +11,73 @@ import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { InputLabel, TextField } from "@mui/material";
-import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 200,
+    },
+  },
+};
+
+const names = ["Accepted", "Rejected", "Pending"];
+
+function getStyles(name: string, personName: readonly string[], theme: Theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  width: "100%",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,79 +111,113 @@ function createData(
 
 
 const History = () => {
-  const [age, setAge] = React.useState("");
-  const [historyData, setHistoryData] = useState([]);
-  const fetchData = async () => {
-    try {
-      // Replace 'your-api-endpoint' with the actual endpoint of your API
-      const response =  await axios.get("http://localhost:8082/convert/get-all");
-      setHistoryData(response.data);
-      
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
 
-  useEffect(() => {
-    fetchData();
-  }, []); 
-  
-  const handleChangeage = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value }
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
   };
   return (
-    <div className="history">
-      <div className="history_container">
-        <div className="history_container_top">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker />
-          </LocalizationProvider>
-          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small-label">Status</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={age}
-              label="Status"
-              onChange={handleChangeage}
-            >
-              <MenuItem value={10}>Accepted</MenuItem>
-              <MenuItem value={20}>Failure</MenuItem>
-              <MenuItem value={30}>Pending</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+    <div className="container">
+      <div className="history">
+        <div className="history_container">
+          <div className="history_container_top">
+            <FormControl sx={{ m: 1, width: 200, mt: 3 }} size="small">
+              <Select
+                multiple
+                displayEmpty
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <em>Status</em>;
+                  }
 
-        <div className="history_container_section">
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="center">Sl No.</StyledTableCell>
-                  <StyledTableCell align="center">Batch Id</StyledTableCell>
-                  <StyledTableCell align="center">Refrence Id</StyledTableCell>
-                  <StyledTableCell align="center">
-                    Carbs&nbsp;(g)
-                  </StyledTableCell>
-                  <StyledTableCell align="center">Status</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-              {historyData.map((row) => (
-                <StyledTableRow key={row.batchId}>
-                  <StyledTableCell component="th" scope="row" align="center">
-                    {row.batchId}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{row.calories}</StyledTableCell>
-                  <StyledTableCell align="center">{row.fat}</StyledTableCell>
-                  <StyledTableCell align="center">{row.carbs}</StyledTableCell>
-                  <StyledTableCell align="center">{row.protein}</StyledTableCell>
-                </StyledTableRow>
-              ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                  return selected.join(", ");
+                }}
+                MenuProps={MenuProps}
+                inputProps={{ "aria-label": "Without label" }}
+                style={{ backgroundColor: "#E8E8E8", marginTop: "-15px" }}
+              >
+                {names.map((name) => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              className="datePickerCalendar"
+              placeholderText="Start Date"
+            />
+
+            <Search style={{ width: '30%' }}>
+              <SearchIconWrapper>
+                <SearchIcon className="icon" />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search"
+                inputProps={{ "aria-label": "search" }}
+                className="search"
+              />
+            </Search>
+          </div>
+
+          <div className="history_container_section">
+
+            <TableContainer component={Paper} style={{ background: "transparent" }}>
+              <Table sx={{
+                minWidth: 700,
+              }}
+                aria-label="customized table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Sl No.</StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Batch Id</StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Refrence Id</StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>
+                      Carbs&nbsp;(g)
+                    </StyledTableCell>
+                    <StyledTableCell align="center" style={{ backgroundColor: "#eee1", fontWeight: "700" }}>Status</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <StyledTableRow key={row.name} >
+                      <StyledTableCell component="th" scope="row" align="center" style={{fontWeight:"900", color:"#404040"}}>
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>
+                        {row.calories}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>{row.fat}</StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>
+                        {row.carbs}
+                      </StyledTableCell>
+                      <StyledTableCell align="center" style={{fontWeight:"900" , color:"#404040"}}>
+                        {row.protein}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
         </div>
       </div>
     </div>

@@ -1,12 +1,40 @@
-.history {
-  &_container {
-    &_top {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.5);
+.container {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 35px 35px;
+  backdrop-filter: blur(0px);
+  border-radius: 5px;
+
+  .history {
+    .datePickerCalendar {
+      background-color: #E8E8E8;
+      border: 1px solid rgb(183, 182, 182);
+      width: 90%;
+      padding: 12px;
+      border-radius: 5px;
     }
-    &_section {
+    .datePickerCalendar::placeholder{
+      color: black;
+      font-style: italic;
+      font-size: 15px;
+    }
+
+    &_container {
+      &_top {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        .icon{
+          color: black;
+        }
+
+        .search{
+          // background-color: #abaaaa;
+          color: #000;
+        }
+      }
+
+      &_section {}
     }
   }
 }
