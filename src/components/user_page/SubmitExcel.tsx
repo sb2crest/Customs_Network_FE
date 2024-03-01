@@ -129,7 +129,7 @@ const SubmitExcel = () => {
 
   return (
     <div
-      style={{ width: "50%", margin: "50px" }}
+      style={{ width: "40%", margin: "50px" }}
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
