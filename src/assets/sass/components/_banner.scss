@@ -6,7 +6,7 @@
     background: url(../../images/page-title-background.jpg);
     background-position: center;
     background-size: cover;
-    font-family: "Poppins",sans-serif;
+    font-family: "Poppins", sans-serif;
 
     &_section {
       display: flex;
@@ -48,6 +48,7 @@
         padding: 7vw 0;
         .form-box {
           background-color: #212121;
+          opacity: 0.77;
           margin: auto auto;
           padding: 40px;
           border-radius: 5px;
