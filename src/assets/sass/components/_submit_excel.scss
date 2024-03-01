@@ -1,0 +1,75 @@
+.browsefile {
+  font-family: "Poppins", sans-serif;
+  &_container {
+    h4 {
+      text-align: center;
+    }
+    &_section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      //   background-color:#b0cbd9;
+      border: 0.5px dashed #7b8596;
+      padding: 10px;
+      .icon {
+        .upload_icon {
+          font-size: 2em;
+          color: #143369;
+          font-weight: 800;
+        }
+      }
+      .content {
+        margin: 0;
+        font-weight: 500;
+        display: inline;
+      }
+      .browse {
+        background: #fff;
+        color: #143369;
+        box-shadow: none;
+        display: inline;
+        text-decoration: underline;
+        text-transform: capitalize;
+        &:hover {
+          background: #fff;
+          color: #143369;
+          box-shadow: none;
+        }
+      }
+      .supported_formats {
+        color: #7b8596;
+        font-size: 12px;
+      }
+    }
+    span {
+      color: #143369;
+      display: block;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+  }
+  .submit_btn {
+    width: 100%;
+    background: #143369;
+    &:hover {
+      background: #103290;
+    }
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: -0.5vw;
+    li {
+      font-size: 12px;
+      color: #014421;
+      font-size: 14px;
+    }
+  }
+}
+
+.success_icon {
+  color: green;
+  text-align: center;
+  font-size: 3.5rem;
+}
