@@ -1,40 +1,69 @@
 .container {
-  background-color: rgba(255, 255, 255, 0.5);
   padding: 35px 35px;
   backdrop-filter: blur(0px);
   border-radius: 5px;
 
   .history {
+    .history_container_top {
+      background-color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #a0a0a0;
+
+      .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+        height: 40px;
+      }
+      .filters {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+      }
+      .search{
+        padding: 10px 25px;
+        border: none;
+        border-radius: 5px;
+        background: #103290;
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        
+      }
+    }
     .datePickerCalendar {
-      background-color: #E8E8E8;
+      background-color: #e8e8e8;
       border: 1px solid rgb(183, 182, 182);
       width: 90%;
       padding: 12px;
       border-radius: 5px;
     }
-    .datePickerCalendar::placeholder{
+    .datePickerCalendar::placeholder {
       color: black;
       font-style: italic;
       font-size: 15px;
     }
 
     &_container {
-      &_top {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
+      border: 2px solid #a0a0a0;
 
-        .icon{
+      &_top {
+        text-align: center;
+        .icon {
           color: black;
         }
 
-        .search{
+        .search {
           // background-color: #abaaaa;
           color: #000;
         }
       }
 
-      &_section {}
+      &_section {
+      }
     }
   }
 }

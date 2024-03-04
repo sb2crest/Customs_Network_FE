@@ -23,7 +23,7 @@
           font-size: 2em;
           margin-top: 2vw;
           cursor: pointer;
-          .x-mark{
+          .x-mark {
             padding-left: 10vw;
           }
         }
@@ -34,6 +34,8 @@
             padding: 0;
             margin: 0;
             text-decoration: none;
+            display: none;
+
             a {
               text-decoration: none;
               color: inherit;
@@ -70,11 +72,12 @@
       }
     }
   }
-  .sidebar {  
+  .sidebar {
     &.active {
-      width: 15%;  
+      width: 15%;
       .sidebar_container_section_list {
         ul {
+          display: block;
           li {
             &.active-li {
               flex-direction: row;

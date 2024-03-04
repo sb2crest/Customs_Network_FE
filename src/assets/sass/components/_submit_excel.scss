@@ -94,9 +94,20 @@
       }
     }
   }
+  .loader{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+  }
 
   .success_icon {
     color: green;
     text-align: center;
     font-size: 3.5rem;
+  }
+  .close_button{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
   }
