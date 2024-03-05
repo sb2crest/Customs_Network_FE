@@ -3,8 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url(../../images/page-title-background.jpg);
-    background-position: center;
+    background: url(../../images/home-banner-bg.jpg);
     background-size: cover;
     font-family: "Poppins", sans-serif;
 
@@ -53,20 +52,7 @@
           padding: 40px;
           border-radius: 5px;
         }
-        .form-box:before {
-          width: 30%;
-          height: 100%;
-          background-size: cover;
-          content: "";
-          position: fixed;
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          z-index: -1;
-          display: block;
-          filter: blur(10px);
-        }
+       
         .form-box .header-text {
           font-size: 18px;
           font-weight: 600;
@@ -79,6 +65,7 @@
         }
         textarea {
           height: 120px;
+          opacity: 0.9;
         }
         .form-box input,
         textarea {
@@ -87,7 +74,7 @@
           padding: 20px;
           width: 90%;
           font-size: 18px;
-          font-family: poppins;
+          font-family: "Poppins",sans-serif;
           background: rgba(49, 49, 49, 0.8);
           color: #adadad;
         }
@@ -101,8 +88,12 @@
           font-size: 13px;
           font-weight: 700;
           padding: 20px;
+          &:hover{
+            transform: scale(2);
+          }
         }
       }
     }
   }
 }
+
