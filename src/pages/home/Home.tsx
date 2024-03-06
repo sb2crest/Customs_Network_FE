@@ -8,6 +8,7 @@ import FlightIcon from "@mui/icons-material/Flight";
 import DirectionsSubwayIcon from "@mui/icons-material/DirectionsSubway";
 import map from "../../assets/images/map.jpg";
 import Banner from "../../components/Banner";
+import serviceImage from "../../assets/images/services-image.jpg"
 const Home = () => {
   return (
     <>
@@ -75,7 +76,7 @@ const Home = () => {
                 <div className="services_container_details">
                   <div className="services_container_details_section">
                     <div className="services_container_details_section_left">
-                      <img src="" alt="IMAGE" />
+                      <img src={serviceImage}  alt="IMAGE" />
                     </div>
                     <div className="services_container_details_section_right">
                       <p className="heading">Quick Tracking Service</p>
@@ -98,24 +99,32 @@ const Home = () => {
                   </div>
                   <div className="services_container_details_items">
                     <div className="items">
+                      <div className="items-1">
                       <LocalShippingIcon className="service_icon" />
                       <p className="heading">LAND TRANSPORT</p>
                       <p className="content">1000+ Trucks in 120 Cities</p>
                     </div>
+                    </div>
                     <div className="items">
+                    <div className="items-2">
                       <FlightIcon className="service_icon" />
                       <p className="heading">Air Freight</p>
                       <p className="content">120+ Aircrafts in 30 Cities</p>
                     </div>
+                    </div>
                     <div className="items">
+                    <div className="items-3">
                       <DirectionsBoatIcon className="service_icon" />
                       <p className="heading">Ocean Freight</p>
                       <p className="content">6000+ Containers in 20 Ports</p>
                     </div>
+                    </div>
                     <div className="items">
+                    <div className="items-4">
                       <DirectionsSubwayIcon className="service_icon" />
                       <p className="heading">Smart Warehouses</p>
                       <p className="content">Cover 1,000,000 sqm.</p>
+                    </div>
                     </div>
                   </div>
                   <div className="services_container_details_description">
