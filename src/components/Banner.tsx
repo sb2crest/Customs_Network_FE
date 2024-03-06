@@ -1,4 +1,3 @@
-import React from "react";
 import "../assets/sass/components/_banner.scss";
 const Banner = () => {
   return (

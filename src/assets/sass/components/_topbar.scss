@@ -1,7 +1,7 @@
 .topbar {
   &_container {
     background-color: #852824;
-    font-family: "Poppins",sans-serif;
+    font-family: "Poppins", sans-serif;
     &_section {
       display: flex;
       justify-content: space-between;
@@ -11,15 +11,47 @@
         justify-content: center;
         align-items: center;
         gap: 15px;
-        i {
-          margin-right: 7px;
+        .language_selector {
+          cursor: pointer;
+          i {
+            margin: -3px 7px 0 5px;
+          }
+          &_dropdown {
+            position: absolute;
+            top: 40px;
+            left: 0px;
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            li {
+              padding: 8px 16px;
+              background-color: #2e2e2e;
+              &:hover {
+                background: #852824;
+              }
+            }
+          }
         }
+        .email{
+          display: flex;
+          align-items: center;
+          a{
+            text-decoration: none;
+            color: #ffffff;
+          }
+        }
+        
         p {
           display: flex;
           align-items: center;
           border-right: 1.5px solid #ffffff;
           color: #ffffff;
           padding: 0 1em;
+          position: relative;
+        }
+        i{
+          margin-right: 7px;
         }
       }
       &_right {
@@ -29,6 +61,7 @@
         i {
           color: #ffffff;
           margin: 0 0.5em;
+          cursor: pointer;
         }
         .Book_Demo {
           button {
@@ -38,7 +71,7 @@
             font-size: 15px;
             font-weight: 600;
             padding: 20px;
-            cursor: pointer;            
+            cursor: pointer;
           }
         }
       }

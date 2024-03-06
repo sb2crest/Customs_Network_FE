@@ -1,35 +1,49 @@
 import { Link, Outlet } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
 import "../../assets/sass/components/_user_page.scss";
+import { PiMicrosoftExcelLogo } from "react-icons/pi";
+import { LuFileJson } from "react-icons/lu";
+import { FaHistory } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { useState } from "react";
+import { FaXmark } from "react-icons/fa6";
+
 
 const UserPage = () => {
+  const [hamburgerClick , setHamburgerClick] = useState(false);
+
+  const handleHamburgerClick = () => {
+    setHamburgerClick(!hamburgerClick );
+  };
   return (
     <div className="userpage">
-      <div className="sidebar">
+      <div className={`sidebar ${hamburgerClick  ? "active" : "sidebar"}`}>
         <div className="sidebar_container">
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
-              <img src={logo} alt="logo" />
+            {hamburgerClick ? (
+                <FaXmark onClick={handleHamburgerClick} className="x-mark"/>
+              ) : (
+                <GiHamburgerMenu onClick={handleHamburgerClick} />
+              )}
             </div>
             <div className="sidebar_container_section_list">
               <ul>
                 <Link to="submit-excel">
-                  {" "}
-                  <li>
+                  <li className={hamburgerClick  ? "active-li" : ""}>
+                    <PiMicrosoftExcelLogo className="sidebar_icon" />
                     Submit Excel
-                    <i className="fa-solid fa-chevron-right fa-sm"></i>
                   </li>
                 </Link>
                 <Link to="submit-json">
-                  <li>
+                  <li className={hamburgerClick  ? "active-li" : ""}>
+                    <LuFileJson className="sidebar_icon" />
                     Submit Json
-                    <i className="fa-solid fa-chevron-right fa-sm"></i>
                   </li>
                 </Link>
                 <Link to="history">
-                  <li>
+                  <li className={hamburgerClick  ? "active-li" : ""}>
+                    <FaHistory className="sidebar_icon" />
                     History
-                    <i className="fa-solid fa-chevron-right fa-sm"></i>
                   </li>
                 </Link>
               </ul>

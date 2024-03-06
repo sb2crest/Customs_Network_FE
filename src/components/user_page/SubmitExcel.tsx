@@ -8,8 +8,9 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import "../../assets/sass/components/_submit_excel.scss";
-import { Modal, Box } from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Modal, Box, CircularProgress } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { FaXmark } from "react-icons/fa6";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -27,6 +28,7 @@ const SubmitExcel = () => {
   const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
   const [isDragOver, setIsDragOver] = React.useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSuccessModalOpen = () => {
     setIsSuccessModalOpen(true);
@@ -101,6 +103,7 @@ const SubmitExcel = () => {
       );
 
       if (response.status === 200) {
+      
         handleSuccessModalOpen();
         console.log("Files uploaded successfully");
       } else {
@@ -111,10 +114,24 @@ const SubmitExcel = () => {
     }
   };
 
-  const handleOkButtonClick = () => {
-    uploadFiles();
-    console.log("OK button clicked");
+  const handleOkButtonClick = async () => {
+    setIsLoading(true); // Show loader when the request is initiated
+  
+    try {
+      await uploadFiles();
+  
+      // You may also want to handle additional logic after a successful upload here
+      // For example, resetting the form or navigating to another page
+  
+      handleSuccessModalOpen();
+      console.log("OK button clicked");
+    } catch (error) {
+      console.error("Error occurred during file upload:", error);
+    } finally {
+      setIsLoading(false); // Hide the loader regardless of the API response
+    }
   };
+  
 
   const modalStyle = {
     position: "absolute" as const,
@@ -129,7 +146,7 @@ const SubmitExcel = () => {
 
   return (
     <div
-      style={{ width: "50%", margin: "50px" }}
+      style={{ width: "40%", margin: "50px" }}
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
@@ -137,8 +154,9 @@ const SubmitExcel = () => {
     >
       <Card
         sx={{
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',
-          backdropFilter: 'blur(1px)', borderRadius: "15px"
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          backdropFilter: "blur(1px)",
+          borderRadius: "15px",
         }}
         className={isDragOver ? "drag-over" : ""}
       >
@@ -171,7 +189,9 @@ const SubmitExcel = () => {
                   Supported formats: .xlsx & .xls
                 </p>
               </div>
-              <span style={{ color: "#414142" , fontWeight:"500"}} >Selected Excel Files</span>
+              <span style={{ color: "#414142", fontWeight: "500" }}>
+                Selected Excel Files
+              </span>
               {selectedFiles.length > 0 && (
                 <ul>
                   {selectedFiles.map((file, index) => (
@@ -191,6 +211,7 @@ const SubmitExcel = () => {
             </CardActions>
           </div>
         </CardContent>
+        {isLoading && <CircularProgress color="primary" className="loader" />}
       </Card>
       <Modal
         open={isSuccessModalOpen}
@@ -200,6 +221,7 @@ const SubmitExcel = () => {
       >
         <Box sx={{ ...modalStyle, textAlign: "center" }}>
           <CheckCircleIcon className="success_icon" />
+          <FaXmark className="close_button" onClick={handleSuccessModalClose}/>
           <h2 id="modal-modal-title">File Uploaded Successfully!</h2>
           <p id="modal-modal-description">
             Your files have been successfully uploaded.
