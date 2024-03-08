@@ -1,292 +1,182 @@
-import React, { useEffect, useState } from "react";
-import "../../assets/sass/components/_history.scss";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import "react-datepicker/dist/react-datepicker.css";
-import { DialogContentText, InputLabel, TextField } from "@mui/material";
-import axios from "axios";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import { IoEye } from "react-icons/io5";
+import "../../assets/sass/components/_history.scss";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
+import { TextField } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 import dayjs from "dayjs";
-import "dayjs/locale/en";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-dayjs.extend(customParseFormat);
-
-const JsonViewer = ({ jsonData, onClose }) => {
-  return (
-    <Dialog open={!!jsonData} onClose={onClose}>
-      <DialogContent>
-        <DialogContentText>
-          <pre>{JSON.stringify(jsonData, null, 2)}</pre>
-        </DialogContentText>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-const StyledTableCell = styled(TableCell)(() => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#103290",
-    color: "#103290",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(() => ({
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const History = () => {
-  const [historyData, setHistoryData] = useState([]);
-  const [age, setAge] = React.useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [displayedJsonType, setDisplayedJsonType] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [referenceId, setReferenceId] = useState("");
-  const [batchId, setBatchId] = useState("");
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Status");
+  const location = useLocation();
+  const [historyData, setHistoryData] = useState(
+    location.state?.historyData || []
+  );
+  const data = historyData.data || [];
 
-  const handleEyeIconClick = (row, jsonType) => {
-    setSelectedRow(row);
-    setDisplayedJsonType(jsonType);
-    setModalOpen(true);
+  const handleSelectClick = () => {
+    setMenuOpen(!isMenuOpen);
   };
 
-  const handleCloseModal = () => {
-    setSelectedRow(null);
-    setModalOpen(false);
+  const handleOptionClick = (option: React.SetStateAction<string>) => {
+    setSelectedOption(option);
+    setMenuOpen(false);
   };
 
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
+  const handleApplyClick = () => {
+    const apiUrl = "http://localhost:8080/convert/getFdaPn-records";
+    const formattedDate = selectedDate
+      ? dayjs(selectedDate).format("DD-MM-YYYY")
+      : null;
+    const requestData = {
+      createdOn: formattedDate || null,
+      referenceId: referenceId || null,
+      status: selectedOption.toUpperCase() || null,
+    };
 
-  const fetchData = async () => {
-    try {
-      // Replace 'your-api-endpoint' with the actual endpoint of your API
-      const response = await axios.get("http://localhost:8082/convert/get-all");
-      setHistoryData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+    axios
+      .get(apiUrl, {
+        params: requestData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("API Response:", response.data);
+        const updatedData = response.data;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleSearch = async () => {
-    try {
-      const formattedDate = selectedDate
-        ? dayjs(selectedDate).format("DD-MM-YYYY")
-        : "";
-      const url = `http://localhost:8082/convert/getFdaPn-records?date=${formattedDate}&referenceId=${referenceId}&batchId=${batchId}&status=${age}`;
-
-      const response = await axios.get(url);
-      setHistoryData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+        // Update the state with the new data
+        setHistoryData({
+          ...historyData,
+          data: updatedData,
+        });
+      })
+      .catch((error) => {
+        console.error("Error making API call:", error);
+      });
   };
 
   return (
-    <div className="container">
-      <div className="history">
-        <div className="history_container_top">
-          <div className="filters">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                className="datepicker"
-                sx={{ width: "200px" }}
-                value={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-              />
-            </LocalizationProvider>
-
-            <TextField
-              id="outlined-basic"
-              label="Reference ID"
-              variant="outlined"
-              size="small"
-              color="primary"
-              style={{ width: "160px" }}
-              value={referenceId}
-              onChange={(e) => setReferenceId(e.target.value)}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Batch ID"
-              variant="outlined"
-              size="small"
-              color="primary"
-              style={{ width: "160px" }}
-              value={batchId}
-              onChange={(e) => setBatchId(e.target.value)}
-            />
-
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small-label">Status</InputLabel>
-              <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                value={age}
-                label="Status"
-                onChange={handleStatusChange}
-                style={{ width: "160px" }}
-              >
-                <MenuItem value="SUCCESS">SUCCESS</MenuItem>
-                <MenuItem value="FAILED">FAILED</MenuItem>
-              </Select>
-            </FormControl>
-
-            <button className="search" onClick={handleSearch}>
-              Search
-            </button>
+    <div className="history">
+      <div className="history_container">
+        <div className="history_container_section">
+          <div className="filter_row">
+            <p>History</p>
+            <div className="filter">
+              <div className="created_date">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    className="datepicker"
+                    sx={{ width: "170px" }}
+                    value={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    format="DD-MM-YYYY"
+                  />
+                </LocalizationProvider>
+              </div>
+              <div className="referenceId_filter">
+                <TextField
+                  id="outlined-basic"
+                  label="Reference ID"
+                  variant="outlined"
+                  size="small"
+                  style={{ width: "160px" }}
+                  value={referenceId}
+                  onChange={(e) => setReferenceId(e.target.value)}
+                />
+              </div>
+              <div className="status_filter">
+                <div className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}>
+                  <div className="select" onClick={handleSelectClick}>
+                    <div
+                      className={`selected ${
+                        selectedOption === "placeholder" ? "placeholder" : ""
+                      }`}
+                    >
+                      {selectedOption}
+                    </div>
+                    <div
+                      className={`caret ${isMenuOpen ? "caret-rotate" : ""}`}
+                    ></div>
+                  </div>
+                  <ul className="menu">
+                    <li onClick={() => handleOptionClick("All")}>All</li>
+                    <li onClick={() => handleOptionClick("Success")}>
+                      Success
+                    </li>
+                    <li onClick={() => handleOptionClick("Failed")}>Failed</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="Apply_button">
+                <button type="submit" onClick={handleApplyClick}>
+                  Apply
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="history_container">
-          <div className="history_container_section">
-            <TableContainer
-              component={Paper}
-              style={{ background: "transparent" }}
-            >
-              <Table
-                sx={{
-                  minWidth: 700,
-                }}
-                aria-label="customized table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      Batch Id
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      User Id
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      Refrence Id
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      Created Date
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      Status
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      Request Json
-                    </StyledTableCell>
-                    <StyledTableCell
-                      align="center"
-                      style={{ backgroundColor: "#eee1", fontWeight: "700" }}
-                    >
-                      Response Json
-                    </StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {historyData.map((row) => (
-                    <StyledTableRow key={row.batchId}>
-                      <StyledTableCell
-                        component="th"
-                        scope="row"
-                        align="center"
-                      >
-                        {row.batchId}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.userId}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.referenceId}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.createdOn}
-                      </StyledTableCell>
-
-                      <StyledTableCell align="center">
-                        {row.status}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <IoEye
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleEyeIconClick(row, "requestJson")}
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <IoEye
-                          style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            handleEyeIconClick(row, "responseJson")
-                          }
-                        />
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Batch Id</th>
+                <th>User Id</th>
+                <th>Refrence Id</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Request Json</th>
+                <th>Response Json</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td className="batchid">{item.batchId}</td>
+                  <td className="userid">{item.userId}</td>
+                  <td>{item.referenceId}</td>
+                  <td>{item.createdOn}</td>
+                  <td
+                    style={{
+                      color:
+                        item.status === "FAILED"
+                          ? "#e53d34"
+                          : item.status === "SUCCESS"
+                          ? "rgb(80 199 147)"
+                          : "rgb(250 145 107)",
+                    }}
+                  >
+                    {item.status}
+                  </td>
+                  <td>
+                    <button>
+                      <IoEye style={{ cursor: "pointer" }} className="eye" />
+                    </button>
+                  </td>
+                  <td>
+                    <button>
+                      <IoEye style={{ cursor: "pointer" }} className="eye" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            
+          </table>
+          <Stack spacing={2} sx={{textAlign:"end"}}>
+              <Pagination count={10} size="small" />
+            </Stack>
         </div>
       </div>
-      <Dialog open={modalOpen} onClose={handleCloseModal}>
-        <DialogTitle>Details</DialogTitle>
-        <DialogContent>
-          {selectedRow && (
-            <div>
-              {displayedJsonType === "requestJson" && (
-                <JsonViewer
-                  jsonData={selectedRow.requestJson}
-                  onClose={handleCloseModal}
-                />
-              )}
-              {displayedJsonType === "responseJson" && (
-                <JsonViewer
-                  jsonData={selectedRow.responseJson}
-                  onClose={handleCloseModal}
-                />
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
