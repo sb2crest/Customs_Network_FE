@@ -12,7 +12,7 @@ $placeholder: #6b728c;
     &_section {
       background: #212121;
       opacity: 0.89;
-      padding: 1em;
+      padding: 0.5em 1em;
       border-radius: 10px;
       .filter_row {
         display: flex;
@@ -147,8 +147,8 @@ $placeholder: #6b728c;
 
           tr {
             th {
-              padding-top: 1.25rem;
-              padding-bottom: 1.25rem;
+              padding-top: 1rem;
+              padding-bottom: 1rem;
               padding-left: 1.5rem;
               padding-right: 1.5rem;
               font-size: 0.75rem;
@@ -200,6 +200,16 @@ $placeholder: #6b728c;
             }
           }
         }
+      }
+      .pagination{
+        display: flex;
+        justify-content: flex-end;
+        .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+          background-color: #7b8596;
+      }
+      .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root {
+        color:rgb(203 213 225) ;
+      }
       }
     }
   }

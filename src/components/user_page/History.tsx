@@ -23,6 +23,11 @@ const History = () => {
   );
   const data = historyData.data || [];
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
+
+  
+
   const handleSelectClick = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -170,11 +175,12 @@ const History = () => {
                 </tr>
               ))}
             </tbody>
-            
           </table>
-          <Stack spacing={2} sx={{textAlign:"end"}}>
-              <Pagination count={10} size="small" />
+          <div className="pagination">
+            <Stack spacing={1}>
+              <Pagination count={10}  shape="rounded" />
             </Stack>
+          </div>
         </div>
       </div>
     </div>
