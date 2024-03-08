@@ -1,68 +1,205 @@
-.container {
-  padding: 35px 35px;
-  backdrop-filter: blur(0px);
-  border-radius: 5px;
+$hover-black: #1e2235;
+$black: #2b3044;
+$bg: #eceffc;
+$placeholder: #6b728c;
 
-  .history {
-    .history_container_top {
-      background-color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 5px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 2px solid #a0a0a0;
-
-      .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-        height: 40px;
-      }
-      .filters {
+.history {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  &_container {
+    width: 100%;
+    &_section {
+      background: #212121;
+      opacity: 0.89;
+      padding: 1em;
+      border-radius: 10px;
+      .filter_row {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
-
-      }
-      .search{
-        padding: 10px 25px;
-        border: none;
-        border-radius: 5px;
-        background: #103290;
-        color: #fff;
-        font-weight: 600;
-        font-size: 16px;
-        cursor: pointer;
-        
-      }
-    }
-    .datePickerCalendar {
-      background-color: #e8e8e8;
-      border: 1px solid rgb(183, 182, 182);
-      width: 90%;
-      padding: 12px;
-      border-radius: 5px;
-    }
-    .datePickerCalendar::placeholder {
-      color: black;
-      font-style: italic;
-      font-size: 15px;
-    }
-
-    &_container {
-      background-color: rgba(255, 255, 255, 0.7);
-      border-radius: 8px;
-      border: 2px solid #a0a0a0;
-
-      &_top {
-        text-align: center;
-        .icon {
-          color: black;
+        p {
+          font-size: 1.25rem;
+          line-height: 28px;
+          font-weight: 500;
+          text-transform: capitalize;
+          color: rgb(255, 255, 255);
         }
+        .filter {
+          display: flex;
+          justify-content: center;
+          align-items: stretch;
+          gap: 20px;
+          .created_date {
+            .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+              height: 40.5px;
+              background-color: #414142;
+              color: #020000;
+            }
+          }
+          .Apply_button{
+            button{
+              padding: 10px 25px;
+              background-color: #414142;
+              border: none;
+              border-radius: 5px;
+              font-size: 16px;
+              cursor: pointer;
+              &:hover{
+                background-color: #e53d34;
+                color: #fff;
+              }
+            }
+          }
+        }
+        .referenceId_filter {
+          .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+            background-color: #414142;
+            color: #020000;
+          
+          }
+          
+        }
+        .status_filter {
+          .dropdown {
+            width: 150px;
+            position: relative;
+            color: #020000;
+            height: 40.5px;
+            
+            .select {
+              cursor: pointer;
+              transition: 0.3s;
+              background-color: #414142;
+              border-radius: 5px;
+              display: flex;
+              padding: 8px 20px;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 16px;
+              .selected {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
 
-        .search {
-          // background-color: #abaaaa;
-          color: #000;
+                &.placeholder {
+                  color: $placeholder;
+                 
+                }
+              }
+
+              .caret {
+                margin-left: 10px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 6px solid #020000;
+                transition: 0.3s;
+                
+              }
+            }
+
+            .menu {
+              visibility: hidden;
+              background-color: #414142;
+              border-radius: 5px;
+              overflow: hidden;
+              position: absolute;
+              width: 100%;
+              top: 70%;
+              opacity: 0;
+              transition: visibility 0s, opacity 0.3s;
+              z-index: 1;
+              padding: 0;
+
+              li {
+                cursor: pointer;
+                padding: 10px;
+                list-style: none;
+
+                &:hover {
+                  background-color: rgb(203 213 225);
+                }
+              }
+            }
+
+            &.menu-open {
+              .menu {
+                visibility: visible;
+                opacity: 1;
+              }
+            }
+
+            &.caret-rotate {
+              .select {
+                .caret {
+                  transform: rotate(180deg);
+                }
+              }
+            }
+          }
         }
       }
+      table {
+        thead {
+          background-color: #414142;
 
-      &_section {
+          tr {
+            th {
+              padding-top: 1.25rem;
+              padding-bottom: 1.25rem;
+              padding-left: 1.5rem;
+              padding-right: 1.5rem;
+              font-size: 0.75rem;
+              line-height: 1rem;
+              font-weight: 600;
+              text-transform: uppercase;
+              text-align: center;
+              cursor: pointer;
+              color: rgb(203 213 225);
+            }
+          }
+        }
+        tbody {
+          tr {
+            .batchid {
+              width: 150px;
+            }
+            .userid{
+              width: 100px;
+            }
+
+            td {
+              padding-left: 0.5rem;
+              padding-right: 0.5rem;
+              padding-top: 0.5rem;
+              padding-bottom: 0.5rem;
+              font-size: 0.875rem;
+              line-height: 1.25rem;
+              font-weight: 400;
+              text-transform: capitalize;
+              color: #7b8596;
+              background: #212121;
+              text-align: -webkit-center;
+              font-weight: 600;
+              button {
+                background: #212121;
+                border: 0.5px solid #414142;
+                border-radius: 0.25rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .eye {
+                cursor: pointer;
+                color: #7b8596;
+                width: 13px;
+                height: 20px;
+              }
+            }
+          }
+        }
       }
     }
   }

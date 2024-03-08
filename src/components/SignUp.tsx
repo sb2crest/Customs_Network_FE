@@ -4,12 +4,18 @@ import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "../assets/sass/components/_login_signup.scss";
-import axios from 'axios';
+import axios from "axios";
 
 const SignUp = () => {
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
+    userId: Yup.string()
+      .matches(
+        /^[a-zA-Z0-9]{10}$/,
+        "User ID must be 10 characters with alphabets and numbers only"
+      )
+      .required("User ID is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
@@ -19,9 +25,10 @@ const SignUp = () => {
     initialValues: {
       firstName: "",
       lastName: "",
+      userId: "",
       email: "",
       password: "",
-      checkbox:"",
+      checkbox: false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -37,16 +44,19 @@ const SignUp = () => {
     setFieldTouched,
   } = formik;
 
-
-  const UserSignup = () =>{
-    axios.post('http://localhost:8080/api/v1/auth/register',values)
-    .then((res) => {
-      console.log(res.data) 
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  }
+  const UserSignup = () => {
+    axios
+      .post("http://localhost:8081/api/v1/auth/register", values)
+      .then((res) => {
+        console.log(res.data);
+        if (res.status === 200) {
+          formik.resetForm();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   return (
     <div className="signup">
       <div className="signup_container">
@@ -76,11 +86,10 @@ const SignUp = () => {
                         type="text"
                         placeholder="First Name"
                         required
-                        defaultValue={values.firstName}
+                        value={values.firstName}
                         onChange={handleChange}
                         onBlur={() => setFieldTouched("firstName", true)}
                       />
-
                       {touched.firstName && errors.firstName && (
                         <div className="error-message">{errors.firstName}</div>
                       )}
@@ -97,6 +106,20 @@ const SignUp = () => {
                       />
                       {touched.lastName && errors.lastName && (
                         <div className="error-message">{errors.lastName}</div>
+                      )}
+                    </div>
+                    <div className="input_container">
+                      <input
+                        id="userId"
+                        type="text"
+                        placeholder="User Id"
+                        required
+                        value={values.userId}
+                        onChange={handleChange}
+                        onBlur={() => setFieldTouched("userId", true)}
+                      />
+                      {touched.userId && errors.userId && (
+                        <div className="error-message">{errors.userId}</div>
                       )}
                     </div>
                     <div className="input_container">
@@ -131,16 +154,19 @@ const SignUp = () => {
 
                     <div className="checkbox_container ">
                       <input
+                      id="checkbox"
                         type="checkbox"
                         required
-                        value={values.checkbox}
+                        checked={values.checkbox}
                         onChange={handleChange}
-                        onBlur={() => setFieldTouched("password", true)}
+                        onBlur={() => setFieldTouched("checkbox", true)}
                       />
                       <label>I agree to the terms of service</label>
                     </div>
 
-                    <button type="button" onClick={UserSignup}>Sign Up</button>
+                    <button type="button" onClick={UserSignup}>
+                      Sign Up
+                    </button>
                     <p className="toggle_sentence">
                       Already a member? <Link to="/login">Login here</Link>{" "}
                     </p>
