@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import "../../assets/sass/components/_submit_excel.scss";
 import { Modal, Box, CircularProgress } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { FaXmark } from "react-icons/fa6";
 
 const VisuallyHiddenInput = styled("input")({
@@ -29,6 +28,7 @@ const SubmitExcel = () => {
   const [isDragOver, setIsDragOver] = React.useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
   const handleSuccessModalOpen = () => {
     setIsSuccessModalOpen(true);
@@ -103,45 +103,38 @@ const SubmitExcel = () => {
       );
 
       if (response.status === 200) {
-      
         handleSuccessModalOpen();
+        setIsLoading(false);
+        setError("");
         console.log("Files uploaded successfully");
       } else {
         console.error("Failed to upload files");
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error uploading files:", error);
+      setIsLoading(false);
     }
   };
 
-  const handleOkButtonClick = async () => {
-    setIsLoading(true); // Show loader when the request is initiated
-  
-    try {
-      await uploadFiles();
-  
-      // You may also want to handle additional logic after a successful upload here
-      // For example, resetting the form or navigating to another page
-  
-      handleSuccessModalOpen();
-      console.log("OK button clicked");
-    } catch (error) {
-      console.error("Error occurred during file upload:", error);
-    } finally {
-      setIsLoading(false); // Hide the loader regardless of the API response
+  const handleOkButtonClick = () => {
+    if (selectedFiles.length === 0) {
+      setError("Please select at least one file.");
+      return;
     }
+    setIsLoading(true);
+    uploadFiles();
   };
-  
-
   const modalStyle = {
     position: "absolute" as const,
     top: "50%",
-    left: "60%",
+    left: "50%",
     transform: "translate(-50%, -50%)",
     width: 300,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
+    borderRadius: 5,
   };
 
   return (
@@ -209,6 +202,7 @@ const SubmitExcel = () => {
                 Submit
               </Button>
             </CardActions>
+            {error && <div className="error-message">{error}</div>}
           </div>
         </CardContent>
         {isLoading && <CircularProgress color="primary" className="loader" />}
@@ -220,8 +214,28 @@ const SubmitExcel = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={{ ...modalStyle, textAlign: "center" }}>
-          <CheckCircleIcon className="success_icon" />
-          <FaXmark className="close_button" onClick={handleSuccessModalClose}/>
+          <div className="checkmark">
+            <div className="check-container">
+              <div className="check-background">
+                <svg
+                  viewBox="0 0 65 51"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 25L27.3077 44L58.5 7"
+                    stroke="white"
+                    stroke-width="13"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="check-shadow"></div>
+            </div>
+          </div>
+
+          <FaXmark className="close_button" onClick={handleSuccessModalClose} />
           <h2 id="modal-modal-title">File Uploaded Successfully!</h2>
           <p id="modal-modal-description">
             Your files have been successfully uploaded.

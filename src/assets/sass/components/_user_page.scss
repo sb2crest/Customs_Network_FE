@@ -3,6 +3,8 @@
   background: url(../../images/image.jpg);
   background-position: left;
   background-size: cover;
+  justify-content: space-between;
+  align-items: center;
   .sidebar {
     font-family: "Poppins", sans-serif;
     width: 7%;
@@ -25,6 +27,13 @@
           cursor: pointer;
           .x-mark {
             padding-left: 10vw;
+          }
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          span{
+            font-size: 18px;
           }
         }
         &_list {

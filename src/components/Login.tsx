@@ -8,9 +8,7 @@ import axios from "axios";
 const Login = () => {
   const navigate = useNavigate();
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
+    email: Yup.string().required("Email or User Id is required"),
     password: Yup.string().required("password is required"),
   });
   const formik = useFormik({
@@ -32,24 +30,26 @@ const Login = () => {
     setFieldTouched,
   } = formik;
 
- const UserLogin = () => {
-  axios
-    .post("http://localhost:8080/api/v1/auth/authenticate", values)
-    .then((res) => {
-      console.log(res.data);
-      if (res.data.access_token) {
-        localStorage.setItem("access_token", res.data.access_token);
-        localStorage.setItem("refresh_token", res.data.refresh_token);
-        navigate("/user-page", {
-          state: { accessToken: res.data.access_token },
-        });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
-
+  const UserLogin = () => {
+    axios
+      .post("http://localhost:8081/api/v1/auth/authenticate", values)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.access_token) {
+          localStorage.setItem("access_token", res.data.access_token);
+          localStorage.setItem("refresh_token", res.data.refresh_token);
+          navigate("/user-page", {
+            state: {
+              accessToken: res.data.access_token,
+              userId: res.data.user_id,
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <div className="signup">
@@ -78,7 +78,7 @@ const Login = () => {
                       <input
                         id="email"
                         type="text"
-                        placeholder="Email"
+                        placeholder="Email or User Id"
                         required
                         value={values.email}
                         onChange={handleChange}
@@ -103,7 +103,7 @@ const Login = () => {
                         <div className="error-message">{errors.password}</div>
                       )}
                     </div>
-                    <p className="forgot_password">Forgot Password</p>
+                    <p className="forgot_password">Forgot Password?</p>
                     <button type="button" onClick={UserLogin}>
                       Login
                     </button>
