@@ -6,6 +6,7 @@ import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import HeadsetMicOutlinedIcon from '@mui/icons-material/HeadsetMicOutlined';
 import chooseus from "../../assets/images/choose-us.jpg"
+import { Link } from 'react-router-dom';
 
 
 const MissionStatement: React.FC<{ title: string; description: string }> = ({ title, description }) => {
@@ -21,10 +22,20 @@ const AboutUs: React.FC = () => {
   return (
     <div className='about-us'>
       <div className="about-us-container">
-        <div className='heading'>
-          About Us
-        </div>
-      </div>
+  <div className='heading'>
+    About Us
+    </div>
+    <div className='about-us-container-link'>
+    <ul>
+      <li>
+        <Link to={"/"}>Home</Link>
+      </li>
+      <li>&#10095;</li>
+      <li>About Us</li>
+    </ul>
+  </div>
+</div>
+
 
       <div className="about-us-content">
         <div className="who-we-are-section">
