@@ -1,23 +1,130 @@
-import React, { useState, useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; 
-import '../../assets/sass/components/_submit_json.scss';
+import * as React from "react";
+import { styled } from "@mui/system";
+import { SlCloudUpload } from "react-icons/sl";
+import { useLocation } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import axios from "axios";
+import "../../assets/sass/components/_submit_excel.scss";
 import { Modal, Box, CircularProgress } from "@mui/material";
 import { FaXmark } from "react-icons/fa6";
-import axios from 'axios';
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 const SubmitJson = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [formattedValue, setFormattedValue] = useState('');
-  const [showPopup, setShowPopup] = useState(false);
+  const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
+  const [isDragOver, setIsDragOver] = React.useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 1000, 
+  const handleSuccessModalOpen = () => {
+    setIsSuccessModalOpen(true);
+  };
+
+  const handleSuccessModalClose = () => {
+    setIsSuccessModalOpen(false);
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(false);
+
+    const files = event.dataTransfer.files;
+    if (files) {
+      const excelFiles = Array.from(files).filter((file) =>
+        isExcelFile(file.name)
+      );
+      setSelectedFiles(excelFiles);
+    }
+  };
+
+  const location = useLocation();
+  const accessToken = location.state?.accessToken;
+
+  const isExcelFile = (fileName: string) => {
+    return fileName.endsWith(".json");
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const excelFiles = Array.from(files).filter((file) =>
+        isExcelFile(file.name)
+      );
+      setSelectedFiles(excelFiles);
+    }
+  };
+
+  const uploadFiles = async () => {
+    const formData = new FormData();
+
+    selectedFiles.forEach((file) => {
+      formData.append("file", file);
     });
-  }, []);
 
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/convert/json-file-to-xml",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        handleSuccessModalOpen();
+        setIsLoading(false);
+        setError("");
+        console.log("Files uploaded successfully");
+      } else {
+        console.error("Failed to upload files");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      setIsLoading(false);
+    }
+  };
+
+  const handleOkButtonClick = () => {
+    if (selectedFiles.length === 0) {
+      setError("Please select at least one file.");
+      return;
+    }
+    setIsLoading(true);
+    uploadFiles();
+  };
   const modalStyle = {
     position: "absolute" as const,
     top: "50%",
@@ -30,75 +137,78 @@ const SubmitJson = () => {
     borderRadius: 5,
   };
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleSuccessModalClose = () => {
-    setShowPopup(false);
-  };
-
-  const handleSubmit = () => {
-    try {
-      const parsedValue = JSON.parse(inputValue);
-      const beautifiedValue = JSON.stringify(parsedValue, null, 2);
-      setInputValue(beautifiedValue);
-      setFormattedValue(beautifiedValue);
-    } catch (error) {
-      console.error('Invalid JSON format');
-    }
-  };
-
-  const handleSubmission = async () => {
-    setIsLoading(true);
-    if (!formattedValue.trim()) {
-      console.error('Submission attempt with empty JSON.');
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const response = await axios.post('http://localhost:8080/convert/json-to-xml', formattedValue, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.status === 200) {
-        setShowPopup(true);
-      } else {
-        console.error('API call failed:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('Error during API call:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <div className="submit-json-page">
-      <div className="input-container">
-        {inputValue === '' && (
-          <label htmlFor="jsonInput">Enter JSON here:</label>
-        )}
-        <textarea
-          id="jsonInput"
-          value={inputValue}
-          onChange={handleInputChange}
-          className="large-placeholder"
-          data-aos="fade-up"
-        />
-      </div>
-      <div className='buttons'>
-        <button onClick={handleSubmit}>Beautify</button>
-        <div className="submit-button-container">
-          <button onClick={handleSubmission} disabled={!inputValue.trim()}>Submit</button>
-        </div>
-      </div>
-      {isLoading && <CircularProgress color="primary" className="loader" />}
+    <div
+      style={{ width: "40%", margin: "50px" }}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <Card
+        sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          backdropFilter: "blur(1px)",
+          borderRadius: "15px",
+        }}
+        className={isDragOver ? "drag-over" : ""}
+      >
+        <CardContent>
+          <div className="browsefile">
+            <div className="browsefile_container">
+              <p className="p-text">Upload Files Here</p>
+              <div className="browsefile_container_section">
+                <div className="icon">
+                  <SlCloudUpload className="upload_icon" />
+                </div>
+                <p className="content">Drag & drop files or</p>
+
+                <Button
+                  component="label"
+                  role={undefined}
+                  variant="contained"
+                  tabIndex={-1}
+                  className="browse"
+                >
+                  Browse Files
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                    accept=".json"
+                    multiple
+                  />
+                </Button>
+                <p className="supported_formats">
+                  Supported formats: .json
+                </p>
+              </div>
+              <span style={{ color: "#414142", fontWeight: "500" }}>
+                Selected Excel Files
+              </span>
+              {selectedFiles.length > 0 && (
+                <ul>
+                  {selectedFiles.map((file, index) => (
+                    <li key={index}>{file.name}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <CardActions>
+              <Button
+                variant="contained"
+                onClick={handleOkButtonClick}
+                className="submit_btn"
+              >
+                Submit
+              </Button>
+            </CardActions>
+            {error && <div className="error-message">{error}</div>}
+          </div>
+        </CardContent>
+        {isLoading && <CircularProgress color="primary" className="loader" />}
+      </Card>
       <Modal
-        open={showPopup}
+        open={isSuccessModalOpen}
         onClose={handleSuccessModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -115,9 +225,9 @@ const SubmitJson = () => {
                   <path
                     d="M7 25L27.3077 44L58.5 7"
                     stroke="white"
-                    strokeWidth="13"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    stroke-width="13"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
                 </svg>
               </div>

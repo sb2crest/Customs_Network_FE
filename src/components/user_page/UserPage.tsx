@@ -1,47 +1,57 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import "../../assets/sass/components/_user_page.scss";
 import { PiMicrosoftExcelLogo } from "react-icons/pi";
 import { LuFileJson } from "react-icons/lu";
 import { FaHistory } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { FaXmark } from "react-icons/fa6";
-// import { useLocation } from 'react-router-dom';
 import axios from "axios";
 
-
 const UserPage = () => {
-  const [hamburgerClick , setHamburgerClick] = useState(false);
+  const [hamburgerClick, setHamburgerClick] = useState(false);
   const [historyData, setHistoryData] = useState([]);
+  const [showSubmitFile, setShowSubmitFile] = useState(false);
+
   const navigate = useNavigate();
 
-  // const location = useLocation();
-  // const userId = location.state?.userId;
+  const location = useLocation();
+  const userIdRef = useRef(location.state?.userId);
 
   const handleHamburgerClick = () => {
-    setHamburgerClick(!hamburgerClick );
+    setHamburgerClick(!hamburgerClick);
+  };
+
+  const handleMouseEnter = () => {
+    setShowSubmitFile(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowSubmitFile(false);
   };
 
   const fetchHistoryData = () => {
-    axios.get(`http://localhost:8080/convert/get-all?userId=abc1230010`)
+    axios
+      .get(`http://localhost:8080/convert/get-all?userId=${userIdRef.current}`)
       .then((response) => {
         setHistoryData(response.data);
-        navigate('history', { state: { historyData: response.data } });
+        navigate("history", {
+          state: { userId: userIdRef.current, historyData: response.data },
+        });
       })
       .catch((error) => {
-        console.error('Error fetching history data:', error);
+        console.error("Error fetching history data:", error);
       });
   };
 
-
   return (
     <div className="userpage">
-      <div className={`sidebar ${hamburgerClick  ? "active" : "sidebar"}`}>
+      <div className={`sidebar ${hamburgerClick ? "active" : "sidebar"}`}>
         <div className="sidebar_container">
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
-            {hamburgerClick ? (
-                <FaXmark onClick={handleHamburgerClick} className="x-mark"/>
+              {hamburgerClick ? (
+                <FaXmark onClick={handleHamburgerClick} className="x-mark" />
               ) : (
                 <GiHamburgerMenu onClick={handleHamburgerClick} />
               )}
@@ -50,19 +60,38 @@ const UserPage = () => {
             <div className="sidebar_container_section_list">
               <ul>
                 <Link to="submit-excel">
-                  <li className={hamburgerClick  ? "active-li" : ""}>
+                  <li className={hamburgerClick ? "active-li" : ""}>
                     <PiMicrosoftExcelLogo className="sidebar_icon" />
                     Submit Excel
                   </li>
                 </Link>
-                <Link to="submit-json">
-                  <li className={hamburgerClick  ? "active-li" : ""}>
-                    <LuFileJson className="sidebar_icon" />
-                    Submit Json
-                  </li>
-                </Link>
+                <li
+                  className={hamburgerClick ? "active-li" : ""}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <LuFileJson className="sidebar_icon" />
+                  Submit Json
+                  {showSubmitFile && (
+                    <ul className="dropdown">
+                      <Link to="submit-json">
+                        <li className={hamburgerClick ? "active-li" : ""}>
+                          Submit Json File
+                        </li>
+                      </Link>
+                      <Link to="paste-json">
+                        <li className={hamburgerClick ? "active-li" : ""}>
+                          Paste Json
+                        </li>
+                      </Link>
+                    </ul>
+                  )}
+                </li>
                 <Link to="history">
-                  <li className={hamburgerClick  ? "active-li" : ""} onClick={fetchHistoryData}>
+                  <li
+                    className={hamburgerClick ? "active-li" : ""}
+                    onClick={fetchHistoryData}
+                  >
                     <FaHistory className="sidebar_icon" />
                     History
                   </li>

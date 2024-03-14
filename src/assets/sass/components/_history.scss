@@ -7,6 +7,7 @@ $placeholder: #6b728c;
   font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
+  z-index: 1;
   &_container {
     width: 100%;
     &_section {
@@ -14,6 +15,7 @@ $placeholder: #6b728c;
       opacity: 0.89;
       padding: 0.5em 1em;
       border-radius: 10px;
+    
       .filter_row {
         display: flex;
         justify-content: space-between;

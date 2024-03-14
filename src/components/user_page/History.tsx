@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoEye } from "react-icons/io5";
 import "../../assets/sass/components/_history.scss";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,33 +10,68 @@ import axios from "axios";
 import dayjs from "dayjs";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 
 const History = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [referenceId, setReferenceId] = useState("");
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Status");
+  const [selectedOption, setSelectedOption] = useState("");
   const location = useLocation();
-  const [historyData, setHistoryData] = useState(
-    location.state?.historyData || []
+  const [data, setData] = useState(location.state?.historyData.data || []);
+  const [totalRecords, setTotalRecords] = useState(
+    location.state?.historyData.totalRecords || 0
   );
-  const data = historyData.data || [];
-
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
 
-  
+  const locationState = useLocation().state;
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [displayedJsonType, setDisplayedJsonType] = useState(null);
+  const [userId, setUserId] = useState("");
+
+  const handleEyeIconClick = (item, jsonType) => {
+    setSelectedRow(item);
+    setDisplayedJsonType(jsonType);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedRow(null);
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (locationState && locationState.historyData) {
+      setData(locationState.historyData.data || []);
+      setTotalRecords(locationState.historyData.totalRecords || 0);
+      const firstItem = locationState.historyData.data[0];
+    const extractedUserId = firstItem?.userId;
+    setUserId(extractedUserId || "");
+    }
+  }, [locationState]);
 
   const handleSelectClick = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-  const handleOptionClick = (option: React.SetStateAction<string>) => {
+  const handleOptionClick = (option) => {
     setSelectedOption(option);
     setMenuOpen(false);
   };
 
   const handleApplyClick = () => {
+    fetchData();
+  };
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+    fetchData(page);
+  };
+
+  const fetchData = (page = 1) => {
     const apiUrl = "http://localhost:8080/convert/getFdaPn-records";
     const formattedDate = selectedDate
       ? dayjs(selectedDate).format("DD-MM-YYYY")
@@ -46,8 +80,10 @@ const History = () => {
       createdOn: formattedDate || null,
       referenceId: referenceId || null,
       status: selectedOption.toUpperCase() || null,
+      page: page - 1,
+      userId: userId,
     };
-
+ 
     axios
       .get(apiUrl, {
         params: requestData,
@@ -58,18 +94,13 @@ const History = () => {
       .then((response) => {
         console.log("API Response:", response.data);
         const updatedData = response.data;
-
-        // Update the state with the new data
-        setHistoryData({
-          ...historyData,
-          data: updatedData,
-        });
+        setData(updatedData.data || []);
+        setTotalRecords(updatedData.totalRecords || 0);
       })
       .catch((error) => {
         console.error("Error making API call:", error);
       });
   };
-
   return (
     <div className="history">
       <div className="history_container">
@@ -104,17 +135,17 @@ const History = () => {
                   <div className="select" onClick={handleSelectClick}>
                     <div
                       className={`selected ${
-                        selectedOption === "placeholder" ? "placeholder" : ""
+                        selectedOption === "placeholder" ? "placeholder" : " Status"
                       }`}
                     >
-                      {selectedOption}
+                      {selectedOption|| "Status"}
                     </div>
                     <div
                       className={`caret ${isMenuOpen ? "caret-rotate" : ""}`}
                     ></div>
                   </div>
                   <ul className="menu">
-                    <li onClick={() => handleOptionClick("All")}>All</li>
+                    {/* <li onClick={() => handleOptionClick("All")}>All</li> */}
                     <li onClick={() => handleOptionClick("Success")}>
                       Success
                     </li>
@@ -164,12 +195,20 @@ const History = () => {
                   </td>
                   <td>
                     <button>
-                      <IoEye style={{ cursor: "pointer" }} className="eye" />
+                      <IoEye
+                        style={{ cursor: "pointer" }}
+                        className="eye"
+                        onClick={() => handleEyeIconClick(item, "requestJson")}
+                      />
                     </button>
                   </td>
                   <td>
                     <button>
-                      <IoEye style={{ cursor: "pointer" }} className="eye" />
+                      <IoEye
+                        style={{ cursor: "pointer" }}
+                        className="eye"
+                        onClick={() => handleEyeIconClick(item, "responseJson")}
+                      />
                     </button>
                   </td>
                 </tr>
@@ -178,10 +217,41 @@ const History = () => {
           </table>
           <div className="pagination">
             <Stack spacing={1}>
-              <Pagination count={10}  shape="rounded" />
+              <Pagination
+                count={Math.ceil(totalRecords / 10) || 1}
+                page={currentPage}
+                shape="rounded"
+                onChange={handlePageChange}
+              />
             </Stack>
           </div>
         </div>
+      </div>
+      <div className="popup">
+        <Dialog open={modalOpen} onClose={handleCloseModal}>
+          <DialogContent>
+            {selectedRow && (
+              <div>
+                {displayedJsonType === "requestJson" && (
+                  <div>
+                    Request JSON:
+                    <pre>
+                      {JSON.stringify(selectedRow.requestJson, null, 2)}
+                    </pre>
+                  </div>
+                )}
+                {displayedJsonType === "responseJson" && (
+                  <div>
+                    Response JSON:
+                    <pre>
+                      {JSON.stringify(selectedRow.responseJson, null, 2)}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
