@@ -1,16 +1,19 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "../assets/sass/components/_login_signup.scss";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email or User Id is required"),
-    password: Yup.string().required("password is required"),
+    password: Yup.string().required("Password is required"),
   });
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -18,9 +21,10 @@ const Login = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      UserLogin(values);
     },
   });
+
   const {
     handleSubmit,
     handleChange,
@@ -30,15 +34,16 @@ const Login = () => {
     setFieldTouched,
   } = formik;
 
-  const UserLogin = () => {
+  const UserLogin = (credentials) => {
     axios
-      .post("http://localhost:8081/api/v1/auth/authenticate", values)
+      .post("http://localhost:8081/api/v1/auth/authenticate", credentials)
       .then((res) => {
-        console.log(res.data);
+        console.log("Login successful!");
+        console.log("Response data:", res.data);
         if (res.data.access_token) {
-          localStorage.setItem("access_token", res.data.access_token);
-          localStorage.setItem("refresh_token", res.data.refresh_token);
-          navigate("/user-page", {
+          const { access_token, user_id, role } = res.data;
+          login(access_token, user_id, role);
+          navigate(res.data.role === "ADMIN" ? "/admin-page" : "/user-page", {
             state: {
               accessToken: res.data.access_token,
               userId: res.data.user_id,
@@ -104,9 +109,7 @@ const Login = () => {
                       )}
                     </div>
                     <p className="forgot_password">Forgot Password?</p>
-                    <button type="button" onClick={UserLogin}>
-                      Login
-                    </button>
+                    <button type="submit">Login</button>
                     <p className="toggle_sentence">
                       Don't have an account?{" "}
                       <Link to="/signup">Register here</Link>{" "}
