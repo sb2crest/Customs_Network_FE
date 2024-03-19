@@ -1,14 +1,15 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext";
-
+import useAuth from '../hooks/useAuth';
+import {axiosPrivate1} from '../services/apiService';
+const LOGIN_URL = '/api/v1/auth/authenticate';
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { setAuth } = useAuth();
+
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email or User Id is required"),
     password: Yup.string().required("Password is required"),
@@ -20,10 +21,12 @@ const Login = () => {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      UserLogin(values);
+    onSubmit: () => {
+      UserLogin();
     },
   });
+
+ 
 
   const {
     handleSubmit,
@@ -34,27 +37,30 @@ const Login = () => {
     setFieldTouched,
   } = formik;
 
-  const UserLogin = (credentials) => {
-    axios
-      .post("http://localhost:8081/api/v1/auth/authenticate", credentials)
-      .then((res) => {
-        console.log("Login successful!");
-        console.log("Response data:", res.data);
-        if (res.data.access_token) {
-          const { access_token, user_id, role } = res.data;
-          login(access_token, user_id, role);
-          navigate(res.data.role === "ADMIN" ? "/admin-page" : "/user-page", {
-            state: {
-              accessToken: res.data.access_token,
-              userId: res.data.user_id,
-            },
-          });
+  const UserLogin = async () => {
+    try {
+      const response = await axiosPrivate1.post(LOGIN_URL,
+        JSON.stringify(values),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
         }
-      })
-      .catch((err) => {
-        console.error(err);
+      );
+      console.log(JSON.stringify(response?.data));
+      const accessToken = response?.data?.access_token;
+      const refreshToken = response?.data?.refresh_token;
+      const role = response?.data?.role;
+      setAuth({ values, role, accessToken,refreshToken });
+      navigate(response.data.role === "ADMIN" ? "/admin-page" : "/user-page", {
+        state: {
+          accessToken: response.data.access_token,
+          userId: response.data.user_id,
+        },
       });
-  };
+    } catch (err) {
+      console.log("Login failed", err)
+    }
+  }
 
   return (
     <div className="signup">
@@ -121,6 +127,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+    
     </div>
   );
 };

@@ -6,10 +6,10 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import axios from "axios";
 import "../../assets/sass/components/_submit_excel.scss";
 import { Modal, Box, CircularProgress } from "@mui/material";
 import { FaXmark } from "react-icons/fa6";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -29,7 +29,8 @@ const SubmitExcel = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-
+  const axiosPrivate = useAxiosPrivate();
+  
   const handleSuccessModalOpen = () => {
     setIsSuccessModalOpen(true);
   };
@@ -90,15 +91,13 @@ const SubmitExcel = () => {
     });
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/convert/excel-to-xml",
+      const response = await axiosPrivate.post(
+        "/convert/excel-to-xml",
         formData,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
           },
-          withCredentials: true,
         }
       );
 

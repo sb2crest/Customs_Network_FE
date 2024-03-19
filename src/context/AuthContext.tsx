@@ -1,54 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 
-const AuthContext = createContext();
-
-export const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("access_token"));
-  const [role, setRole] = useState(null); 
-  const [userId, setUserId] = useState(null); 
+    const [auth, setAuth] = useState({});
 
-  const login = (accessToken,userId, role) => {
-    console.log("role obtained",role)
+    return (
+        <AuthContext.Provider value={{ auth, setAuth }}>
+            {children}
+        </AuthContext.Provider>
+    )
+}
 
-    localStorage.setItem("access_token", accessToken);
-    setAccessToken(accessToken);
-    setIsAuthenticated(true);
-    setRole(role); 
-    setUserId(userId);
-  };
-
-
-  const logout = () => {
-    localStorage.removeItem("access_token");
-    setIsAuthenticated(false);
-    setRole(null); 
-    setUserId(null);
-  };
-
-  const checkTokenExpiration = () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-    const tokenPayload = JSON.parse(atob(token.split(".")[1]));
-    const tokenExp = tokenPayload.exp * 1000; 
-    const currentTime = new Date().getTime();
-    if (currentTime > tokenExp) {
-      logout();
-    }
-  };
-
-  useEffect(() => {
-    // Check token expiration every minute
-    const interval = setInterval(checkTokenExpiration, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, role }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+export default AuthContext;

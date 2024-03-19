@@ -4,28 +4,50 @@ import { PiMicrosoftExcelLogo } from "react-icons/pi";
 import { LuFileJson } from "react-icons/lu";
 import { FaHistory } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { MdOutlineStackedLineChart } from "react-icons/md";
 import { useState, useRef, useEffect } from "react";
 import { FaXmark } from "react-icons/fa6";
-import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import TokenExpirationPopup from "../TokenExpirationPopup";
+import useAuth from "../../hooks/useAuth";
+const TOKEN_EXPIRATION_THRESHOLD = 10000;
 
 const UserPage = () => {
-  const { logout } = useAuth();
   const [hamburgerClick, setHamburgerClick] = useState(false);
   const [historyData, setHistoryData] = useState([]);
   const [showSubmitFile, setShowSubmitFile] = useState(false);
-
   const navigate = useNavigate();
-
+  const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
-  const userIdRef = useRef(location.state?.userId?? null);
+  const userIdRef = useRef(location.state?.userId ?? null);
+  const [showPopup, setShowPopup] = useState(false);
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     if (!userIdRef.current) {
-      // Redirect to login if no user ID
-      navigate('/login');
+      navigate("/login");
     }
   }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, TOKEN_EXPIRATION_THRESHOLD);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleContinueSession = () => {
+    setShowPopup(false);
+    setTimeout(() => {
+      setShowPopup(true);
+    }, TOKEN_EXPIRATION_THRESHOLD);
+  };
+
+  const handleLogout = () => {
+    setShowPopup(false);
+    setAuth({});
+    navigate("/login");
+  };
 
   const handleHamburgerClick = () => {
     setHamburgerClick(!hamburgerClick);
@@ -40,8 +62,8 @@ const UserPage = () => {
   };
 
   const fetchHistoryData = () => {
-    axios
-      .get(`http://localhost:8080/convert/get-all?userId=${userIdRef.current}`)
+    axiosPrivate
+      .get(`/convert/get-all?userId=${userIdRef.current}`)
       .then((response) => {
         setHistoryData(response.data);
         navigate("history", {
@@ -50,13 +72,14 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.error("Error fetching history data:", error);
+        navigate("/login", { state: { from: location }, replace: true });
       });
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  // const handleLogout = () => {
+  //   logout();
+  //   navigate('/login');
+  // };
 
   return (
     <div className="userpage">
@@ -110,8 +133,9 @@ const UserPage = () => {
                     History
                   </li>
                 </Link>
-                <li>
-                  <button onClick={handleLogout}>Logout</button>
+                <li className={hamburgerClick ? "active-li" : ""}>
+                <MdOutlineStackedLineChart className="sidebar_icon" />
+                  Trends
                 </li>
               </ul>
             </div>
@@ -121,6 +145,12 @@ const UserPage = () => {
       <div className="userpage-content-container">
         <Outlet />
       </div>
+      {showPopup && (
+        <TokenExpirationPopup
+          onContinue={handleContinueSession}
+          onLogout={handleLogout}
+        />
+      )}
     </div>
   );
 };

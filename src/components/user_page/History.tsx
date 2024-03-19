@@ -6,12 +6,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import dayjs from "dayjs";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const History = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -24,6 +24,7 @@ const History = () => {
     location.state?.historyData.totalRecords || 0
   );
   const [currentPage, setCurrentPage] = useState(1);
+  const axiosPrivate = useAxiosPrivate();
 
   const locationState = useLocation().state;
 
@@ -72,7 +73,7 @@ const History = () => {
   };
 
   const fetchData = (page = 1) => {
-    const apiUrl = "http://localhost:8080/convert/getFdaPn-records";
+    const apiUrl = "/convert/getFdaPn-records";
     const formattedDate = selectedDate
       ? dayjs(selectedDate).format("DD-MM-YYYY")
       : null;
@@ -84,7 +85,7 @@ const History = () => {
       userId: userId,
     };
  
-    axios
+    axiosPrivate
       .get(apiUrl, {
         params: requestData,
         headers: {

@@ -4,13 +4,14 @@ import 'aos/dist/aos.css';
 import '../../assets/sass/components/_paste_json.scss';
 import { Modal, Box, CircularProgress } from "@mui/material";
 import { FaXmark } from "react-icons/fa6";
-import axios from 'axios';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const PasteJson = () => {
   const [inputValue, setInputValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     AOS.init({
@@ -58,7 +59,7 @@ const PasteJson = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/convert/json-to-xml', formattedValue, {
+      const response = await axiosPrivate.post('/convert/json-to-xml', formattedValue, {
         headers: {
           'Content-Type': 'application/json',
         },
