@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { IoEye } from "react-icons/io5";
 import "../../assets/sass/components/_history.scss";
 import Pagination from "@mui/material/Pagination";
@@ -7,50 +7,24 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { DatePicker } from 'antd';
-import { useUserContext } from '../../context/UserContext';
-import { useLocation } from 'react-router-dom';
-import { axiosPrivate } from "../../services/apiService";
+import { useAdminContext } from "../../context/AdminContext";
+
 const { RangePicker } = DatePicker;
 
-const History = () => {
-  const { historyData } = useUserContext(); 
+const AdminHistory = () => {
+  const { adminHistoryData } = useAdminContext(); 
   const [selectedDate, setSelectedDate] = useState(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const [responseData, setResponseData] = useState(historyData && historyData.data ? historyData.data : []);
-  const [totalRecords, setTotalRecords] = useState(historyData ? historyData.totalRecords : 0); 
+  const [responseData, setResponseData] = useState(adminHistoryData && adminHistoryData.data ? adminHistoryData.data : []);
+  const [totalRecords, setTotalRecords] = useState(adminHistoryData ? adminHistoryData.totalRecords : 0); 
   const [currentPage, setCurrentPage] = useState(1);
+  const axiosPrivate = useAxiosPrivate();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [displayedJsonType, setDisplayedJsonType] = useState(null);
   const [userId, setUserId] = useState("");
-
-  const dropdownRef = useRef(null);
-  const location = useLocation();
-  const { state } = location;
-  const { userId: locationUserId } = state || {};
-
-  useEffect(() => {
-    if (locationUserId) {
-      setUserId(locationUserId);
-    }
-  }, [locationUserId]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setMenuOpen(false);
-      }
-    };
-
-    // Add event listener when component mounts
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Remove event listener when component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleEyeIconClick = (item, jsonType) => {
     setSelectedRow(item);
@@ -64,14 +38,14 @@ const History = () => {
   };
 
   useEffect(() => {
-    if (historyData && historyData.data) {
-      setResponseData(historyData.data);
-      setTotalRecords(historyData.totalRecords)
+    if (adminHistoryData && adminHistoryData.data) {
+      setResponseData(adminHistoryData.data);
+      setTotalRecords(adminHistoryData.totalRecords)
       setSelectedOption("");
       setSelectedDate(null);
     }
     setCurrentPage(1);
-  }, [historyData]);
+  }, [adminHistoryData]);
 
   const handleSelectClick = () => {
     setMenuOpen(!isMenuOpen);
@@ -99,13 +73,11 @@ const History = () => {
     const endDate = selectedDate ? selectedDate[1].format("YYYY-MM-DD") : null;
   
     let requestbody = {
-      fieldName: "user_id",
-      value: userId,
       startDate: startDate,
       endDate: endDate || new Date().toISOString().split('T')[0],
       page: page,
       size: size,
-      userId: userId,
+      userId: userId || null,
     };
   
     if (selectedOption && selectedOption !== "All") {
@@ -136,11 +108,14 @@ const History = () => {
           <div className="filter_row">
             <p>History</p>
             <div className="filter">
+              <div className="userId">
+              <input type="text" placeholder="User Id" value={userId} onChange={(e) => setUserId(e.target.value)} />
+              </div>
               <div className="created_date">
               <RangePicker separator="" className="date-range" onChange={(date)=> setSelectedDate(date)}/>
               </div>
               <div className="status_filter">
-                <div ref={dropdownRef} className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}>
+                <div className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}>
                   <div className="select" onClick={handleSelectClick}>
                     <div
                       className={`selected ${
@@ -208,7 +183,6 @@ const History = () => {
                   >
                     {item.status}
                   </td>
-                 
                   <td className="eyeicon">
                     <button>
                       <IoEye
@@ -273,4 +247,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default AdminHistory;
