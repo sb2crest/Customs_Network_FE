@@ -89,7 +89,7 @@ const Trends = () => {
           <div className="trends_container_section_section1">
             <div className="heading">
               <h2>
-                Trends <MdOutlineStackedLineChart />
+                Trends &nbsp;<MdOutlineStackedLineChart />
               </h2>
             </div>
           </div>
@@ -148,9 +148,7 @@ const Trends = () => {
                     <div className="heading">
                       <h5>Total Transaction</h5>
                       <p>
-                        {responseData.length > 0
-                          ? responseData[0].totalTransactions
-                          : 0}{" "}
+                      {trendsData.allTransactions || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp style={{ color: "#cccccc" }} />
                       </p>
@@ -167,11 +165,9 @@ const Trends = () => {
                       />
                     </div>
                     <div className="heading">
-                      <h5>Successful Transaction</h5>
+                      <h5>Accepted Transaction</h5>
                       <p>
-                        {responseData.length > 0
-                          ? responseData[0].acceptedCount
-                          : 0}{" "}
+                      {trendsData.totalAcceptedCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp style={{ color: "rgb(80 199 147)" }} />
                       </p>
@@ -190,9 +186,7 @@ const Trends = () => {
                     <div className="heading">
                       <h5>Pending Transaction</h5>
                       <p>
-                        {responseData.length > 0
-                          ? responseData[0].pendingCount
-                          : 0}{" "}
+                      {trendsData.totalPendingCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp style={{ color: "rgb(250 145 107)" }} />
                       </p>
@@ -207,11 +201,9 @@ const Trends = () => {
                       <FaRegCircleXmark style={{ color: "#e53d34" }} />
                     </div>
                     <div className="heading">
-                      <h5>Failed Transaction</h5>
+                      <h5>Rejected Transaction</h5>
                       <p>
-                        {responseData.length > 0
-                          ? responseData[0].rejectedCount
-                          : 0}{" "}
+                      {trendsData.totalRejectedCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp style={{ color: "#e53d34" }} />
                       </p>
@@ -228,9 +220,7 @@ const Trends = () => {
                     <div className="heading">
                       <h5>CBP Down</h5>
                       <p>
-                        {responseData.length > 0
-                          ? responseData[0].cbpDownCount
-                          : 0}{" "}
+                      {trendsData.totalCbpDownCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp style={{ color: "#FFD700" }} />
                       </p>

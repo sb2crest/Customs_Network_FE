@@ -84,7 +84,7 @@ const AdminTrends = () => {
           <div className="trends_container_section_section1">
             <div className="heading">
               <h2>
-                Trends <MdOutlineStackedLineChart />
+                Trends &nbsp;<MdOutlineStackedLineChart />
               </h2>
             </div>
           </div>
@@ -173,7 +173,7 @@ const AdminTrends = () => {
                       />
                     </div>
                     <div className="heading">
-                      <h5>Successful Transaction</h5>
+                      <h5>Accepted Transaction</h5>
                       <p>
                       {responseData.totalAcceptedCount || 0}
                         &nbsp;&nbsp;
@@ -209,7 +209,7 @@ const AdminTrends = () => {
                       <FaRegCircleXmark style={{ color: "#e53d34" }} />
                     </div>
                     <div className="heading">
-                      <h5>Failed Transaction</h5>
+                      <h5>Rejected Transaction</h5>
                       <p>
                       {responseData.totalRejectedCount || 0}
                         &nbsp;&nbsp;

@@ -104,14 +104,16 @@ const UserPage = () => {
   const handleLiClick = (liName) => {
     const isDropdownItem = ["submit-json-file", "paste-json"].includes(liName);
     if (isDropdownItem) {
-      setActiveLi("submit-json");
+      setActiveDropdownItem(liName);
+      setActiveLi("submit-json"); 
     } else if (liName === "submit-json" && !showSubmitFile) {
       setShowSubmitFile(true);
+      setActiveLi(liName);
     } else if (liName !== "submit-json") {
+      setActiveDropdownItem(""); 
       setActiveLi(liName);
     }
   };
-  
   
 
   return (
@@ -139,7 +141,12 @@ const UserPage = () => {
                   </li>
                 </Link>
                 <li
-                  className={activeLi === "submit-json" ? "active-li" : ""}
+                  className={`${
+                    activeLi === "submit-json" ||
+                    activeDropdownItem === "submit-json-file"
+                      ? "active-li"
+                      : ""
+                  }`}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   onClick={() => handleLiClick("submit-json")}
@@ -151,7 +158,9 @@ const UserPage = () => {
                       <Link to="submit-json">
                         <li
                           className={
-                            activeLi === "submit-json-file" ? "active-li" : ""
+                            activeDropdownItem === "submit-json-file"
+                              ? "active-li"
+                              : ""
                           }
                           onClick={() => handleLiClick("submit-json-file")}
                         >
@@ -161,7 +170,9 @@ const UserPage = () => {
                       <Link to="paste-json">
                         <li
                           className={
-                            activeLi === "paste-json" ? "active-li" : ""
+                            activeDropdownItem === "paste-json"
+                              ? "active-li"
+                              : ""
                           }
                           onClick={() => handleLiClick("paste-json")}
                         >

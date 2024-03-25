@@ -14,14 +14,14 @@ const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
 const AdminPage = () => {
   const [hamburgerClick, setHamburgerClick] = useState(false);
+  const [activeLi, setActiveLi] = useState(""); // State to track active li
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
   const userIdRef = useRef(location.state?.userId ?? null);
   const [showPopup, setShowPopup] = useState(false);
   const { setAuth } = useAuth();
-
-  const {  setAdminHistoryData, setAdminTrendsData } = useAdminContext();
+  const { setAdminHistoryData, setAdminTrendsData } = useAdminContext();
   
   useEffect(() => {
     if (!userIdRef.current) {
@@ -52,6 +52,10 @@ const AdminPage = () => {
 
   const handleHamburgerClick = () => {
     setHamburgerClick(!hamburgerClick);
+  };
+
+  const handleLiClick = (liName) => {
+    setActiveLi(liName);
   };
 
   const fetchHistoryData = () => {
@@ -103,10 +107,13 @@ const AdminPage = () => {
             </div>
             <div className="sidebar_container_section_list">
               <ul>
-              <Link to="trends">
+                <Link to="trends">
                   <li
-                    className={hamburgerClick ? "active-li" : ""}
-                    onClick={fetchTrendsData}
+                    className={activeLi === "trends" ? "active-li" : ""}
+                    onClick={() => {
+                      handleLiClick("trends");
+                      fetchTrendsData();
+                    }}
                   >
                     <MdOutlineStackedLineChart className="sidebar_icon" />
                     Trends
@@ -114,8 +121,11 @@ const AdminPage = () => {
                 </Link>
                 <Link to="history">
                   <li
-                    className={hamburgerClick ? "active-li" : ""}
-                    onClick={fetchHistoryData}
+                    className={activeLi === "history" ? "active-li" : ""}
+                    onClick={() => {
+                      handleLiClick("history");
+                      fetchHistoryData();
+                    }}
                   >
                     <FaHistory className="sidebar_icon" />
                     History

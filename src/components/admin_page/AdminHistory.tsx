@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { IoEye } from "react-icons/io5";
 import "../../assets/sass/components/_history.scss";
 import Pagination from "@mui/material/Pagination";
@@ -8,7 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { DatePicker } from 'antd';
 import { useAdminContext } from "../../context/AdminContext";
-
+import { FaHistory } from "react-icons/fa";
 const { RangePicker } = DatePicker;
 
 const AdminHistory = () => {
@@ -20,11 +20,12 @@ const AdminHistory = () => {
   const [totalRecords, setTotalRecords] = useState(adminHistoryData ? adminHistoryData.totalRecords : 0); 
   const [currentPage, setCurrentPage] = useState(1);
   const axiosPrivate = useAxiosPrivate();
-
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [displayedJsonType, setDisplayedJsonType] = useState(null);
   const [userId, setUserId] = useState("");
+
+  const dropdownRef = useRef(null);
 
   const handleEyeIconClick = (item, jsonType) => {
     setSelectedRow(item);
@@ -36,6 +37,22 @@ const AdminHistory = () => {
     setSelectedRow(null);
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    // Add event listener when component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (adminHistoryData && adminHistoryData.data) {
@@ -106,7 +123,7 @@ const AdminHistory = () => {
       <div className="history_container">
         <div className="history_container_section">
           <div className="filter_row">
-            <p>History</p>
+            <p>History&nbsp;<FaHistory className="sidebar_icon" /></p>
             <div className="filter">
               <div className="userId">
               <input type="text" placeholder="User Id" value={userId} onChange={(e) => setUserId(e.target.value)} />
@@ -115,7 +132,7 @@ const AdminHistory = () => {
               <RangePicker separator="" className="date-range" onChange={(date)=> setSelectedDate(date)}/>
               </div>
               <div className="status_filter">
-                <div className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}>
+                <div ref={dropdownRef} className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}>
                   <div className="select" onClick={handleSelectClick}>
                     <div
                       className={`selected ${
@@ -248,3 +265,4 @@ const AdminHistory = () => {
 };
 
 export default AdminHistory;
+

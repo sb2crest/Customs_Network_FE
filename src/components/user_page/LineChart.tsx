@@ -66,8 +66,8 @@ const LineChart = () => {
   const [responseData, setResponseData] = useState([]);
 
   useEffect(() => {
-    if (trendsData && trendsData.length > 0) {
-      setResponseData(trendsData);
+    if (trendsData && trendsData.dailyAuditDTOS && trendsData.dailyAuditDTOS.length > 0) {
+      setResponseData(trendsData.dailyAuditDTOS);
     }
   }, [trendsData]);
 

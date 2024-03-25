@@ -5,11 +5,11 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { DatePicker } from 'antd';
 import { useUserContext } from '../../context/UserContext';
 import { useLocation } from 'react-router-dom';
 import { axiosPrivate } from "../../services/apiService";
+import { FaHistory } from "react-icons/fa";
 const { RangePicker } = DatePicker;
 
 const History = () => {
@@ -134,7 +134,7 @@ const History = () => {
       <div className="history_container">
         <div className="history_container_section">
           <div className="filter_row">
-            <p>History</p>
+            <p>History &nbsp;<FaHistory className="sidebar_icon" /></p>
             <div className="filter">
               <div className="created_date">
               <RangePicker separator="" className="date-range" onChange={(date)=> setSelectedDate(date)}/>

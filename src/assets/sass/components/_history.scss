@@ -23,11 +23,14 @@ $placeholder: #6b728c;
         justify-content: space-between;
         align-items: center;
         p {
-          font-size: 1.25rem;
+          font-size: 18px;
           line-height: 28px;
           font-weight: 500;
           text-transform: capitalize;
-          color: rgb(255, 255, 255);
+          color: #a0a0a0;
+          .sidebar_icon{
+            margin-bottom: -3px;
+          }
         }
         .filter {
           display: flex;
