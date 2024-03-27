@@ -39,7 +39,6 @@ const LoginPage: React.FC = () => {
                                 Login
                             </button>
                         </div>
-
                     </form>
                     <div className='footer-container'>
                         Forgot Password ? |

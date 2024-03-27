@@ -17,6 +17,7 @@ import AdminWrapper from "./utilities/AdminWrapper";
 import AdminTrends from "./components/admin_page/AdminTrends";
 import AdminHistory from "./components/admin_page/AdminHistory";
 import LoginPage from "./components/LoginPage";
+import SignUpPage from "./components/SignUpPage";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
           <Route element={<RequireAuth allowedRoles={"USER"} />}>
