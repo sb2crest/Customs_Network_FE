@@ -16,6 +16,7 @@ import UserWrapper from "./utilities/UserWrapper";
 import AdminWrapper from "./utilities/AdminWrapper";
 import AdminTrends from "./components/admin_page/AdminTrends";
 import AdminHistory from "./components/admin_page/AdminHistory";
+import LoginPage from "./components/LoginPage";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
