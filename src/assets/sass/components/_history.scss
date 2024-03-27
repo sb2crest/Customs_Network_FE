@@ -7,58 +7,84 @@ $placeholder: #6b728c;
   font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 1;
+  height: 100vh;
   &_container {
     width: 100%;
     &_section {
       background: #212121;
       opacity: 0.89;
-      padding: 0.5em 1em;
+      padding: 0.3em 1em;
       border-radius: 10px;
+
       .filter_row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         p {
-          font-size: 1.25rem;
+          font-size: 18px;
           line-height: 28px;
           font-weight: 500;
           text-transform: capitalize;
-          color: rgb(255, 255, 255);
+          color: #a0a0a0;
+          .sidebar_icon{
+            margin-bottom: -3px;
+          }
         }
         .filter {
           display: flex;
           justify-content: center;
           align-items: stretch;
           gap: 20px;
+          .userId{
+            input{
+              width: 100px;
+              padding: 13px 0;
+              padding-left: 15px;
+              border-radius: 5px;
+              background-color: #414142;
+              color: #020000;
+              border: none;
+              &::placeholder {
+                font-size: 16px;
+                color: #020000;
+            }
+            &:focus{
+              outline: none;
+            }
+            }
+          }
           .created_date {
-            .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+            :where(.css-dev-only-do-not-override-djtmh8).ant-picker-outlined {
               height: 40.5px;
               background-color: #414142;
               color: #020000;
+              border: none;
+              width: 18vw;
+            }
+            .anticon svg {
+              color: #020000;
+            }
+            .date-range .ant-picker-input > input::placeholder {
+              color: #020000;
+              font-size: 16px;
             }
           }
-          .Apply_button{
-            button{
+          .Apply_button {
+            button {
               padding: 10px 25px;
               background-color: #414142;
               border: none;
               border-radius: 5px;
               font-size: 16px;
               cursor: pointer;
-              &:hover{
+              &:hover {
                 background-color: #e53d34;
                 color: #fff;
               }
             }
           }
-        }
-        .referenceId_filter {
-          .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-            background-color: #414142;
-            color: #020000;
-          
-          }
-          
         }
         .status_filter {
           .dropdown {
@@ -66,7 +92,7 @@ $placeholder: #6b728c;
             position: relative;
             color: #020000;
             height: 40.5px;
-            
+
             .select {
               cursor: pointer;
               transition: 0.3s;
@@ -84,7 +110,6 @@ $placeholder: #6b728c;
 
                 &.placeholder {
                   color: $placeholder;
-                 
                 }
               }
 
@@ -96,7 +121,6 @@ $placeholder: #6b728c;
                 border-right: 5px solid transparent;
                 border-top: 6px solid #020000;
                 transition: 0.3s;
-                
               }
             }
 
@@ -147,8 +171,8 @@ $placeholder: #6b728c;
 
           tr {
             th {
-              padding-top: 1rem;
-              padding-bottom: 1rem;
+              padding-top: 0.5rem;
+              padding-bottom: 0.5rem;
               padding-left: 1.5rem;
               padding-right: 1.5rem;
               font-size: 0.75rem;
@@ -166,10 +190,12 @@ $placeholder: #6b728c;
             .batchid {
               width: 150px;
             }
-            .userid{
+            .userid {
               width: 100px;
             }
-
+            .eyeicon{
+              width: 100px;
+            }
             td {
               padding-left: 0.5rem;
               padding-right: 0.5rem;
@@ -201,15 +227,15 @@ $placeholder: #6b728c;
           }
         }
       }
-      .pagination{
+      .pagination {
         display: flex;
         justify-content: flex-end;
         .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
           background-color: #7b8596;
-      }
-      .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root {
-        color:rgb(203 213 225) ;
-      }
+        }
+        .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root {
+          color: rgb(203 213 225);
+        }
       }
     }
   }

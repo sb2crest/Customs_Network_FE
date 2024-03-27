@@ -8,6 +8,7 @@
   .sidebar {
     font-family: "Poppins", sans-serif;
     width: 7%;
+    z-index: 10000;
     &_container {
       &_section {
         display: flex;
@@ -15,7 +16,6 @@
         align-items: center;
         flex-direction: column;
         background-color: #212121;
-        // border-right: 2px solid #e53d34;
         opacity: 0.89;
         height: 100vh;
         box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
@@ -26,14 +26,15 @@
           margin-top: 2vw;
           cursor: pointer;
           .x-mark {
-            padding-left: 10vw;
+            padding-left: 8vw;
+            font-size: 22px;
           }
           display: flex;
           justify-content: center;
           align-items: center;
           flex-direction: column;
-          span{
-            font-size: 18px;
+          span {
+            font-size: 20px;
           }
         }
         &_list {
@@ -44,27 +45,35 @@
             margin: 0;
             text-decoration: none;
             display: none;
-
+            .active-li{
+              background-color: #e53d34;
+              color: #fff;
+              .sidebar_icon {
+                color: #fff;
+              }
+            }
             a {
               text-decoration: none;
               color: inherit;
               opacity: 1;
             }
+                  
             li {
               display: flex;
-              justify-content: space-between;
               align-items: center;
-              flex-direction: column;
-              font-size: 13px;
+              flex-direction: row;
+              justify-content: start;
+              font-size: 14px;
               border-bottom: 1px solid #e53d34;
               font-weight: 600;
               color: #a0a0a0;
+              position: relative;
               cursor: pointer;
-              padding: 1.5vw 0;
-
+              padding: 1vw 0;
+              padding-left: 1vw;
               .sidebar_icon {
-                font-size: 1.7em;
-                margin-bottom: 3px;
+                padding-right: 10px;
+                font-size: 1.8em;
                 color: #e53d34;
               }
               &:hover {
@@ -77,13 +86,38 @@
               }
             }
           }
+          .dropdown {
+            position: absolute;
+            top: 0;
+            left: 101%;
+            display: none;
+            background: #212121;
+            padding: 10px;
+            box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+              rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+            width: 90%;
+
+            li {
+              border: none;
+            }
+
+            a {
+              color: #a0a0a0;
+            }
+
+            li:hover {
+              background: #e53d34;
+              transition: background 0.3s ease;
+              color: #fff;
+            }
+          }
         }
       }
     }
   }
   .sidebar {
     &.active {
-      width: 15%;
+      width: 13%;
       .sidebar_container_section_list {
         ul {
           display: block;
@@ -91,11 +125,11 @@
             &.active-li {
               flex-direction: row;
               justify-content: start;
-              padding-left: 2vw;
+              padding-left: 1vw;
               font-size: 14px;
               .sidebar_icon {
                 padding-right: 10px;
-                font-size: 2em;
+                font-size: 1.8em;
               }
             }
           }
@@ -112,5 +146,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 0;
   }
 }

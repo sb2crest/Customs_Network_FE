@@ -1,4 +1,6 @@
 .submit-json-page {
+  z-index: 0;
+  overflow: hidden;
   .input-container {
     margin-bottom: 20px;
     display: flex;
@@ -26,7 +28,7 @@
     border: 0;
     outline: none;
     border-radius: 5px;
-    width: 140vh;
+    width: 125vh;
     height: 70vh;
     background-color: rgba(255, 255, 255, 0.5);
     -webkit-backdrop-filter: blur(1px);
@@ -37,11 +39,15 @@
     padding: 10px 15px;
     width: 15vh;
     text-align: center;
-    color: white;
-    background-color: red;
+    background: #a0a0a0;
+    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    &:hover {
+      color: #fff;
+      background-color: #e53d34;
+    }
   }
 
   .formatted-json {
@@ -73,7 +79,7 @@
 
   .buttons {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     gap: 10px;
   }

@@ -88,6 +88,10 @@
                   font-weight: 600;
                   font-size: 16px;
                   cursor: pointer;
+                  &:hover{
+                    background: #e53d34;
+                    color: #fff;
+                  }
                 }
                 .toggle_sentence,
                 .forgot_password {

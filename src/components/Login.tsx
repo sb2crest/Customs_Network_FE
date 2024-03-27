@@ -2,25 +2,32 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "../assets/sass/components/_login_signup.scss";
-import axios from "axios";
-
+import useAuth from '../hooks/useAuth';
+import {axiosPrivate1} from '../services/apiService';
+const LOGIN_URL = '/api/v1/auth/authenticate';
 const Login = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
+
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email or User Id is required"),
-    password: Yup.string().required("password is required"),
+    password: Yup.string().required("Password is required"),
   });
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: () => {
+      UserLogin();
     },
   });
+
+ 
+
   const {
     handleSubmit,
     handleChange,
@@ -30,26 +37,30 @@ const Login = () => {
     setFieldTouched,
   } = formik;
 
-  const UserLogin = () => {
-    axios
-      .post("http://localhost:8081/api/v1/auth/authenticate", values)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.access_token) {
-          localStorage.setItem("access_token", res.data.access_token);
-          localStorage.setItem("refresh_token", res.data.refresh_token);
-          navigate("/user-page", {
-            state: {
-              accessToken: res.data.access_token,
-              userId: res.data.user_id,
-            },
-          });
+  const UserLogin = async () => {
+    try {
+      const response = await axiosPrivate1.post(LOGIN_URL,
+        JSON.stringify(values),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true
         }
-      })
-      .catch((err) => {
-        console.error(err);
+      );
+      console.log(JSON.stringify(response?.data));
+      const accessToken = response?.data?.access_token;
+      const refreshToken = response?.data?.refresh_token;
+      const role = response?.data?.role;
+      setAuth({ values, role, accessToken,refreshToken });
+      navigate(response.data.role === "ADMIN" ? "/admin-page" : "/user-page", {
+        state: {
+          accessToken: response.data.access_token,
+          userId: response.data.user_id,
+        },
       });
-  };
+    } catch (err) {
+      console.log("Login failed", err)
+    }
+  }
 
   return (
     <div className="signup">
@@ -104,9 +115,7 @@ const Login = () => {
                       )}
                     </div>
                     <p className="forgot_password">Forgot Password?</p>
-                    <button type="button" onClick={UserLogin}>
-                      Login
-                    </button>
+                    <button type="submit">Login</button>
                     <p className="toggle_sentence">
                       Don't have an account?{" "}
                       <Link to="/signup">Register here</Link>{" "}
@@ -118,6 +127,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+    
     </div>
   );
 };
