@@ -6,16 +6,16 @@ import {
   MdOutlinePendingActions,
 } from "react-icons/md";
 import { LuSigma } from "react-icons/lu";
-import { FaRegCircleXmark } from "react-icons/fa6";
 import { GiSandsOfTime } from "react-icons/gi";
-import { FaArrowTrendUp } from "react-icons/fa6";
+import { FaArrowTrendUp, FaCircleXmark } from "react-icons/fa6";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import Button from "@mui/material/Button";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserContext } from "../../context/UserContext";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
+import { FaCheckCircle } from "react-icons/fa";
 
 const Trends = () => {
   const [activeButtons, setActiveButtons] = useState([
@@ -24,7 +24,7 @@ const Trends = () => {
     false,
     false,
   ]);
-  const { trendsData,setTrendsData } = useUserContext();
+  const { trendsData, setTrendsData } = useUserContext();
   const axiosPrivate = useAxiosPrivate();
   const [responseData, setResponseData] = useState([]);
   const [userId, setUserId] = useState("");
@@ -75,7 +75,7 @@ const Trends = () => {
       .then((response) => {
         setResponseData(response.data);
         setTrendsData(response.data);
-      }) 
+      })
       .catch((error) => {
         console.error("Error fetching trends data:", error);
         navigate("/login", { state: { from: location }, replace: true });
@@ -89,7 +89,8 @@ const Trends = () => {
           <div className="trends_container_section_section1">
             <div className="heading">
               <h2>
-                Trends &nbsp;<MdOutlineStackedLineChart />
+                Trends &nbsp;
+                <MdOutlineStackedLineChart />
               </h2>
             </div>
           </div>
@@ -98,8 +99,10 @@ const Trends = () => {
               size="small"
               onClick={() => handleButtonToggle(0)}
               style={{
-                color: "#a0a0a0",
-                backgroundColor: activeButtons[0] ? "#414142" : "transparent",
+                color: "#143369",
+                fontWeight: "bold",
+                padding: "4px 12px",
+                backgroundColor: activeButtons[0] ? "#fff" : "#a0a0a0",
               }}
             >
               Last 3 Days
@@ -108,8 +111,10 @@ const Trends = () => {
               size="small"
               onClick={() => handleButtonToggle(1)}
               style={{
-                color: "#a0a0a0",
-                backgroundColor: activeButtons[1] ? "#414142" : "transparent",
+                color: "#143369",
+                fontWeight: "bold",
+                padding: "4px 12px",
+                backgroundColor: activeButtons[1] ? "#fff" : "#a0a0a0",
               }}
             >
               Weekly
@@ -118,8 +123,10 @@ const Trends = () => {
               size="small"
               onClick={() => handleButtonToggle(2)}
               style={{
-                color: "#a0a0a0",
-                backgroundColor: activeButtons[2] ? "#414142" : "transparent",
+                color: "#143369",
+                fontWeight: "bold",
+                padding: "4px 12px",
+                backgroundColor: activeButtons[2] ? "#fff" : "#a0a0a0",
               }}
               disabled
             >
@@ -129,8 +136,10 @@ const Trends = () => {
               size="small"
               onClick={() => handleButtonToggle(3)}
               style={{
-                color: "#a0a0a0",
-                backgroundColor: activeButtons[3] ? "#414142" : "transparent",
+                color: "#143369",
+                fontWeight: "bold",
+                padding: "4px 12px",
+                backgroundColor: activeButtons[3] ? "#fff" : "#a0a0a0",
               }}
               disabled
             >
@@ -140,90 +149,96 @@ const Trends = () => {
           <div className="trends_container_section_section2">
             <div className="card">
               <div className="item">
-                <Card sx={{ width: 200, background: "#414142" }}>
+                <Card
+                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                >
                   <div className="content">
                     <div className="icon">
                       <LuSigma style={{ color: "#cccccc" }} />
                     </div>
                     <div className="heading">
-                      <h5>Total Transaction</h5>
-                      <p>
-                      {trendsData.allTransactions || 0}
+                      <p style={{ color: "#cccccc" }}>
+                        {trendsData.allTransactions || 0}
                         &nbsp;&nbsp;
-                        <FaArrowTrendUp style={{ color: "#cccccc" }} />
+                        <FaArrowTrendUp />
                       </p>
+                      <h4 style={{ color: "#cccccc" }}>Total Transaction</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
-                <Card sx={{ width: 200, background: "#414142" }}>
+                <Card
+                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                >
                   <div className="content">
                     <div className="icon">
-                      <IoIosCheckmarkCircleOutline
-                        style={{ color: "rgb(80 199 147)" }}
-                      />
+                      <FaCheckCircle style={{ color: "#38E54D" }} />
                     </div>
                     <div className="heading">
-                      <h5>Accepted Transaction</h5>
-                      <p>
-                      {trendsData.totalAcceptedCount || 0}
+                      <p style={{ color: "#38E54D" }}>
+                        {trendsData.totalAcceptedCount || 0}
                         &nbsp;&nbsp;
-                        <FaArrowTrendUp style={{ color: "rgb(80 199 147)" }} />
+                        <FaArrowTrendUp />
                       </p>
+                      <h4 style={{ color: "#38E54D" }}>Accepted Transaction</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
-                <Card sx={{ width: 200, background: "#414142" }}>
+                <Card
+                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                >
                   <div className="content">
                     <div className="icon">
-                      <MdOutlinePendingActions
-                        style={{ color: "rgb(250 145 107)" }}
-                      />
-                    </div>{" "}
+                      <MdOutlinePendingActions style={{ color: "#f5b212" }} />
+                    </div>
                     <div className="heading">
-                      <h5>Pending Transaction</h5>
-                      <p>
-                      {trendsData.totalPendingCount || 0}
+                      <p style={{ color: "#f5b212" }}>
+                        {trendsData.totalPendingCount || 0}
                         &nbsp;&nbsp;
-                        <FaArrowTrendUp style={{ color: "rgb(250 145 107)" }} />
+                        <FaArrowTrendUp />
                       </p>
+                      <h4 style={{ color: "#f5b212" }}>Pending Transaction</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
-                <Card sx={{ width: 200, background: "#414142" }}>
+                <Card
+                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                >
                   <div className="content">
                     <div className="icon">
-                      <FaRegCircleXmark style={{ color: "#e53d34" }} />
+                      <FaCircleXmark style={{ color: "#e53d34" }} />
                     </div>
                     <div className="heading">
-                      <h5>Rejected Transaction</h5>
-                      <p>
-                      {trendsData.totalRejectedCount || 0}
+                      <p style={{ color: "#bf302f" }}>
+                        {trendsData.totalRejectedCount || 0}
                         &nbsp;&nbsp;
-                        <FaArrowTrendUp style={{ color: "#e53d34" }} />
+                        <FaArrowTrendUp />
                       </p>
+                      <h4  style={{ color: "#bf302f" }}>Rejected Transaction</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
-                <Card sx={{ width: 200, background: "#414142" }}>
+                <Card
+                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                >
                   <div className="content">
                     <div className="icon">
                       <GiSandsOfTime style={{ color: "#FFD700" }} />
                     </div>
                     <div className="heading">
-                      <h5>CBP Down</h5>
-                      <p>
-                      {trendsData.totalCbpDownCount || 0}
+                      <p style={{ color: "yellow" }}>
+                        {trendsData.totalCbpDownCount || 0}
                         &nbsp;&nbsp;
-                        <FaArrowTrendUp style={{ color: "#FFD700" }} />
+                        <FaArrowTrendUp />
                       </p>
+                      <h4 style={{ color: "yellow" }}>CBP Down</h4>
                     </div>
                   </div>
                 </Card>
@@ -236,24 +251,24 @@ const Trends = () => {
               <Card
                 sx={{
                   width: 520,
-                  height: 300,
-                  background: "#414142",
+                  height: 260,
+                  background: "rgba(255, 255, 255, 0.5)",
                   marginTop: "2vw",
                 }}
               >
-                <LineChart data={responseData}/>
+                <LineChart data={responseData} />
               </Card>
             </div>
             <div className="barchart">
               <Card
                 sx={{
                   width: 520,
-                  height: 300,
-                  background: "#414142",
+                  height: 260,
+                  background: "rgba(255, 255, 255, 0.5)",
                   marginTop: "2vw",
                 }}
               >
-                <BarChart data={responseData}/>
+                <BarChart data={responseData} />
               </Card>
             </div>
           </div>

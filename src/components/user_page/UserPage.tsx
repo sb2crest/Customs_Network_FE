@@ -6,7 +6,7 @@ import { LuFileJson } from "react-icons/lu";
 import { FaHistory } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineStackedLineChart } from "react-icons/md";
-import { FaXmark } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import TokenExpirationPopup from "../TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
@@ -15,7 +15,7 @@ import { useUserContext } from "../../context/UserContext";
 const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
 const UserPage = () => {
-  const [activeLi, setActiveLi] = useState(""); // State to track active li
+  const [activeLi, setActiveLi] = useState("");
   const [hamburgerClick, setHamburgerClick] = useState(false);
   const [showSubmitFile, setShowSubmitFile] = useState(false);
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const UserPage = () => {
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
               {hamburgerClick ? (
-                <FaXmark onClick={handleHamburgerClick} className="x-mark" />
+                <FaAngleLeft onClick={handleHamburgerClick} className="x-mark" />
               ) : (
                 <GiHamburgerMenu onClick={handleHamburgerClick} />
               )}
@@ -137,7 +137,7 @@ const UserPage = () => {
                     onClick={() => handleLiClick("submit-excel")}
                   >
                     <PiMicrosoftExcelLogo className="sidebar_icon" />
-                    Submit Excel
+                    <span>Submit Excel</span>
                   </li>
                 </Link>
                 <li
@@ -152,7 +152,7 @@ const UserPage = () => {
                   onClick={() => handleLiClick("submit-json")}
                 >
                   <LuFileJson className="sidebar_icon" />
-                  Submit Json
+                  <span>Submit Json</span>
                   {showSubmitFile && (
                     <ul className="dropdown">
                       <Link to="submit-json">
@@ -191,7 +191,7 @@ const UserPage = () => {
                     }}
                   >
                     <FaHistory className="sidebar_icon" />
-                    History
+                    <span>History</span>
                   </li>
                 </Link>
                 <Link to="trends">
@@ -203,7 +203,7 @@ const UserPage = () => {
                     }}
                   >
                     <MdOutlineStackedLineChart className="sidebar_icon" />
-                    Trends
+                    <span>Trends</span>
                   </li>
                 </Link>
               </ul>

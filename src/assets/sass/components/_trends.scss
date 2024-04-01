@@ -28,20 +28,26 @@
               justify-content: start;
               align-items: self-start;
               .icon {
-                font-size: 2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.5rem;
+                padding: 5px;
+                border-radius: 50%;
+                background-color: #fff;
               }
               .heading {
                 margin-left: 10px;
                 p,
-                h5 {
+                h4 {
                   margin: 0;
                 }
                 p {
                   font-size: 18px;
                   color: #ffffff;
+                  text-align: center;
                 }
-                h5 {
-                  color: #a8a196;
+                h4 {
                   font-size: 14px;
                   margin-bottom: 5px;
                 }
@@ -50,7 +56,7 @@
           }
         }
       }
-      .period{
+      .period {
         display: flex;
         justify-content: start;
         align-items: center;
@@ -58,8 +64,8 @@
         padding: 1rem;
         padding-top: 0;
       }
-      .userId{
-        input{
+      .userId {
+        input {
           width: 100px;
           padding: 12px 0;
           padding-left: 15px;
@@ -70,10 +76,10 @@
           &::placeholder {
             font-size: 16px;
             color: #020000;
-        }
-        &:focus{
-          outline: none;
-        }
+          }
+          &:focus {
+            outline: none;
+          }
         }
         gap: 20px;
         padding: 1rem;
@@ -93,16 +99,15 @@
           }
         }
       }
-      .filter{
+      .filter {
         display: flex;
         justify-content: space-between;
         align-items: center;
-       
       }
       .charts {
         display: flex;
         justify-content: space-evenly;
-        align-items: center;      
+        align-items: center;
       }
     }
   }
