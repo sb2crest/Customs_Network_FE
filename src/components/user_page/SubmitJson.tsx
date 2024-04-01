@@ -183,7 +183,7 @@ const SubmitJson = () => {
                 </p>
               </div>
               <span style={{ color: "#414142", fontWeight: "500" }}>
-                Selected Excel Files
+                Selected Json Files
               </span>
               {selectedFiles.length > 0 && (
                 <ul>

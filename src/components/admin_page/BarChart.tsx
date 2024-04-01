@@ -24,19 +24,21 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'bottom',
+      position: 'top',
       labels: {
         boxWidth: 14,
         boxHeight: 13,
         font: {
           size: 13
         },
-        color: '#a8a196'
+        color: '#fff'
       }
     },
     title: {
       display: true,
       text: 'Bar Chart',
+      position: 'bottom',
+      color: '#fff'
     },
   },
   scales: {
@@ -81,26 +83,26 @@ const BarChart = () => {
       {
         label: 'Accepted',
         data: acceptedData,
-        borderColor: 'rgb(80 199 147)',
-        backgroundColor: 'rgb(80 199 147)',
+        borderColor: '#38E54D',
+        backgroundColor: '#38E54D',
       },
       {
         label: 'Pending',
         data: pendingData,
-        borderColor: 'rgb(250 145 107)',
-        backgroundColor: 'rgb(250 145 107)',
+        borderColor: '#f5b212',
+        backgroundColor: '#f5b212',
       },
       {
         label: 'Rejected',
         data: rejectedData,
-        borderColor: '#e53d34',
-        backgroundColor: '#e53d34',
+        borderColor: '#bf302f',
+        backgroundColor: '#bf302f',
       },
       {
         label: 'CBP Down',
         data: cbpDownData,
-        borderColor: '#FFD700',
-        backgroundColor: '#FFD700',
+        borderColor: 'yellow',
+        backgroundColor: 'yellow',
       },
     ],
   };
