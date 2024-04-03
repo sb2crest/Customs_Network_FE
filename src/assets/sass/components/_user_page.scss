@@ -4,7 +4,7 @@
   background-position: left;
   background-size: cover;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   .sidebar {
     font-family: "Poppins", sans-serif;
     width: 7%;
@@ -129,7 +129,7 @@
     }
   }
   .sidebar {
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
     &.active {
       width: 13%;
       .sidebar_container_section_list {
@@ -165,10 +165,14 @@
   }
   .userpage-content-container {
     width: 93%;
+    height: 100vh;
+    overflow-y: scroll;
     overflow-y: auto;
     display: flex;
     justify-content: center;
-    align-items: center;
     z-index: 0;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

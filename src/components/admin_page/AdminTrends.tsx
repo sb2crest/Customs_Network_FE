@@ -57,7 +57,7 @@ const AdminTrends = () => {
         period = "week";
         break;
       case 2:
-        period = "monthly";
+        period = "month";
         break;
       case 3:
         period = "yearly";
@@ -124,7 +124,6 @@ const AdminTrends = () => {
                 padding: "4px 12px",
                 backgroundColor: activeButtons[2] ? "#fff" : "#a0a0a0",
               }}
-              disabled
             >
               Monthly
             </Button>

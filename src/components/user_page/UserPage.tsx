@@ -5,12 +5,12 @@ import { PiMicrosoftExcelLogo } from "react-icons/pi";
 import { LuFileJson } from "react-icons/lu";
 import { FaHistory } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { MdOutlineStackedLineChart } from "react-icons/md";
 import { FaAngleLeft } from "react-icons/fa6";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import TokenExpirationPopup from "../TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
 import { useUserContext } from "../../context/UserContext";
+import { IoBarChartOutline } from "react-icons/io5";
 
 const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
@@ -101,20 +101,19 @@ const UserPage = () => {
       });
   };
 
-  const handleLiClick = (liName) => {
+  const handleLiClick = (liName:string) => {
     const isDropdownItem = ["submit-json-file", "paste-json"].includes(liName);
     if (isDropdownItem) {
       setActiveDropdownItem(liName);
-      setActiveLi("submit-json"); 
+      setActiveLi("submit-json");
     } else if (liName === "submit-json" && !showSubmitFile) {
       setShowSubmitFile(true);
       setActiveLi(liName);
     } else if (liName !== "submit-json") {
-      setActiveDropdownItem(""); 
+      setActiveDropdownItem("");
       setActiveLi(liName);
     }
   };
-  
 
   return (
     <div className="userpage">
@@ -123,7 +122,10 @@ const UserPage = () => {
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
               {hamburgerClick ? (
-                <FaAngleLeft onClick={handleHamburgerClick} className="x-mark" />
+                <FaAngleLeft
+                  onClick={handleHamburgerClick}
+                  className="x-mark"
+                />
               ) : (
                 <GiHamburgerMenu onClick={handleHamburgerClick} />
               )}
@@ -202,7 +204,7 @@ const UserPage = () => {
                       fetchTrendsData();
                     }}
                   >
-                    <MdOutlineStackedLineChart className="sidebar_icon" />
+                    <IoBarChartOutline className="sidebar_icon" />
                     <span>Trends</span>
                   </li>
                 </Link>
