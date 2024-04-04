@@ -4,8 +4,31 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import "../assets/sass/components/_login_signup.scss";
 import axios from "axios";
-
+import TextField from "@mui/material/TextField";
+import { IconButton, InputAdornment } from "@mui/material";
+import React from "react";
+import PersonIcon from "@mui/icons-material/Person";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EmailIcon from '@mui/icons-material/Email';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 const SignUp = () => {
+  const [isActive, setIsActive] = React.useState(false);
+
+  const handleFocus = () => {
+    setIsActive(true);
+  };
+  
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
@@ -60,100 +83,178 @@ const SignUp = () => {
     <div className="signup">
       <div className="signup_container">
         <div className="signup_container_section">
-          <div className="signup_container_section_left">
-            <div className="logo">
-              <img src={logo} alt="Logo" />
-            </div>
-            <div className="content">
-              <h5>Welcome to Border Compliance</h5>
-              <p>
-                Ensuring adherence to regulations and procedures when crossing
-                borders for the smooth and lawful movement of goods and people
-              </p>
-            </div>
-          </div>
           <div className="signup_container_section_right">
+          <img src={logo} alt="logo" width={220} height={50}/>
             <div className="form_container">
               <div className="form_container_heading">
-                <h3>Sign Up</h3>
-                <p>Create an Account</p>
+                <h3>Sign <span style={{color:"#e53d34"}}>Up</span></h3>
                 <div className="form_container_heading_section">
                   <form onSubmit={handleSubmit}>
-                    <div className="input_container">
-                      <input
+                    <div className="input_container" style={{display:"flex",justifyContent:"center",alignItems:"center",gap:"10px"}}>
+                       <TextField
                         id="firstName"
                         type="text"
+                        name="firstName"
+                        className="custom-placeholder"
                         placeholder="First Name"
                         required
-                        value={values.firstName}
-                        onChange={handleChange}
+                        value={formik.values.firstName}
+                        onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("firstName", true)}
+                        error={formik.touched.firstName && !!formik.errors.firstName}
+                        helperText={formik.touched.firstName && formik.errors.firstName}
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <PersonIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.firstName && errors.firstName && (
-                        <div className="error-message">{errors.firstName}</div>
-                      )}
-                    </div>
-                    <div className="input_container">
-                      <input
+                       <TextField
                         id="lastName"
                         type="text"
+                        name="lastName"
+                        className="custom-placeholder"
                         placeholder="Last Name"
                         required
-                        value={values.lastName}
-                        onChange={handleChange}
+                        value={formik.values.lastName}
+                        onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("lastName", true)}
+                        error={formik.touched.lastName && !!formik.errors.lastName}
+                        helperText={formik.touched.lastName && formik.errors.lastName}
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <PersonIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.lastName && errors.lastName && (
-                        <div className="error-message">{errors.lastName}</div>
-                      )}
                     </div>
                     <div className="input_container">
-                      <input
+                      <TextField
                         id="userId"
                         type="text"
+                        name="userId"
+                        className="custom-placeholder"
                         placeholder="User Id"
                         required
-                        value={values.userId}
-                        onChange={handleChange}
+                        value={formik.values.userId}
+                        onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("userId", true)}
+                        error={formik.touched.userId && !!formik.errors.userId}
+                        helperText={formik.touched.userId && formik.errors.userId}
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <VerifiedUserIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.userId && errors.userId && (
-                        <div className="error-message">{errors.userId}</div>
-                      )}
                     </div>
                     <div className="input_container">
-                      <input
+                      <TextField
                         id="email"
                         type="text"
+                        name="email"
+                        className="custom-placeholder"
                         placeholder="Email"
                         required
-                        value={values.email}
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("email", true)}
+                        error={formik.touched.email && !!formik.errors.email}
+                        helperText={formik.touched.email && formik.errors.email}
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <EmailIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.email && errors.email && (
-                        <div className="error-message">{errors.email}</div>
-                      )}
                     </div>
                     <div className="input_container">
-                      {" "}
-                      <input
+                       <TextField
                         id="password"
-                        type="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="Password"
+                        value={formik.values.password}
                         required
-                        value={values.password}
                         onChange={handleChange}
                         onBlur={() => setFieldTouched("password", true)}
+                        error={touched.password && !!errors.password}
+                        helperText={touched.password && errors.password}
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <VisibilityIcon />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.password && errors.password && (
-                        <div className="error-message">{errors.password}</div>
-                      )}
                     </div>
 
                     <div className="checkbox_container ">
                       <input
-                      id="checkbox"
+                        id="checkbox"
                         type="checkbox"
                         required
                         checked={values.checkbox}
@@ -162,10 +263,12 @@ const SignUp = () => {
                       />
                       <label>I agree to the terms of service</label>
                     </div>
+                    <div className="submit">
+                      <button type="button" onClick={UserSignup}>
+                        Sign Up
+                      </button>
+                    </div>
 
-                    <button type="button" onClick={UserSignup}>
-                      Sign Up
-                    </button>
                     <p className="toggle_sentence">
                       Already a member? <Link to="/login">Login here</Link>{" "}
                     </p>

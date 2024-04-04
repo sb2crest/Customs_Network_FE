@@ -224,9 +224,9 @@ const SubmitExcel = () => {
                   <path
                     d="M7 25L27.3077 44L58.5 7"
                     stroke="white"
-                    stroke-width="13"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="13"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </div>

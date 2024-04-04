@@ -37,16 +37,12 @@ const History = () => {
   }, [locationUserId]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event:MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node | null)) {
         setMenuOpen(false);
       }
     };
-
-    // Add event listener when component mounts
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Remove event listener when component unmounts
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -77,7 +73,7 @@ const History = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option:string) => {
     setSelectedOption(option);
     setMenuOpen(false);
   };
@@ -87,7 +83,7 @@ const History = () => {
     fetchData();
   };
 
-  const handlePageChange = (event, page) => {
+  const handlePageChange = (page:number) => {
     setCurrentPage(page);
     fetchData(page);
   };

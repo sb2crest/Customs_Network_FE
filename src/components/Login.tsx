@@ -1,14 +1,36 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import useAuth from '../hooks/useAuth';
-import {axiosPrivate1} from '../services/apiService';
-const LOGIN_URL = '/api/v1/auth/authenticate';
+import useAuth from "../hooks/useAuth";
+import { axiosPrivate1 } from "../services/apiService";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import PersonIcon from "@mui/icons-material/Person";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
+
+const LOGIN_URL = "/api/v1/auth/authenticate";
 const Login = () => {
+  const [isActive, setIsActive] = React.useState(false);
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleFocus = () => {
+    setIsActive(true);
+  };
   const navigate = useNavigate();
   const { setAuth } = useAuth();
-
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email or User Id is required"),
@@ -26,8 +48,6 @@ const Login = () => {
     },
   });
 
- 
-
   const {
     handleSubmit,
     handleChange,
@@ -39,18 +59,19 @@ const Login = () => {
 
   const UserLogin = async () => {
     try {
-      const response = await axiosPrivate1.post(LOGIN_URL,
+      const response = await axiosPrivate1.post(
+        LOGIN_URL,
         JSON.stringify(values),
         {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
         }
       );
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.access_token;
       const refreshToken = response?.data?.refresh_token;
       const role = response?.data?.role;
-      setAuth({ values, role, accessToken,refreshToken });
+      setAuth({ values, role, accessToken, refreshToken });
       navigate(response.data.role === "ADMIN" ? "/admin-page" : "/user-page", {
         state: {
           accessToken: response.data.access_token,
@@ -58,64 +79,96 @@ const Login = () => {
         },
       });
     } catch (err) {
-      console.log("Login failed", err)
+      console.log("Login failed", err);
     }
-  }
+  };
 
   return (
     <div className="signup">
       <div className="signup_container">
         <div className="signup_container_section">
-          <div className="signup_container_section_left">
-            <div className="logo">
-              <img src={logo} alt="Logo" />
-            </div>
-            <div className="content">
-              <h5>Welcome to Border Comply</h5>
-              <p>
-                Ensuring adherence to regulations and procedures when crossing
-                borders for the smooth and lawful movement of goods and people
-              </p>
-            </div>
-          </div>
           <div className="signup_container_section_right">
+          <img src={logo} alt="logo" width={220} height={50}/>
             <div className="form_container">
               <div className="form_container_heading">
-                <h3>Login</h3>
-                <p>Sign into your Account</p>
+                <h3>
+                  Log<span style={{ color: "#e53d34" }}>in</span>
+                </h3>
                 <div className="form_container_heading_section">
                   <form onSubmit={handleSubmit}>
                     <div className="input_container">
-                      <input
+                      <TextField
                         id="email"
-                        type="text"
+                        name="email"
+                        className="custom-placeholder"
                         placeholder="Email or User Id"
-                        required
-                        value={values.email}
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("email", true)}
+                        error={formik.touched.email && !!formik.errors.email}
+                        helperText={formik.touched.email && formik.errors.email}
+                        variant="standard"
+                        fullWidth
+                        required
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <PersonIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.email && errors.email && (
-                        <div className="error-message">{errors.email}</div>
-                      )}
                     </div>
                     <div className="input_container">
-                      {" "}
-                      <input
+                      <TextField
                         id="password"
-                        type="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="Password"
+                        value={formik.values.password}
                         required
-                        value={values.password}
                         onChange={handleChange}
                         onBlur={() => setFieldTouched("password", true)}
+                        error={touched.password && !!errors.password}
+                        helperText={touched.password && errors.password}
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: { fontWeight: '600' },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <VisibilityIcon />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        onFocus={handleFocus}
+                        sx={{
+                          "& .MuiInput-underline:after": {
+                            borderBottomColor: isActive ? "#757575" : "",
+                          },
+                        }}
                       />
-                      {touched.password && errors.password && (
-                        <div className="error-message">{errors.password}</div>
-                      )}
                     </div>
                     <p className="forgot_password">Forgot Password?</p>
-                    <button type="submit">Login</button>
+                    <div className="submit">
+                      <button type="submit">Login</button>
+                    </div>
                     <p className="toggle_sentence">
                       Don't have an account?{" "}
                       <Link to="/signup">Register here</Link>{" "}
@@ -127,7 +180,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-    
     </div>
   );
 };

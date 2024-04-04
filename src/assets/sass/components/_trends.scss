@@ -3,7 +3,7 @@
   opacity: 0.9;
   width: 95.5%;
   padding: 24px;
-  height: fit-content;
+  height:fit-content;
   &_container {
     &_section {
       &_section1 {
@@ -110,6 +110,8 @@
         justify-content: start;
         align-items: center;
         gap: 10px;
+  background-color: inherit;
+
       }
       h3{
         font-size: 18px;

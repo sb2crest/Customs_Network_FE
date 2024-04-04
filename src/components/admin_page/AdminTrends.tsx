@@ -60,7 +60,7 @@ const AdminTrends = () => {
         period = "month";
         break;
       case 3:
-        period = "yearly";
+        period = "year";
         break;
       default:
         period = "today";
@@ -79,7 +79,7 @@ const AdminTrends = () => {
   };
 
   return (
-    <div className="trends">
+    <div className="trends" style={{height:"91.8vh"}}>
       <div className="trends_container">
         <div className="trends_container_section">
           <div className="trends_container_section_section1">
@@ -136,7 +136,6 @@ const AdminTrends = () => {
                 padding: "4px 12px",
                 backgroundColor: activeButtons[3] ? "#fff" : "#a0a0a0",
               }}
-              disabled
             >
               Yearly
             </Button>

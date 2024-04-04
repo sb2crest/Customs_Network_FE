@@ -115,7 +115,7 @@ const Trends = () => {
         period = "month";
         break;
       case 3:
-        period = "yearly";
+        period = "year";
         break;
       default:
         period = "today";
@@ -222,7 +222,6 @@ const Trends = () => {
                 padding: "4px 12px",
                 backgroundColor: activeButtons[3] ? "#fff" : "#a0a0a0",
               }}
-              disabled
             >
               Yearly
             </Button>
