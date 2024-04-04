@@ -1,0 +1,42 @@
+.aboutus {
+  &_container {
+    &_section {
+      font-family: "Poppins", sans-serif;
+      &_banner {
+        height: 60vh;
+        background: url(../../images/aboutUs-bg.jpg) no-repeat;
+        background-position: center;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        h1 {
+          font-size: 6vw;
+          color: #fff;
+        }
+        p {
+          margin-top: -4.5vw;
+          font-size: 2.3vw;
+          color: #fff;
+        }
+        ul {
+          margin-top: -2vw;
+          list-style: none;
+          display: flex;
+          color: #fff;
+          padding-inline-start: 0px;
+          align-items: center;
+          li {
+            margin-left: 10px;
+            font-weight: 600;
+            a {
+              text-decoration: none;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

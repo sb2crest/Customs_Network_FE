@@ -3,12 +3,12 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import "../../assets/sass/components/_user_page.scss";
 import { FaHistory } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { MdOutlineStackedLineChart } from "react-icons/md";
-import { FaXmark } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import TokenExpirationPopup from "../TokenExpirationPopup";
+import TokenExpirationPopup from "../../utilities/TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
 import { useAdminContext } from "../../context/AdminContext";
+import { IoBarChartOutline } from "react-icons/io5";
 
 const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
@@ -99,7 +99,7 @@ const AdminPage = () => {
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
               {hamburgerClick ? (
-                <FaXmark onClick={handleHamburgerClick} className="x-mark" />
+                <FaAngleLeft onClick={handleHamburgerClick} className="x-mark" />
               ) : (
                 <GiHamburgerMenu onClick={handleHamburgerClick} />
               )}
@@ -107,7 +107,7 @@ const AdminPage = () => {
             </div>
             <div className="sidebar_container_section_list">
               <ul>
-                <Link to="trends">
+              <Link to="trends">
                   <li
                     className={activeLi === "trends" ? "active-li" : ""}
                     onClick={() => {
@@ -115,8 +115,8 @@ const AdminPage = () => {
                       fetchTrendsData();
                     }}
                   >
-                    <MdOutlineStackedLineChart className="sidebar_icon" />
-                    Trends
+                    <IoBarChartOutline className="sidebar_icon" />
+                    <span>Trends</span>
                   </li>
                 </Link>
                 <Link to="history">
@@ -128,7 +128,7 @@ const AdminPage = () => {
                     }}
                   >
                     <FaHistory className="sidebar_icon" />
-                    History
+                    <span>History</span>
                   </li>
                 </Link>
               </ul>

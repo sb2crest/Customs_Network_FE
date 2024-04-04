@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -10,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { useAdminContext } from '../../context/AdminContext';
+import { useEffect, useState } from 'react';
 
 ChartJS.register(
   CategoryScale,
@@ -63,19 +63,33 @@ export const options = {
 
 const BarChart = () => {
   const { adminTrendsData } = useAdminContext();
+  const [responseData, setResponseData] = useState([]);
 
-  if (!adminTrendsData || !Array.isArray(adminTrendsData.totalTransactionCountDtos)) {
-    console.error('Invalid adminTrendsData:', adminTrendsData);
-    return null; // or handle the error appropriately
-  }
+  useEffect(() => {
+    if (adminTrendsData && adminTrendsData.totalTransactionCountDtos) {
+      setResponseData(adminTrendsData.totalTransactionCountDtos);
+    }
+    else if (adminTrendsData && adminTrendsData.trendsData) {
+      const monthNames = Object.keys(adminTrendsData.trendsData);
+      const data = monthNames.map((month) => {
+        const monthData = adminTrendsData.trendsData[month];
+        return {
+          date: month,
+          acceptedCount: monthData.acceptedCount,
+          pendingCount: monthData.pendingCount,
+          rejectedCount: monthData.rejectedCount,
+          cbpDownCount: monthData.cbpDownCount,
+        };
+      });
+      setResponseData(data);
+    }
+  }, [adminTrendsData]);
 
-  const { totalTransactionCountDtos } = adminTrendsData;
-
-  const labels = totalTransactionCountDtos.map(dataItem => dataItem.date);
-  const acceptedData = totalTransactionCountDtos.map(dataItem => dataItem.acceptedCount);
-  const pendingData = totalTransactionCountDtos.map(dataItem => dataItem.pendingCount);
-  const rejectedData = totalTransactionCountDtos.map(dataItem => dataItem.rejectedCount);
-  const cbpDownData = totalTransactionCountDtos.map(dataItem => dataItem.cbpDownCount);
+  const labels = responseData.map((dataItem) => dataItem.date);
+  const acceptedData = responseData.map((dataItem) => dataItem.acceptedCount);
+  const pendingData = responseData.map((dataItem) => dataItem.pendingCount);
+  const rejectedData = responseData.map((dataItem) => dataItem.rejectedCount);
+  const cbpDownData = responseData.map((dataItem) => dataItem.cbpDownCount);
 
   const data = {
     labels,

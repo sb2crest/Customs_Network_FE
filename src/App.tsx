@@ -8,7 +8,7 @@ import SubmitExcel from "./components/user_page/SubmitExcel";
 import SubmitJson from "./components/user_page/SubmitJson";
 import History from "./components/user_page/History";
 import PasteJson from "./components/user_page/PasteJson";
-import Unauthorized from "./components/UnAuthorized";
+import Unauthorized from "./utilities/UnAuthorized";
 import RequireAuth from "./components/RequireAuth";
 import Layout from "./components/Layout";
 import Trends from "./components/user_page/Trends";
@@ -49,7 +49,7 @@ function App() {
             </Route>
           </Route>
 
-          {/* Add a catch-all route for undefined paths */}
+          {/* route for undefined paths */}
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>

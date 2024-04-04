@@ -1,35 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap");
+
 .signup {
+  font-family: "Source Serif 4", serif;
   &_container {
     &_section {
-      background-color: #eef1f6;
+      background: url(../../images/login-bg.jpg);
+      background-position: bottom;
+      background-size: cover;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: "Poppins", sans-serif;
-      &_left {
-        clip-path: polygon(0 0, 70% 0, 100% 100%, 0% 100%);
-        width: 55%;
-        // background: linear-gradient(to bottom left, #212121, #e53d34);
-        background-image: url("../../images/page-title-background.jpg");
-        height: 100vh;
-        color: #fff;
-        display: flex;
-        align-items: baseline;
-        justify-content: center;
-        flex-direction: column;
-        padding-left: 3vw;
-        img {
-          margin-bottom: 2vw;
-        }
-        h5 {
-          color: #fff;
-        }
-        p {
-          font-size: 14px;
-          width: 85%;
-        }
-      }
+
       &_right {
         height: 100vh;
         width: 50%;
@@ -37,69 +19,89 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        img {
+          margin-left: -4vw;
+          padding-bottom: 1vw;
+        }
         .form_container {
+          background: #fff;
+          opacity: 0.77;
+          border-radius: 20px;
+          padding: 20px 30px;
+          width: 50%;
+          font-family: inherit;
           &_heading {
             h3 {
               font-size: 1.5rem;
               text-align: center;
-              margin-bottom: 0;
-            }
-            p {
-              text-align: center;
-              padding-bottom: 1vw;
+              margin-bottom: 10px;
               margin-top: 0;
             }
             &_section {
               form {
+                font-family: inherit;
+                opacity: 1;
                 input[type="text"],
                 input[type="password"] {
                   background: #fff;
-                  width: 20rem;
-                  padding: 13px 14px;
+                  padding: 8px 14px 8px;
                   border-bottom: #fff;
+                  font-family: "Source Serif 4", serif;
                   border: none;
                   &::placeholder {
-                    color: #c6c6c6;
+                    color: black;
                   }
                 }
                 .input_container,
                 .checkbox_container {
-                  margin-bottom: 1.2rem;
+                  margin-bottom: 1rem;
                   position: relative;
-                  .error-message {
-                    font-size: 10px;
-                    margin-top: 2px;
-                    color: red;
-                    position: absolute;
-                    bottom: -35%;
-                    left: 2%;
-                  }
                 }
                 .checkbox_container {
                   display: flex;
                   align-items: center;
                 }
-                button {
-                  width: 100%;
-                  padding: 10px;
-                  border: none;
-                  background: #1e1e1e;
-                  color: #a0a0a0;
-                  font-weight: 600;
-                  font-size: 16px;
-                  cursor: pointer;
-                  &:hover{
-                    background: #e53d34;
-                    color: #fff;
+                .submit {
+                  button {
+                    width: 100%;
+                    padding: 10px;
+                    border: none;
+                    background: #a0a0a0;
+                    color: #1e1e1e;
+                    font-weight: 700;
+                    font-size: 16px;
+                    cursor: pointer;
+                  font-family: "Source Serif 4", serif;
+                    &:hover {
+                      background: #434343;
+                      color: #fff;
+                    }
                   }
                 }
+
                 .toggle_sentence,
                 .forgot_password {
                   font-size: 16px;
-                  margin-top: 1vw;
+                }
+                .toggle_sentence {
+                  text-align: center;
+                  a {
+                    color: #e53d34;
+                  }
                 }
                 .forgot_password {
                   text-align: right;
+                }
+                button {
+                  padding: 0;
+                }
+                .css-1d1r5q-MuiFormHelperText-root.Mui-error {
+                  color: red;
+                  margin-left: 5px;
+                  font-weight: 550;
+                  position: absolute;
+                  bottom: -45%;
+                  left: 0;
                 }
               }
             }

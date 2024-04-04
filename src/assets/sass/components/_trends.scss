@@ -1,26 +1,28 @@
 .trends {
   background-color: #212121;
   opacity: 0.9;
-  height: 99vh;
-  width: 99.5%;
-  border-radius: 10px;
+  width: 95.5%;
+  padding: 24px;
+  height:fit-content;
   &_container {
     &_section {
       &_section1 {
         display: flex;
-        padding: 1rem;
+        padding-bottom: 1rem;
         .heading {
           width: 100%;
           h2 {
             color: #a0a0a0;
             font-size: 18px;
+            margin: 0;
           }
         }
       }
       &_section2 {
         .card {
           display: flex;
-          justify-content: space-evenly;
+          justify-content: start;
+          gap: 12px;
           .item {
             .content {
               padding: 0.5rem;
@@ -61,8 +63,7 @@
         justify-content: start;
         align-items: center;
         gap: 20px;
-        padding: 1rem;
-        padding-top: 0;
+        padding-bottom: 1rem;
       }
       .userId {
         input {
@@ -106,8 +107,142 @@
       }
       .charts {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: start;
         align-items: center;
+        gap: 10px;
+  background-color: inherit;
+
+      }
+      h3{
+        font-size: 18px;
+        font-weight: 500;
+        color: #a0a0a0;
+        padding-top: 1rem;
+      }
+      .customized_trends {
+        display: flex;
+        gap: 20px;
+        .status_filter {
+          .dropdown {
+            width: 150px;
+            position: relative;
+            color: #fff;
+            height: 40.5px;
+
+            .select {
+              cursor: pointer;
+              transition: 0.3s;
+              background-color: #414142;
+              border-radius: 5px;
+              display: flex;
+              padding: 8px 20px;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 16px;
+              .selected {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &.placeholder {
+                  color: #6b728c;
+                }
+              }
+
+              .caret {
+                margin-left: 10px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 6px solid #fff;
+                transition: 0.3s;
+              }
+            }
+
+            .menu {
+              visibility: hidden;
+              background-color: #414142;
+              border-radius: 5px;
+              overflow: hidden;
+              position: absolute;
+              width: 100%;
+              top: 65%;
+              opacity: 0;
+              transition: visibility 0s, opacity 0.3s;
+              z-index: 1;
+              padding: 0;
+            
+              li {
+                cursor: pointer;
+                padding: 10px;
+                list-style: none;
+
+                &:hover {
+                  background-color: rgb(203 213 225);
+                  color: #020000;
+                }
+              }
+            }
+
+            &.menu-open {
+              .menu {
+                visibility: visible;
+                opacity: 1;
+              }
+            }
+
+            &.caret-rotate {
+              .select {
+                .caret {
+                  transform: rotate(180deg);
+                }
+              }
+            }
+          }
+          }
+          .portInputField {
+            position: relative;
+            input {
+              width: 150px;
+              height: 34px;
+              padding-left: 15px;
+              border-radius: 5px;
+              background-color: #414142;
+              color: #fff;
+              border: none;
+              &::placeholder {
+                font-size: 12px;
+                color: #fff;
+              }
+              &:focus {
+                outline: none;
+              }
+            }
+            ul {
+              padding: 0;
+              margin: 0;
+              border-radius: 5px;
+              margin-top: 2px;
+              max-height: 200px;
+              overflow-y: auto;
+              position: absolute;
+              top: 40px;
+              left: 0;
+              li {
+                cursor: pointer;
+                padding: 5px 8px;
+                list-style: none;
+                background-color: #414142;
+                width: 140px;
+                color: #fff;
+                &:hover {
+                  background-color: rgb(203 213 225);
+                  color: #020000;
+                }
+              }
+            }
+          }
       }
     }
   }
