@@ -7,7 +7,7 @@ import { FaHistory } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaAngleLeft } from "react-icons/fa6";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import TokenExpirationPopup from "../TokenExpirationPopup";
+import TokenExpirationPopup from "../../utilities/TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
 import { useUserContext } from "../../context/UserContext";
 import { IoBarChartOutline } from "react-icons/io5";

@@ -103,7 +103,9 @@ const History = () => {
       size: size,
       userId: userId,
     };
-  
+
+    console.log("Request Body:", requestbody);
+
     if (selectedOption && selectedOption !== "All") {
       requestbody = {
         ...requestbody,
@@ -233,7 +235,7 @@ const History = () => {
                 count={Math.ceil(totalRecords / 10) || 1}
                 page={currentPage}
                 shape="rounded"
-                onChange={handlePageChange}
+                onChange={(event, page) => handlePageChange(page)}
               />
             </Stack>
           </div>
