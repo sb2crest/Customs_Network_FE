@@ -17,18 +17,18 @@ $placeholder: #6b728c;
       opacity: 0.89;
       padding: 0.3em 1em;
       border-radius: 10px;
-
       .filter_row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        p {
-          font-size: 18px;
-          line-height: 28px;
+        .history_heading {
+          font-size: 16px;
+          line-height: 20px;
           font-weight: 500;
           text-transform: capitalize;
           color: #a0a0a0;
-          .sidebar_icon{
+          margin: 15px 0;
+          .sidebar_icon {
             margin-bottom: -3px;
           }
         }
@@ -36,44 +36,43 @@ $placeholder: #6b728c;
           display: flex;
           justify-content: center;
           align-items: stretch;
-          gap: 20px;
-          .userId{
-            input{
+          gap: 8px;
+          padding-bottom: 5px;
+          .userId {
+            input {
               width: 100px;
-              padding: 13px 0;
-              padding-left: 15px;
+              padding: 8px 10px;
               border-radius: 5px;
               background-color: #414142;
               color: #020000;
               border: none;
               &::placeholder {
-                font-size: 16px;
                 color: #020000;
-            }
-            &:focus{
-              outline: none;
-            }
+              }
+              &:focus {
+                outline: none;
+              }
             }
           }
           .created_date {
             :where(.css-dev-only-do-not-override-djtmh8).ant-picker-outlined {
-              height: 40.5px;
+              height: 32px;
               background-color: #414142;
               color: #020000;
               border: none;
-              width: 18vw;
+              width: 15.5vw;
             }
             .anticon svg {
               color: #020000;
             }
             .date-range .ant-picker-input > input::placeholder {
               color: #020000;
-              font-size: 16px;
+              font-size: 14px;
             }
           }
           .Apply_button {
             button {
-              padding: 10px 25px;
+              padding: 7px 16px;
               background-color: #414142;
               border: none;
               border-radius: 5px;
@@ -88,10 +87,10 @@ $placeholder: #6b728c;
         }
         .status_filter {
           .dropdown {
-            width: 150px;
+            width: 135px;
             position: relative;
             color: #020000;
-            height: 40.5px;
+            height: 30px;
 
             .select {
               cursor: pointer;
@@ -99,10 +98,10 @@ $placeholder: #6b728c;
               background-color: #414142;
               border-radius: 5px;
               display: flex;
-              padding: 8px 20px;
+              padding: 6px 20px;
               align-items: center;
               justify-content: space-between;
-              font-size: 16px;
+              font-size: 14px;
               .selected {
                 overflow: hidden;
                 white-space: nowrap;
@@ -139,7 +138,7 @@ $placeholder: #6b728c;
 
               li {
                 cursor: pointer;
-                padding: 10px;
+                padding: 6px;
                 list-style: none;
 
                 &:hover {
@@ -173,9 +172,9 @@ $placeholder: #6b728c;
             th {
               padding-top: 0.5rem;
               padding-bottom: 0.5rem;
-              padding-left: 1.4rem;
-              padding-right: 1.4rem;
-              font-size: 0.75rem;
+              padding-left: 1.3rem;
+              padding-right: 1.3rem;
+              font-size: 0.7rem;
               line-height: 1rem;
               font-weight: 600;
               text-transform: uppercase;
@@ -193,7 +192,7 @@ $placeholder: #6b728c;
             .userid {
               width: 100px;
             }
-            .eyeicon{
+            .eyeicon {
               width: 100px;
             }
             td {
@@ -204,7 +203,6 @@ $placeholder: #6b728c;
               font-size: 0.82rem;
               line-height: 1.25rem;
               font-weight: 400;
-              text-transform: capitalize;
               color: #7b8596;
               background: #212121;
               text-align: -webkit-center;
@@ -227,9 +225,84 @@ $placeholder: #6b728c;
           }
         }
       }
-      .pagination {
+      .user_pagination{
         display: flex;
         justify-content: flex-end;
+        .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+          background-color: #7b8596;
+        }
+        .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root {
+          color: rgb(203 213 225);
+        }
+      }
+      .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        .dropdown {
+          display: flex;
+          align-items: center;
+          position: relative;
+          gap: 10px;
+          .show{
+            display: block;
+          }
+          ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 130px;
+            color: #020000;
+            background-color: #414142;
+            border-radius: 5px;
+            position: absolute;
+            top: 100%;
+            display: none;
+            li {
+              text-align: center;
+              padding: 5px 0;
+              cursor: pointer;
+              &:hover {
+                background-color: rgb(203 213 225);
+                border-radius: 5px;
+              }
+            }
+          }
+          .Select_date_dropdown {
+            width: 130px;
+            color: #020000;
+            background-color: #414142;
+            border: none;
+            border-radius: 5px;
+            height: 30px;
+            cursor: pointer;
+            .dropdown_icon {
+              transform: rotate(90deg);
+              margin-left: 10px;
+            }
+          }
+          .execute_button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #e53d34;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: rgb(218, 218, 218);
+            .execute_icon {
+              margin-left: 5px;
+              font-weight: 900;
+            }
+            &:hover {
+              transform: scale(1.02);
+            }
+          }
+        }
+
         .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
           background-color: #7b8596;
         }

@@ -5,25 +5,30 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import { DatePicker } from 'antd';
-import { useUserContext } from '../../context/UserContext';
-import { useLocation } from 'react-router-dom';
+import { DatePicker } from "antd";
+import { useUserContext } from "../../context/UserContext";
+import { useLocation } from "react-router-dom";
 import { axiosPrivate } from "../../services/apiService";
 import { FaHistory } from "react-icons/fa";
 const { RangePicker } = DatePicker;
 
 const History = () => {
-  const { historyData } = useUserContext(); 
+  const { historyData } = useUserContext();
   const [selectedDate, setSelectedDate] = useState(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const [responseData, setResponseData] = useState(historyData && historyData.data ? historyData.data : []);
-  const [totalRecords, setTotalRecords] = useState(historyData ? historyData.totalRecords : 0); 
+  const [responseData, setResponseData] = useState(
+    historyData && historyData.data ? historyData.data : []
+  );
+  const [totalRecords, setTotalRecords] = useState(
+    historyData ? historyData.totalRecords : 0
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [displayedJsonType, setDisplayedJsonType] = useState(null);
   const [userId, setUserId] = useState("");
+  const [statusCount, setStatusCount] = useState(false);
 
   const dropdownRef = useRef(null);
   const location = useLocation();
@@ -37,8 +42,11 @@ const History = () => {
   }, [locationUserId]);
 
   useEffect(() => {
-    const handleClickOutside = (event:MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node | null)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node | null)
+      ) {
         setMenuOpen(false);
       }
     };
@@ -62,7 +70,7 @@ const History = () => {
   useEffect(() => {
     if (historyData && historyData.data) {
       setResponseData(historyData.data);
-      setTotalRecords(historyData.totalRecords)
+      setTotalRecords(historyData.totalRecords);
       setSelectedOption("");
       setSelectedDate(null);
     }
@@ -73,7 +81,7 @@ const History = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-  const handleOptionClick = (option:string) => {
+  const handleOptionClick = (option: string) => {
     setSelectedOption(option);
     setMenuOpen(false);
   };
@@ -81,24 +89,27 @@ const History = () => {
   const handleApplyClick = () => {
     setCurrentPage(1);
     fetchData();
+    setStatusCount(true);
   };
 
-  const handlePageChange = (page:number) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
     fetchData(page);
   };
 
   const fetchData = (page = 1, size = 10) => {
     const apiUrl = "/convert/fetchDataByColValue";
-    
-    const startDate = selectedDate ? selectedDate[0].format("YYYY-MM-DD") : null;
+
+    const startDate = selectedDate
+      ? selectedDate[0].format("YYYY-MM-DD")
+      : null;
     const endDate = selectedDate ? selectedDate[1].format("YYYY-MM-DD") : null;
-  
+
     let requestbody = {
       fieldName: "user_id",
       value: userId,
       startDate: startDate,
-      endDate: endDate || new Date().toISOString().split('T')[0],
+      endDate: endDate || new Date().toISOString().split("T")[0],
       page: page,
       size: size,
       userId: userId,
@@ -113,7 +124,6 @@ const History = () => {
         value: selectedOption,
       };
     }
-  
     axiosPrivate
       .post(apiUrl, requestbody)
       .then((response) => {
@@ -126,19 +136,29 @@ const History = () => {
         console.error("Error making API call:", error);
       });
   };
-  
+
   return (
     <div className="history">
       <div className="history_container">
         <div className="history_container_section">
           <div className="filter_row">
-            <p>History &nbsp;<FaHistory className="sidebar_icon" /></p>
+            <p className="history_heading">
+              History &nbsp;
+              <FaHistory className="sidebar_icon" />
+            </p>
             <div className="filter">
               <div className="created_date">
-              <RangePicker separator="" className="date-range" onChange={(date)=> setSelectedDate(date)}/>
+                <RangePicker
+                  separator=""
+                  className="date-range"
+                  onChange={(date) => setSelectedDate(date)}
+                />
               </div>
               <div className="status_filter">
-                <div ref={dropdownRef} className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}>
+                <div
+                  ref={dropdownRef}
+                  className={`dropdown ${isMenuOpen ? "menu-open" : ""}`}
+                >
                   <div className="select" onClick={handleSelectClick}>
                     <div
                       className={`selected ${
@@ -156,11 +176,20 @@ const History = () => {
                   <ul className="menu">
                     <li onClick={() => handleOptionClick("All")}>All</li>
                     <li onClick={() => handleOptionClick("ACCEPTED")}>
-                     Accepted
+                      Accepted
                     </li>
-                    <li onClick={() => handleOptionClick("REJECTED")}>Rejected</li>
-                    <li onClick={() => handleOptionClick("PENDING")}>Pending</li>
-                    <li onClick={() => handleOptionClick("CBP DOWN")}>CBP Down</li>
+                    <li onClick={() => handleOptionClick("REJECTED")}>
+                      Rejected
+                    </li>
+                    <li onClick={() => handleOptionClick("PENDING")}>
+                      Pending
+                    </li>
+                    <li onClick={() => handleOptionClick("VALIDATION ERROR")}>
+                      Validation Error
+                    </li>
+                    <li onClick={() => handleOptionClick("CBP DOWN")}>
+                      CBP Down
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -179,7 +208,31 @@ const History = () => {
                 <th>User Id</th>
                 <th>Refrence Id</th>
                 <th>Created Date</th>
-                <th>Status</th>
+                <th>
+                  Status <br />
+                  {statusCount ? (
+                    <span
+                      style={{
+                        color:
+                          responseData.length > 0
+                            ? responseData[0].status === "REJECTED"
+                              ? "#e53d34"
+                              : responseData[0].status === "ACCEPTED"
+                              ? "rgb(80 199 147)"
+                              : responseData[0].status === "PENDING"
+                              ? "#CD5C08"
+                              : responseData[0].status === "VALIDATION ERROR"
+                              ? "#F8DE22"
+                              : "#12CAD6"
+                            : "",
+                      }}
+                    >
+                      Count:{totalRecords}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </th>
                 <th>Request Json</th>
                 <th>Response Json</th>
               </tr>
@@ -200,13 +253,15 @@ const History = () => {
                           : item.status === "ACCEPTED"
                           ? "rgb(80 199 147)"
                           : item.status === "PENDING"
-                          ? "rgb(250 145 107)"
-                          : "#FFD700",
+                          ? "#CD5C08"
+                          : item.status === "VALIDATION ERROR"
+                          ? "#F8DE22"
+                          : "#12CAD6",
                     }}
                   >
                     {item.status}
                   </td>
-                 
+
                   <td className="eyeicon">
                     <button>
                       <IoEye
@@ -229,7 +284,7 @@ const History = () => {
               ))}
             </tbody>
           </table>
-          <div className="pagination">
+          <div className="user_pagination">
             <Stack spacing={1}>
               <Pagination
                 count={Math.ceil(totalRecords / 10) || 1}

@@ -14,7 +14,7 @@ const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
 const AdminPage = () => {
   const [hamburgerClick, setHamburgerClick] = useState(false);
-  const [activeLi, setActiveLi] = useState(""); // State to track active li
+  const [activeLi, setActiveLi] = useState(""); 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();

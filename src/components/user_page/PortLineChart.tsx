@@ -70,6 +70,7 @@ interface LineChartData {
   pendingCount: number;
   rejectedCount: number;
   cbpDownCount: number;
+  validationErrorCount: number;
 }
 
 const PortLineChart = ({ portTrendsResponseData }: LineChartProps) => {
@@ -81,7 +82,8 @@ const PortLineChart = ({ portTrendsResponseData }: LineChartProps) => {
     const pendingData = portTrendsResponseData.map((dataItem) => dataItem.pendingCount);
     const rejectedData = portTrendsResponseData.map((dataItem) => dataItem.rejectedCount);
     const cbpDownData = portTrendsResponseData.map((dataItem) => dataItem.cbpDownCount);
-    
+    const validationErrorData = portTrendsResponseData.map((dataItem) => dataItem.validationErrorCount);
+
     const data = {
       labels: labels.length ? labels : ['No data'],
       datasets: [
@@ -93,9 +95,9 @@ const PortLineChart = ({ portTrendsResponseData }: LineChartProps) => {
         },
         {
           label: "Pending",
-          data: portTrendsResponseData.length ? pendingData : [0], 
-          borderColor: "#f5b212",
-          backgroundColor: "#f5b212",
+          data: pendingData,
+          borderColor: "#CD5C08",
+          backgroundColor: "#CD5C08",
         },
         {
           label: "Rejected",
@@ -104,10 +106,16 @@ const PortLineChart = ({ portTrendsResponseData }: LineChartProps) => {
           backgroundColor: "#bf302f",
         },
         {
+          label: "Validation Error",
+          data: validationErrorData,
+          borderColor: "#F8DE22",
+          backgroundColor: "#F8DE22",
+        },
+        {
           label: "CBP Down",
-          data: portTrendsResponseData.length ? cbpDownData : [0], 
-          borderColor: "yellow",
-          backgroundColor: "yellow",
+          data: cbpDownData,
+          borderColor: "#12CAD6",
+          backgroundColor: "#12CAD6",
         },
       ],
     };

@@ -15,6 +15,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { IoBarChartOutline } from "react-icons/io5";
 import PortBarChart from "./PortBarChart";
 import PortLineChart from "./PortLineChart";
+import { MdErrorOutline  } from "react-icons/md";
 
 const Trends = () => {
   const [activeButtons, setActiveButtons] = useState([
@@ -230,7 +231,7 @@ const Trends = () => {
             <div className="card">
               <div className="item">
                 <Card
-                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 180, background: "rgba(255, 255, 255, 0.5)" }}
                 >
                   <div className="content">
                     <div className="icon">
@@ -249,7 +250,7 @@ const Trends = () => {
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
                 >
                   <div className="content">
                     <div className="icon">
@@ -261,33 +262,33 @@ const Trends = () => {
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#38E54D" }}>Accepted Transaction</h4>
+                      <h4 style={{ color: "#38E54D" }}>Accepted</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
                 >
                   <div className="content">
                     <div className="icon">
-                      <MdOutlinePendingActions style={{ color: "#f5b212" }} />
+                      <MdOutlinePendingActions style={{ color: "#CD5C08" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#f5b212" }}>
+                      <p style={{ color: "#CD5C08" }}>
                         {trendsData.totalPendingCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#f5b212" }}>Pending Transaction</h4>
+                      <h4 style={{ color: "#CD5C08" }}>Pending</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
                 >
                   <div className="content">
                     <div className="icon">
@@ -299,26 +300,45 @@ const Trends = () => {
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#bf302f" }}>Rejected Transaction</h4>
+                      <h4 style={{ color: "#bf302f" }}>Rejected</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 200, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 180, background: "rgba(255, 255, 255, 0.5)" }}
                 >
                   <div className="content">
                     <div className="icon">
-                      <GiSandsOfTime style={{ color: "#FFD700" }} />
+                      <MdErrorOutline  style={{ color: "#F8DE22" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "yellow" }}>
+                      <p style={{ color: "#F8DE22" }}>
+                        {trendsData.totalValidationErrorCount || 0}
+                        &nbsp;&nbsp;
+                        <FaArrowTrendUp />
+                      </p>
+                      <h4 style={{ color: "#F8DE22" }}>Validation Error</h4>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+              <div className="item">
+                <Card
+                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
+                >
+                  <div className="content">
+                    <div className="icon">
+                      <GiSandsOfTime style={{ color: "#12CAD6" }} />
+                    </div>
+                    <div className="heading">
+                      <p style={{ color: "#12CAD6" }}>
                         {trendsData.totalCbpDownCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "yellow" }}>CBP Down</h4>
+                      <h4 style={{ color: "#12CAD6" }}>CBP Down</h4>
                     </div>
                   </div>
                 </Card>
