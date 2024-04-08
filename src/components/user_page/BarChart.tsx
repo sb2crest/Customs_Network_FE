@@ -67,6 +67,7 @@ interface BarChartData {
   pendingCount: number;
   rejectedCount: number;
   cbpDownCount: number;
+  validationErrorCount: number;
 }
 
 const BarChart = () => {
@@ -98,6 +99,7 @@ const BarChart = () => {
   const pendingData = responseData.map((dataItem) => dataItem.pendingCount);
   const rejectedData = responseData.map((dataItem) => dataItem.rejectedCount);
   const cbpDownData = responseData.map((dataItem) => dataItem.cbpDownCount);
+  const validationErrorData = responseData.map((dataItem) => dataItem.validationErrorCount);
   
   const data = {
     labels,
@@ -111,8 +113,8 @@ const BarChart = () => {
       {
         label: "Pending",
         data: pendingData,
-        borderColor: "#f5b212",
-        backgroundColor: "#f5b212",
+        borderColor: "#CD5C08",
+        backgroundColor: "#CD5C08",
       },
       {
         label: "Rejected",
@@ -121,10 +123,16 @@ const BarChart = () => {
         backgroundColor: "#bf302f",
       },
       {
+        label: "Validation Error",
+        data: validationErrorData,
+        borderColor: "#F8DE22",
+        backgroundColor: "#F8DE22",
+      },
+      {
         label: "CBP Down",
         data: cbpDownData,
-        borderColor: "yellow",
-        backgroundColor: "yellow",
+        borderColor: "#12CAD6",
+        backgroundColor: "#12CAD6",
       },
     ],
   };

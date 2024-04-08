@@ -92,6 +92,7 @@ const LineChart = () => {
   const pendingData = responseData.map((dataItem) => dataItem.pendingCount);
   const rejectedData = responseData.map((dataItem) => dataItem.rejectedCount);
   const cbpDownData = responseData.map((dataItem) => dataItem.cbpDownCount);
+  const validationErrorData = responseData.map((dataItem) => dataItem.validationErrorCount);
 
   const data = {
     labels,
@@ -103,22 +104,28 @@ const LineChart = () => {
         backgroundColor: '#38E54D',
       },
       {
-        label: 'Pending',
+        label: "Pending",
         data: pendingData,
-        borderColor: '#f5b212',
-        backgroundColor: '#f5b212',
+        borderColor: "#CD5C08",
+        backgroundColor: "#CD5C08",
       },
       {
-        label: 'Rejected',
+        label: "Rejected",
         data: rejectedData,
-        borderColor: '#bf302f',
-        backgroundColor: '#bf302f',
+        borderColor: "#bf302f",
+        backgroundColor: "#bf302f",
       },
       {
-        label: 'CBP Down',
+        label: "Validation Error",
+        data: validationErrorData,
+        borderColor: "#F8DE22",
+        backgroundColor: "#F8DE22",
+      },
+      {
+        label: "CBP Down",
         data: cbpDownData,
-        borderColor: 'yellow',
-        backgroundColor: 'yellow',
+        borderColor: "#12CAD6",
+        backgroundColor: "#12CAD6",
       },
     ],
   };

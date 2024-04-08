@@ -6,15 +6,22 @@ import "../assets/sass/components/_login_signup.scss";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { IconButton, InputAdornment } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EmailIcon from '@mui/icons-material/Email';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-const SignUp = () => {
-  const [isActive, setIsActive] = React.useState(false);
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Dialog from "@mui/material/Dialog";
 
+const SignUp = () => {
+  const [isActive, setIsActive] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [signUpMessage, setSignUpMessage] = useState('');
   const handleFocus = () => {
     setIsActive(true);
   };
@@ -35,7 +42,7 @@ const SignUp = () => {
     userId: Yup.string()
       .matches(
         /^[a-zA-Z0-9]{10}$/,
-        "User ID must be 10 characters with alphabets and numbers only"
+        "UserID must be 10 characters alphanumeric."
       )
       .required("User ID is required"),
     email: Yup.string()
@@ -73,11 +80,23 @@ const SignUp = () => {
         console.log(res.data);
         if (res.status === 200) {
           formik.resetForm();
+          setOpenPopup(true);
+          setSignUpMessage("Registration successful");
         }
       })
       .catch((err) => {
         console.error(err);
+        if (err.response && err.response.data) {
+          setOpenPopup(true);
+          setSignUpMessage(err.response.data);
+        } else {
+          console.error("Unknown error occurred");
+        }
       });
+  };
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+    setSignUpMessage('');
   };
   return (
     <div className="signup">
@@ -279,6 +298,16 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      <Dialog onClose={handleClosePopup} open={openPopup}>
+        <List sx={{ p: 2 }}>
+          <ListItem disableGutters>
+            <ListItemText primary={signUpMessage} />
+          </ListItem>
+        </List>
+        <Button autoFocus onClick={handleClosePopup}>
+          Close
+        </Button>
+      </Dialog>
     </div>
   );
 };

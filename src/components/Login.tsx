@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
@@ -11,12 +11,22 @@ import PersonIcon from "@mui/icons-material/Person";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import { isValidEmail } from "../utilities/global";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import { DialogContent, DialogActions } from "@mui/material";
+import { Typography } from "antd";
 
 const LOGIN_URL = "/api/v1/auth/authenticate";
 const Login = () => {
-  const [isActive, setIsActive] = React.useState(false);
-
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [openErrorPopup, setOpenErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -59,9 +69,14 @@ const Login = () => {
 
   const UserLogin = async () => {
     try {
+      const userInput = values.email.replace(/\s/g, "");
+      const isEmail = isValidEmail(userInput);
+      const data = isEmail
+        ? { email: userInput, password: values.password }
+        : { userId: userInput, password: values.password };
       const response = await axiosPrivate1.post(
         LOGIN_URL,
-        JSON.stringify(values),
+        JSON.stringify(data),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -80,7 +95,18 @@ const Login = () => {
       });
     } catch (err) {
       console.log("Login failed", err);
+      if (err.response && err.response.data) {
+        setOpenErrorPopup(true);
+        setErrorMessage(err.response.data);
+      } else {
+        console.error("Unknown error occurred");
+      }
     }
+  };
+
+  const handleClosePopup = () => {
+    setOpenErrorPopup(false);
+    setErrorMessage('');
   };
 
   return (
@@ -88,7 +114,7 @@ const Login = () => {
       <div className="signup_container">
         <div className="signup_container_section">
           <div className="signup_container_section_right">
-          <img src={logo} alt="logo" width={220} height={50}/>
+            <img src={logo} alt="logo" width={220} height={50} />
             <div className="form_container">
               <div className="form_container_heading">
                 <h3>
@@ -111,7 +137,7 @@ const Login = () => {
                         fullWidth
                         required
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <PersonIcon />
@@ -141,7 +167,7 @@ const Login = () => {
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <IconButton
@@ -180,6 +206,22 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Dialog open={openErrorPopup} onClose={handleClosePopup}>
+        <DialogTitle>Error</DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom variant="h5" align="center" color="error">
+            Oops!
+          </Typography>
+          <Typography gutterBottom align="center">
+            {errorMessage}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClosePopup} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
