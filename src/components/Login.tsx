@@ -12,21 +12,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import { isValidEmail } from "../utilities/global";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Dialog from "@mui/material/Dialog";
-import { DialogContent, DialogActions } from "@mui/material";
-import { Typography } from "antd";
+import { IoIosWarning } from "react-icons/io";
 
 const LOGIN_URL = "/api/v1/auth/authenticate";
 const Login = () => {
   const [isActive, setIsActive] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [openErrorPopup, setOpenErrorPopup] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -96,17 +88,11 @@ const Login = () => {
     } catch (err) {
       console.log("Login failed", err);
       if (err.response && err.response.data) {
-        setOpenErrorPopup(true);
         setErrorMessage(err.response.data);
       } else {
         console.error("Unknown error occurred");
       }
     }
-  };
-
-  const handleClosePopup = () => {
-    setOpenErrorPopup(false);
-    setErrorMessage('');
   };
 
   return (
@@ -121,6 +107,14 @@ const Login = () => {
                   Log<span style={{ color: "#e53d34" }}>in</span>
                 </h3>
                 <div className="form_container_heading_section">
+                  <div className="popup">
+                    {errorMessage && (
+                      <p style={{ textAlign: "center", color: "red" }}>
+                        <IoIosWarning style={{ marginRight: "10px",fontSize:"22px" }} />
+                        {errorMessage}
+                      </p>
+                    )}
+                  </div>
                   <form onSubmit={handleSubmit}>
                     <div className="input_container">
                       <TextField
@@ -206,22 +200,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Dialog open={openErrorPopup} onClose={handleClosePopup}>
-        <DialogTitle>Error</DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom variant="h5" align="center" color="error">
-            Oops!
-          </Typography>
-          <Typography gutterBottom align="center">
-            {errorMessage}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClosePopup} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };

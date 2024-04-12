@@ -14,7 +14,7 @@ import { TbPlayerPlayFilled } from "react-icons/tb";
 const { RangePicker } = DatePicker;
 
 const AdminHistory = () => {
-  const { adminHistoryData } = useAdminContext();
+  const { adminHistoryData,setAdminHistoryData } = useAdminContext();
   const [selectedDateS3, setSelectedDateS3] = useState("");
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [dateMenuOpen, setDateMenuOpen] = useState(false);
@@ -34,7 +34,16 @@ const AdminHistory = () => {
   const [userId, setUserId] = useState("");
   const [fetchedDates, setFetchedDates] = useState([]);
   const [statusCount, setStatusCount] = useState(false);
-
+  const [showExecuteButton, setShowExecuteButton] = useState(true);
+  const [requestBody, setRequestBody] = useState({
+    startDate: null,
+    endDate: null,
+    page: 1,
+    size: 10,
+    userId: null,
+    fieldName: null,
+    value: null
+  });
   const dropdownRef = useRef(null);
 
   const handleEyeIconClick = (item, jsonType) => {
@@ -61,21 +70,27 @@ const AdminHistory = () => {
   }, []);
 
   useEffect(() => {
-    if (adminHistoryData && adminHistoryData.data) {
-      setResponseData(adminHistoryData.data);
-      setTotalRecords(adminHistoryData.totalRecords);
+    if ( adminHistoryData.totalRecords === 0) {
+      setSelectedOption("All");
+      setShowExecuteButton(false);
+      setCurrentPage(1);
+      fetchHistoryData();
+    } else {
+      setResponseData(adminHistoryData.data || []);
+      setTotalRecords(adminHistoryData.totalRecords || 0);
       setSelectedOption("CBP DOWN");
       setSelectedDate(null);
+      setCurrentPage(1);
+      setShowExecuteButton(true);
     }
-    setCurrentPage(1);
   }, [adminHistoryData]);
-
+  
   const handleSelectClick = () => {
     setMenuOpen(!isMenuOpen);
   };
 
   const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
+      setSelectedOption(option);
     setMenuOpen(false);
   };
 
@@ -113,6 +128,13 @@ const AdminHistory = () => {
         value: selectedOption,
       };
     }
+
+    if (selectedOption === "CBP DOWN") {
+      setShowExecuteButton(true);
+    } else {
+      setShowExecuteButton(false);
+    }
+
     axiosPrivate
       .post(apiUrl, requestbody)
       .then((response) => {
@@ -145,10 +167,18 @@ const AdminHistory = () => {
       .get(`/convert/execute?folderkey=${formattedDate}`)
       .then((response) => {
         console.log(response.data);
+        setSelectedOption("All");
         setSelectedDateS3("select Date");
-        fetchHistoryData();
+        setAdminHistoryData("")
+        if (response.status === 200) {
+          fetchHistoryData();
+        }
+      })
+      .catch((error) => {
+        console.error("Error executing CBP files:", error);
       });
   };
+
   const fetchDatesFromS3 = () => {
     axiosPrivate.get("/convert/s3-folders").then((response) => {
       console.log(response.data);
@@ -241,7 +271,28 @@ const AdminHistory = () => {
                 <th>User Id</th>
                 <th>Refrence Id</th>
                 <th>Created Date</th>
-                <th>Status <br />{statusCount ? <span color="#fff">Count:{totalRecords}</span>:""}</th>
+                <th>Status <br /> {statusCount ? (
+                    <span
+                      style={{
+                        color:
+                          responseData.length > 0
+                            ? responseData[0].status === "REJECTED"
+                              ? "#e53d34"
+                              : responseData[0].status === "ACCEPTED"
+                              ? "rgb(80 199 147)"
+                              : responseData[0].status === "PENDING"
+                              ? "#CD5C08"
+                              : responseData[0].status === "VALIDATION ERROR"
+                              ? "#F8DE22"
+                              : "#12CAD6"
+                            : "",
+                      }}
+                    >
+                      Count:{totalRecords}
+                    </span>
+                  ) : (
+                    ""
+                  )}</th>
                 <th>Request Json</th>
                 <th>Response Json</th>
               </tr>
@@ -292,7 +343,8 @@ const AdminHistory = () => {
               ))}
             </tbody>
           </table>
-          <div className="pagination">
+          <div className={`pagination ${showExecuteButton ?"execute":""}`}>
+            {showExecuteButton && (
             <div className="dropdown">
               <button
                 className="Select_date_dropdown"
@@ -316,6 +368,7 @@ const AdminHistory = () => {
                 <IoPlay className="execute_icon" />
               </button>
             </div>
+)}
             <Stack spacing={1}>
               <Pagination
                 count={Math.ceil(totalRecords / 10) || 1}
