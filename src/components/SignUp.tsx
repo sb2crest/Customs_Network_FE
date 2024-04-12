@@ -1,33 +1,46 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "../assets/sass/components/_login_signup.scss";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
-import { IconButton, InputAdornment } from "@mui/material";
+import { Box, IconButton, InputAdornment, Modal } from "@mui/material";
 import React, { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import EmailIcon from '@mui/icons-material/Email';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Dialog from "@mui/material/Dialog";
+import EmailIcon from "@mui/icons-material/Email";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import { FaCheckCircle } from "react-icons/fa";
+import { IoIosWarning } from "react-icons/io";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 300,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 5,
+  textAlign: "center",
+};
 
 const SignUp = () => {
   const [isActive, setIsActive] = useState(false);
-  const [openPopup, setOpenPopup] = useState(false);
-  const [signUpMessage, setSignUpMessage] = useState('');
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleFocus = () => {
     setIsActive(true);
   };
-  
-  const [showPassword, setShowPassword] = React.useState(false);
+  const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
@@ -60,9 +73,9 @@ const SignUp = () => {
       checkbox: false,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: () => {
+      UserSignup();
+      },
   });
   const {
     handleSubmit,
@@ -80,37 +93,52 @@ const SignUp = () => {
         console.log(res.data);
         if (res.status === 200) {
           formik.resetForm();
-          setOpenPopup(true);
-          setSignUpMessage("Registration successful");
+          handleOpen();
         }
       })
       .catch((err) => {
         console.error(err);
         if (err.response && err.response.data) {
-          setOpenPopup(true);
-          setSignUpMessage(err.response.data);
+          setErrorMessage(err.response.data);
         } else {
           console.error("Unknown error occurred");
         }
       });
   };
-  const handleClosePopup = () => {
-    setOpenPopup(false);
-    setSignUpMessage('');
+  const navigateToLogin = () => {
+    navigate("/login");
   };
   return (
     <div className="signup">
       <div className="signup_container">
         <div className="signup_container_section">
           <div className="signup_container_section_right">
-          <img src={logo} alt="logo" width={220} height={50}/>
+            <img src={logo} alt="logo" width={220} height={50} />
             <div className="form_container">
               <div className="form_container_heading">
-                <h3>Sign <span style={{color:"#e53d34"}}>Up</span></h3>
+                <h3>
+                  Sign <span style={{ color: "#e53d34" }}>Up</span>
+                </h3>
                 <div className="form_container_heading_section">
+                <div className="popup">
+                    {errorMessage && (
+                      <p style={{ textAlign: "center", color: "red" }}>
+                        <IoIosWarning style={{ marginRight: "10px",fontSize:"22px" }} />
+                        {errorMessage}
+                      </p>
+                    )}
+                  </div>
                   <form onSubmit={handleSubmit}>
-                    <div className="input_container" style={{display:"flex",justifyContent:"center",alignItems:"center",gap:"10px"}}>
-                       <TextField
+                    <div
+                      className="input_container"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      <TextField
                         id="firstName"
                         type="text"
                         name="firstName"
@@ -120,12 +148,16 @@ const SignUp = () => {
                         value={formik.values.firstName}
                         onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("firstName", true)}
-                        error={formik.touched.firstName && !!formik.errors.firstName}
-                        helperText={formik.touched.firstName && formik.errors.firstName}
+                        error={
+                          formik.touched.firstName && !!formik.errors.firstName
+                        }
+                        helperText={
+                          formik.touched.firstName && formik.errors.firstName
+                        }
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <PersonIcon />
@@ -139,7 +171,7 @@ const SignUp = () => {
                           },
                         }}
                       />
-                       <TextField
+                      <TextField
                         id="lastName"
                         type="text"
                         name="lastName"
@@ -149,12 +181,16 @@ const SignUp = () => {
                         value={formik.values.lastName}
                         onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("lastName", true)}
-                        error={formik.touched.lastName && !!formik.errors.lastName}
-                        helperText={formik.touched.lastName && formik.errors.lastName}
+                        error={
+                          formik.touched.lastName && !!formik.errors.lastName
+                        }
+                        helperText={
+                          formik.touched.lastName && formik.errors.lastName
+                        }
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <PersonIcon />
@@ -181,11 +217,13 @@ const SignUp = () => {
                         onChange={formik.handleChange}
                         onBlur={() => setFieldTouched("userId", true)}
                         error={formik.touched.userId && !!formik.errors.userId}
-                        helperText={formik.touched.userId && formik.errors.userId}
+                        helperText={
+                          formik.touched.userId && formik.errors.userId
+                        }
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <VerifiedUserIcon />
@@ -216,7 +254,7 @@ const SignUp = () => {
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <EmailIcon />
@@ -232,7 +270,7 @@ const SignUp = () => {
                       />
                     </div>
                     <div className="input_container">
-                       <TextField
+                      <TextField
                         id="password"
                         name="password"
                         type={showPassword ? "text" : "password"}
@@ -246,7 +284,7 @@ const SignUp = () => {
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: '600' },
+                          style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <IconButton
@@ -283,7 +321,7 @@ const SignUp = () => {
                       <label>I agree to the terms of service</label>
                     </div>
                     <div className="submit">
-                      <button type="button" onClick={UserSignup}>
+                      <button type="submit">
                         Sign Up
                       </button>
                     </div>
@@ -298,16 +336,44 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-      <Dialog onClose={handleClosePopup} open={openPopup}>
-        <List sx={{ p: 2 }}>
-          <ListItem disableGutters>
-            <ListItemText primary={signUpMessage} />
-          </ListItem>
-        </List>
-        <Button autoFocus onClick={handleClosePopup}>
-          Close
-        </Button>
-      </Dialog>
+      <div className="successful_registeration_popup">
+        <Modal open={open} onClose={handleClose}>
+          <Box sx={style}>
+            <div className="checkIcon" style={{ borderRadius: "50%" }}>
+              <FaCheckCircle
+                className="icon"
+                style={{
+                  fontSize: "5em",
+                  color: "#82ce34",
+                  background: "#fff",
+                  marginTop: "-50%",
+                  borderRadius: "50%",
+                }}
+              />
+            </div>
+            <div className="successful_content">
+              <h1 style={{ color: "gray" }}>Awesome!</h1>
+              <p style={{ color: "#a0a0a0" }}>
+                Your registration was successful. You can now proceed to Login.
+              </p>
+              <button
+                onClick={navigateToLogin}
+                style={{
+                  width: "100%",
+                  color: "#fff",
+                  background: "#82ce34",
+                  border: "none",
+                  padding: "10px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+              >
+                OK
+              </button>
+            </div>
+          </Box>
+        </Modal>
+      </div>
     </div>
   );
 };
