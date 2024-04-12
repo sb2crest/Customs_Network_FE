@@ -73,14 +73,14 @@ $placeholder: #6b728c;
           .Apply_button {
             button {
               padding: 7px 16px;
-              background-color: #414142;
+              background-color: #f85047;
               border: none;
               border-radius: 5px;
               font-size: 16px;
+              color: #fff;
               cursor: pointer;
               &:hover {
                 background-color: #e53d34;
-                color: #fff;
               }
             }
           }
@@ -235,11 +235,13 @@ $placeholder: #6b728c;
           color: rgb(203 213 225);
         }
       }
+      .execute{
+        justify-content: space-between !important;
+      }
       .pagination {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        
+        justify-content: end;
         .dropdown {
           display: flex;
           align-items: center;

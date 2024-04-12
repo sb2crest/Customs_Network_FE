@@ -15,7 +15,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { IoBarChartOutline } from "react-icons/io5";
 import PortBarChart from "./PortBarChart";
 import PortLineChart from "./PortLineChart";
-import { MdErrorOutline  } from "react-icons/md";
+import { MdErrorOutline } from "react-icons/md";
 
 const Trends = () => {
   const [activeButtons, setActiveButtons] = useState([
@@ -136,8 +136,8 @@ const Trends = () => {
   const fetchSuggestions = (input: string) => {
     const endpoint =
       selectedOption === "Port Code"
-        ? `/getPortData?portCode=${input}`
-        : `/getPortData?portName=${input}`;
+        ? `/getPortData?portDetails=${input}`
+        : `/getPortData?portDetails=${input}`;
 
     axiosPrivate
       .get(endpoint)
@@ -311,7 +311,7 @@ const Trends = () => {
                 >
                   <div className="content">
                     <div className="icon">
-                      <MdErrorOutline  style={{ color: "#F8DE22" }} />
+                      <MdErrorOutline style={{ color: "#F8DE22" }} />
                     </div>
                     <div className="heading">
                       <p style={{ color: "#F8DE22" }}>
@@ -420,9 +420,17 @@ const Trends = () => {
                       {suggestions.map((item, index) => (
                         <li
                           key={index}
-                          onClick={() => handleSuggestionSelect(item)}
+                          onClick={() =>
+                            handleSuggestionSelect(
+                              selectedOption === "Port Code"
+                                ? item.portCode
+                                : item.portName
+                            )
+                          }
                         >
-                          {item}
+                          {selectedOption === "Port Code"
+                            ? item.portCode
+                            : item.portName}
                         </li>
                       ))}
                     </ul>
