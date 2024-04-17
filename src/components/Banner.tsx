@@ -1,4 +1,3 @@
-import "../assets/sass/components/_banner.scss";
 const Banner = () => {
   return (
     <div className="banner">

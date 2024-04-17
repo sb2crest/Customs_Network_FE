@@ -1,7 +1,4 @@
-import React from "react";
-import logo from "../../assets/images/logo.png";
-import "../../assets/sass/components/_headermenu.scss";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const HeaderMenu = () => {
   return (
@@ -10,28 +7,28 @@ const HeaderMenu = () => {
         <div className="menu_list_container_section">
           <nav>
             <div className="logo_left">
-              <img src={logo} alt="logo" />
+              <p>LOGO</p>
             </div>
             <div className="list_right">
               <ul>
-                <Link to="/home">
-                  <li>Home</li>
-                </Link>
-                <Link to="/services">
-                  <li>Services</li>
-                </Link>
-                <Link to="/aboutUs">
-                  <li>About Us</li>
-                </Link>
-                <Link to="/contactUs">
-                  <li>Contact Us</li>
-                </Link>
-                <Link to="/login">
-                  <li>Login</li>
-                </Link>
-                <Link to="/signup">
-                  <li>Sign Up</li>
-                </Link>
+                <li>
+                  <NavLink to="/home" activeClassName="active">Home</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/services" activeClassName="active">Services</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/aboutUs" activeClassName="active">About Us</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/contactUs" activeClassName="active">Contact Us</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/login" activeClassName="active">Login</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/signup" activeClassName="active">Sign Up</NavLink>
+                </li>
               </ul>
             </div>
           </nav>
@@ -40,4 +37,5 @@ const HeaderMenu = () => {
     </div>
   );
 };
+
 export default HeaderMenu;

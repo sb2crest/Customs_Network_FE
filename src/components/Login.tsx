@@ -83,6 +83,7 @@ const Login = () => {
         state: {
           accessToken: response.data.access_token,
           userId: response.data.user_id,
+          isPortDetails: response.data.isPortDetails,
         },
       });
     } catch (err) {
@@ -103,8 +104,8 @@ const Login = () => {
             <img src={logo} alt="logo" width={220} height={50} />
             <div className="form_container">
               <div className="form_container_heading">
-                <h3>
-                  Log<span style={{ color: "#e53d34" }}>in</span>
+                <h3 style={{color:"#01a7c2"}}>
+                  Log<span style={{ color: "#A3BAC3" }}>in</span>
                 </h3>
                 <div className="form_container_heading_section">
                   <div className="popup">
@@ -131,10 +132,10 @@ const Login = () => {
                         fullWidth
                         required
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500",fontSize:"14px" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <PersonIcon />
+                              <PersonIcon sx={{color:"#007090"}}/>
                             </InputAdornment>
                           ),
                         }}
@@ -161,7 +162,7 @@ const Login = () => {
                         variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500",fontSize:"14px" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <IconButton
@@ -169,9 +170,9 @@ const Login = () => {
                                 onMouseDown={handleMouseDownPassword}
                               >
                                 {showPassword ? (
-                                  <VisibilityOff />
+                                  <VisibilityOff sx={{color:"#007090"}}/>
                                 ) : (
-                                  <VisibilityIcon />
+                                  <VisibilityIcon sx={{color:"#007090"}}/>
                                 )}
                               </IconButton>
                             </InputAdornment>

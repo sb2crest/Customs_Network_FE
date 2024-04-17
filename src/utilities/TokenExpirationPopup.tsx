@@ -138,7 +138,7 @@ const style = {
 
 const ModalContent = styled("div")(
   ({ theme }) => css`
-    font-family: "IBM Plex Sans", sans-serif;
+  font-family: inherit;
     font-weight: 500;
     text-align: start;
     position: relative;

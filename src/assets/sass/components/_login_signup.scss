@@ -2,7 +2,7 @@
   font-family: inherit;
   &_container {
     &_section {
-      background: url(../../images/login-bg.jpg);
+      background: url(src/assets/images/login-bg.jpg);
       background-position: bottom;
       background-size: cover;
       height: 100vh;
@@ -22,8 +22,7 @@
           padding-bottom: 1vw;
         }
         .form_container {
-          background: #fff;
-          opacity: 0.77;
+          background: $white;
           border-radius: 20px;
           padding: 20px 30px;
           width: 50%;
@@ -53,12 +52,12 @@
                 opacity: 1;
                 input[type="text"],
                 input[type="password"] {
-                  background: #fff;
                   padding: 8px 14px 8px;
                   border-bottom: #fff;
                   border: none;
                   &::placeholder {
-                    color: black;
+                    color: #6c6e6e;
+                    font-size: 16px;
                   }
                 }
                 .input_container,
@@ -69,6 +68,10 @@
                 .checkbox_container {
                   display: flex;
                   align-items: center;
+                  margin-bottom: 5px;
+                }
+                .isPortDetails_container {
+                  margin-bottom: 15px;
                 }
                 .submit {
                   button {
@@ -94,7 +97,7 @@
                 .toggle_sentence {
                   text-align: center;
                   a {
-                    color: #e53d34;
+                    color: #01A7C2;
                   }
                 }
                 .forgot_password {

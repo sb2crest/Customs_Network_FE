@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { IoEye } from "react-icons/io5";
-import "../../assets/sass/components/_history.scss";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
@@ -195,12 +194,14 @@ const AdminHistory = () => {
   return (
     <div className="history">
       <div className="history_container">
+      <div className="history_heading">
+          <h2>
+            History &nbsp;
+            <FaHistory className="sidebar_icon" />
+          </h2>
+        </div>
         <div className="history_container_section">
           <div className="filter_row">
-            <p className="history_heading">
-              History &nbsp;
-              <FaHistory className="sidebar_icon" />
-            </p>{" "}
             <div className="filter">
               <div className="userId">
                 <input
@@ -265,34 +266,26 @@ const AdminHistory = () => {
           </div>
           <table>
             <thead>
-              <tr>
+            <tr>
                 <th>Id</th>
-                <th>Batch Id</th>
-                <th>User Id</th>
-                <th>Refrence Id</th>
-                <th>Created Date</th>
-                <th>Status <br /> {statusCount ? (
+                <th className="batchid">Batch Id</th>
+                <th className="userid">User Id</th>
+                <th className="referenceid">Refrence Id</th>
+                <th className="date">Created Date</th>
+                <th className="status">
+                  Status <br />
+                  {statusCount ? (
                     <span
                       style={{
-                        color:
-                          responseData.length > 0
-                            ? responseData[0].status === "REJECTED"
-                              ? "#e53d34"
-                              : responseData[0].status === "ACCEPTED"
-                              ? "rgb(80 199 147)"
-                              : responseData[0].status === "PENDING"
-                              ? "#CD5C08"
-                              : responseData[0].status === "VALIDATION ERROR"
-                              ? "#F8DE22"
-                              : "#12CAD6"
-                            : "",
+                        color:"#000",
                       }}
                     >
-                      Count:{totalRecords}
+                      Count :{totalRecords}
                     </span>
                   ) : (
                     ""
-                  )}</th>
+                  )}
+                </th>
                 <th>Request Json</th>
                 <th>Response Json</th>
               </tr>
@@ -303,24 +296,28 @@ const AdminHistory = () => {
                   <td>{index + 1}</td>
                   <td className="batchid">{item.batchId}</td>
                   <td className="userid">{item.userId}</td>
-                  <td>{item.referenceId}</td>
-                  <td>{item.createdOn}</td>
+                  <td className="referenceid">{item.referenceId}</td>
+                  <td className="date">{item.createdOn}</td>
                   <td
+                    className="status"
                     style={{
                       color:
                         item.status === "REJECTED"
-                          ? "#e53d34"
+                          ? "#DB7A6B"
                           : item.status === "ACCEPTED"
-                          ? "rgb(80 199 147)"
+                          ? "#4ecdc4"
                           : item.status === "PENDING"
-                          ? "#CD5C08"
+                          ? "#00A8E8"
                           : item.status === "VALIDATION ERROR"
-                          ? "#F8DE22"
-                          : "#12CAD6",
+                          ? "#6A8EAE"
+                          : item.status === "CBP DOWN"
+                          ? "#004D66"
+                          : "#000",
                     }}
                   >
                     {item.status}
                   </td>
+
                   <td className="eyeicon">
                     <button>
                       <IoEye
@@ -388,7 +385,7 @@ const AdminHistory = () => {
                 {displayedJsonType === "requestJson" && (
                   <div>
                     Request JSON:
-                    <pre>
+                    <pre style={{fontSize:"0.7rem"}}>
                       {JSON.stringify(selectedRow.requestJson, null, 2)}
                     </pre>
                   </div>
@@ -396,7 +393,7 @@ const AdminHistory = () => {
                 {displayedJsonType === "responseJson" && (
                   <div>
                     Response JSON:
-                    <pre>
+                    <pre style={{fontSize:"0.7rem"}}>
                       {JSON.stringify(selectedRow.responseJson, null, 2)}
                     </pre>
                   </div>

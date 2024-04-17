@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import GppGoodIcon from "@mui/icons-material/GppGood";
-import "../../assets/sass/pages/_home.scss";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import DirectionsBoatIcon from "@mui/icons-material/DirectionsBoat";
 import FlightIcon from "@mui/icons-material/Flight";

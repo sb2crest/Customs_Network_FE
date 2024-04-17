@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import "../../assets/sass/pages/_aboutUs.scss";
 import { LuAlarmClock } from "react-icons/lu";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { MdHealthAndSafety } from "react-icons/md";
-import aboutUsImg from "../../assets/images/aboutus1.jpg";
+import aboutUsImg from "../../assets/images/whychooseus-bg.jpg";
 import { useState } from "react";
 
 const AboutUs = () => {
@@ -32,9 +31,12 @@ const AboutUs = () => {
                   <LuAlarmClock />
                 </div>
                 <div className="information">
-                  Experience rapid customs clearance on our site. Get swift
-                  service for seamless import/export. Efficient solutions await
-                  for hassle-free transactions.
+                  <h3>Fast Service</h3>
+                  <p>
+                    Experience rapid customs clearance on our site. Get swift
+                    service for seamless import/export. Efficient solutions
+                    await for hassle-free transactions.
+                  </p>
                 </div>
               </div>
               <div className="points">
@@ -42,10 +44,13 @@ const AboutUs = () => {
                   <AiFillThunderbolt />
                 </div>
                 <div className="information">
-                  Ensure 100% accuracy with our prompt customs website.
-                  Experience fast service for all your clearance needs,
-                  guaranteeing efficient import and export processes without
-                  compromise.
+                  <h3>100% Accuracy</h3>
+                  <p>
+                    Ensure 100% accuracy with our prompt customs website.
+                    Experience fast service for all your clearance needs,
+                    guaranteeing efficient import and export processes without
+                    compromise.
+                  </p>
                 </div>
               </div>
               <div className="points">
@@ -53,9 +58,12 @@ const AboutUs = () => {
                   <MdHealthAndSafety />
                 </div>
                 <div className="information">
-                  Count on our customs website for safety and guarantee.
-                  Experience swift service with 100% accuracy, ensuring secure
-                  import/export processes for peace of mind
+                  <h3>Safety & Guarantee</h3>
+                  <p>
+                    Count on our customs website for safety and guarantee.
+                    Experience swift service with 100% accuracy, ensuring secure
+                    import/export processes for peace of mind.
+                  </p>
                 </div>
               </div>
             </div>
@@ -75,62 +83,88 @@ const AboutUs = () => {
               <p className="content3">
                 Trust our platform for reliable solutions, providing peace of
                 mind and confidence in every transaction, setting the standard
-                for excellence in customs services.
+                for excellence in customs services and ensuring secure
+                import/export processes for peace of mind.
               </p>
             </div>
           </div>
           <div className="aboutus_container_section_bottom">
             <div className="left">
-              <img src={aboutUsImg} alt="" width={400} height={400} />
+              <img src={aboutUsImg} alt="" />
             </div>
             <div className="right">
-              <div className="heading_buttons">
-                <button onClick={() => setActiveTab("overview")}>
-                  OVERVIEW
-                </button>
-                <button onClick={() => setActiveTab("security")}>
-                  SECURITY
-                </button>
-                <button onClick={() => setActiveTab("management")}>
-                  MANAGEMENT
-                </button>
+              <div className="container">
+                <div className="heading_buttons">
+                  <button className={activeTab === "overview" ?"overview":""} onClick={() => setActiveTab("overview")}>
+                    OVERVIEW
+                  </button>
+                  <button className={activeTab === "security" ?"security":""} onClick={() => setActiveTab("security")}>
+                    SECURITY
+                  </button>
+                  <button className={activeTab === "management" ?"management":""} onClick={() => setActiveTab("management")}>
+                    MANAGEMENT
+                  </button>
+                </div>
+                {activeTab === "overview" && (
+                  <p className="overview_content">
+                    <span>Why choose us</span>
+                    Select our service for unmatched efficiency and reliability.
+                    With years of industry experience, we specialize in
+                    facilitating seamless import/export procedures with top-tier
+                    security measures, ensuring the safety and integrity of your
+                    transactions at every step. Our user-friendly platform
+                    offers more than just convenience and accessibility; it
+                    provides a comprehensive suite of tools and resources
+                    tailored to meet your specific customs clearance
+                    requirements. Whether you're a small business or a large
+                    enterprise, our customizable solutions adapt to your needs,
+                    streamlining the process and saving you time and resources.
+                    Rely on our team of experts who are committed to excellence
+                    in every aspect of customs clearance. From documentation and
+                    compliance to logistics and regulations, we handle it all
+                    with precision and care.
+                  </p>
+                )}
+                {activeTab === "security" && (
+                  <p className="security_content">
+                    <span>Security</span>
+                    Trust in our service for top-notch security measures that go
+                    beyond industry standards. We understand the critical
+                    importance of safeguarding your data and transactions in
+                    today's digital landscape. That's why we employ advanced
+                    technologies and stringent protocols to ensure the highest
+                    levels of confidentiality and integrity throughout every
+                    stage of the customs process. Our commitment to security
+                    means your information is shielded against unauthorized
+                    access and cyber threats, giving you peace of mind knowing
+                    that your sensitive data is in safe hands. From encryption
+                    to multi-factor authentication, we implement robust measures
+                    to protect your assets and maintain the trust you place in
+                    us. With us, you can confidently navigate the complexities
+                    of customs transactions, knowing that security is at the
+                    forefront of everything we do.
+                  </p>
+                )}
+                {activeTab === "management" && (
+                  <p className="management_content">
+                    <span>Management</span>
+                    Opt for our service and unlock effective management
+                    solutions tailored to your customs needs. Our seasoned team
+                    boasts extensive experience, guaranteeing smooth
+                    coordination and timely processing of customs procedures at
+                    every turn. We pride ourselves on streamlined workflows and
+                    dedicated support, ensuring that even the most intricate
+                    customs challenges are managed with efficiency and
+                    precision. From documentation to compliance, we handle
+                    complexities seamlessly, optimizing your customs experience
+                    from start to finish. Trust in our management expertise to
+                    navigate regulations effortlessly, leaving you with peace of
+                    mind and reliable results every time. Make the smart choice
+                    for efficient customs management and partner with us as your
+                    preferred provider.
+                  </p>
+                )}
               </div>
-              {activeTab === "overview" && (
-                <p className="overview_content">
-                  Select our service for unmatched efficiency and reliability.
-                  We guarantee seamless import/export procedures with top-tier
-                  security measures, ensuring the safety of your transactions.
-                  Our user-friendly platform offers convenience and
-                  accessibility, providing tailored solutions to meet your
-                  customs clearance requirements. Rely on our expertise and
-                  commitment to excellence for hassle-free processing, making us
-                  the preferred choice for all your customs needs.
-                </p>
-              )}
-              {activeTab === "security" && (
-                <p className="security_content">
-                  Trust in our service for top-notch security measures. We
-                  employ advanced technologies and stringent protocols to
-                  safeguard your data and transactions, ensuring confidentiality
-                  and integrity throughout the process. Rest assured that your
-                  information is protected against unauthorized access and cyber
-                  threats, providing peace of mind and confidence in the safety
-                  of your customs transactions. Choose security with us for a
-                  worry-free experience.
-                </p>
-              )}
-              {activeTab === "management" && (
-                <p className="management_content">
-                  Opt for our service for effective management solutions. Our
-                  experienced team ensures smooth coordination and timely
-                  processing of customs procedures. With streamlined workflows
-                  and dedicated support, we handle complexities efficiently,
-                  optimizing your customs experience. Trust our management
-                  expertise to navigate regulations seamlessly and deliver
-                  reliable results, making us the preferred choice for efficient
-                  customs management.
-                </p>
-              )}
             </div>
           </div>
         </div>

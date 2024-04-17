@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import "../../assets/sass/components/_topbar.scss";
-
+import  { useState } from "react";
 export const TopBar = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 

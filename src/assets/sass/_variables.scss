@@ -1,0 +1,110 @@
+//=================================================
+// Variables
+//=================================================
+
+//=============================
+// Media queries
+//=============================
+$retina:     "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+$media_xxxl: "(min-width: 1920px)";
+$media_xxl:  "(max-width: 1700px)";
+$media_xl:   "(max-width: 1199px)";
+$media_lg:   "(max-width: 991px)";
+$media_md:   "(max-width: 767px)";
+$media_sm:   "(max-width: 575px)";
+
+
+
+//=============================
+// Fonts
+//=============================
+$Montserrat:                                         "Montserrat", sans-serif;
+
+$font_primary:                                        $Montserrat;
+
+$f_size_sm:                                           0.684rem; // 13px
+$f_size_md:                                           0.789rem; // 15px
+$f_size_lg:                                           1rem;     // 19px
+
+
+
+//=============================
+// Colors
+//=============================
+$white:                                               #ffffff;
+$blue:                                                #3c8ee7;
+$indigo:                                              #7253e6;
+$purple:                                              #5f4b8b;
+$pink:                                                #e691b8;
+$red:                                                 #ec3f58;
+$orange:                                              #ff953d;
+$yellow:                                              #ffd042;
+$green:                                               #61d27c;
+$teal:                                                #40d9ac;
+$cyan:                                                #02aec9;
+$gray:                                                #efefef;
+$gray-light:                                          #c5c5c5;
+$gray-dark:                                           #a0a0a0;
+$blue-dark:                                           #143369;
+$black:                                               #000000;        
+
+$light-bg:                                            #EAEBED;
+$dark-bg:                                             #A3BAC3;
+$theme-color:                                         #007090;
+$theme-color-light:                                   #01A7C2;
+
+
+
+//top Bar
+$top-bar-background: $white;
+$top-bar-text-color: $theme-color;
+$top-bar-btn-bg: $theme-color;
+$top-bar-btn-color: $white;
+$top-bar-dropdown: $theme-color;
+$top-bar-dropdown-hover: $theme-color-light;
+$top-bar-dropdown-color: $white;
+
+//header
+$header-background: $theme-color-light;
+$header-text-color: $theme-color;
+$header-text-hover-color: $theme-color-light;
+$header-active-color: $theme-color-light;
+$header-font-size: $f_size_lg + (-0.15rem);
+
+//banner
+$banner-header-text-color: $white;
+$banner-content-text-color: $gray-light;
+$banner-btn-color: $white;
+$banner-btn-bg-color: $theme-color-light;
+$banner-btn-bg-color-hover: $theme-color;
+
+//home page
+$home-card-bg-color: $white;
+$home-card-heading-color: $theme-color;
+$home-card-content-color: $dark-bg;
+$home-icon-color: $theme-color-light;
+$home-icon-content-color: $dark-bg;
+$home-heading-color:  $theme-color;
+
+//footer
+$footer-background: $theme-color;
+$footer-text-color: $light-bg;
+$footer-social-color: $white;
+$footer-heading-color: $white;
+
+//contactUs
+$contactUs-banner-text-color: $white;
+$contactUs-heading-color: $theme-color;
+$contactUs-content-color: $black;
+$contactUs-icon-color: $theme-color-light;
+$contactUs-btn-bg-color: $theme-color;
+$contactUs-btn-bg-hover-color: $theme-color-light;
+
+//aboutUs
+$aboutUs-banner-text-color: $white;
+$aboutUs-heading-color: $theme-color;
+$aboutUs-content-color: $gray-dark;
+$aboutUs-icon-color: $theme-color-light;
+$aboutUs-right-bg-color: $dark-bg;
+$aboutUs-right-btn-bg: $white;
+$aboutUs-right-btn-border: $gray-dark;

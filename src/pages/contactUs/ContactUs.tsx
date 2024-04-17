@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import "../../assets/sass/pages/_contactUs.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -20,7 +19,6 @@ const ContactUs = () => {
       message: Yup.string().required("Message is required"),
     }),
     onSubmit: (values) => {
-      // Handle form submission logic here
       console.log(values);
     },
   });

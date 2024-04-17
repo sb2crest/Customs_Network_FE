@@ -1,0 +1,119 @@
+//=================================================
+// Theme variables
+//=================================================
+// Variables
+@import "variables";
+
+//Components SCSS imports
+
+/*=============================
+// banner styles
+=============================*/
+@import "components/banner";
+
+/*=============================
+// footer styles
+=============================*/
+@import "components/footer";
+
+/*=============================
+// header styles
+=============================*/
+@import "components/header";
+
+/*=============================
+// topBar styles
+=============================*/
+@import "components/topbar";
+
+/*=============================
+// login & signup styles
+=============================*/
+@import "components/login_signup";
+
+/*=============================
+// submit excel styles
+=============================*/
+@import "components/submit_excel";
+
+/*=============================
+// history styles
+=============================*/
+@import "components/history";
+
+/*=============================
+// pasteJson styles
+=============================*/
+@import "components/paste_json";
+
+/*=============================
+// userPage styles
+=============================*/
+@import "components/user_page";
+
+/*=============================
+// trends styles
+=============================*/
+@import "components/trends";
+
+
+
+// ===========================================================================================================
+// ===========================================================================================================
+
+//Pages SCSS imports
+
+/*=============================
+// home styles
+=============================*/
+@import "pages/home";
+
+/*=============================
+// aboutUs styles
+=============================*/
+@import "pages/aboutUs";
+
+/*=============================
+// ContactUs styles
+=============================*/
+@import "pages/contactUs";
+
+
+html {
+    -webkit-overflow-scrolling: touch;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 19px;
+    scroll-behavior: smooth;
+    
+    @media #{$media_xl} {
+        font-size: 16px;
+    }
+    
+    @media #{$media_sm} {
+        font-size: 14px;
+    }
+}
+
+body {
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+    font-size: 19px;
+    min-width: 320px;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+    }
+    @media #{$media_xl} {
+        font-size: 16px;
+    }
+    
+    @media #{$media_sm} {
+        font-size: 14px;
+    }
+}

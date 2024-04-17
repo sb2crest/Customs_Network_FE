@@ -1,48 +1,25 @@
 .userpage {
   display: flex;
-  background: url(../../images/image-Photoroom.jpg);
   background-position: left;
   background-size: cover;
   justify-content: space-between;
   align-items: flex-start;
   .sidebar {
-    font-family: "Poppins", sans-serif;
-    width: 7%;
+    font-family: inherit;
+    width: 15%;
     z-index: 10000;
+    background: #eaebed;
     &_container {
       &_section {
         display: flex;
         justify-content: start;
         align-items: center;
         flex-direction: column;
-        background-color: #212121;
-        opacity: 0.89;
         height: 100vh;
-        box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
-          rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
         &_logo {
-          color: #e53d34;
-          font-size: 2em;
+          color: #000;
+          font-size: 1.5rem;
           margin-top: 2vw;
-          cursor: pointer;
-          position: relative;
-          .x-mark {
-            margin-left: 8vw;
-            padding: .1vw;
-            font-size: 22px;
-            background: #a0a0a0;
-            border-radius: 50%;
-            position: absolute;
-            top: 0vw;
-            left: -12px;
-          }
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-          span {
-            font-size: 20px;
-          }
         }
         &_list {
           width: 100%;
@@ -51,12 +28,12 @@
             padding: 0;
             margin: 0;
             text-decoration: none;
+
             .active-li {
-              background-color: #767676;
+              background-color: #a3bac3;
               color: #fff;
               .sidebar_icon {
                 color: #fff;
-                
               }
             }
             a {
@@ -69,34 +46,29 @@
               display: flex;
               align-items: center;
               flex-direction: row;
-              justify-content: center;
+              justify-content: start;
               font-size: 14px;
               font-weight: 600;
-              color: #a0a0a0;
               position: relative;
               cursor: pointer;
               padding: 1vw 0;
-              .dropdown{
+              padding-left: 1vw;
+              .dropdown {
                 width: 130px;
               }
               .sidebar_icon {
                 padding: 8px 12px;
-                background: #a0a0a0;
                 border-radius: 2px;
-                font-size: 1.8em;
-                color: #e53d34;
+                font-size: 1.3em;
+                color: #000;
               }
               &:hover {
-                background: #767676;
                 transition: background 0.3s ease;
+                background-color: #a3bac3;
                 color: #fff;
-
                 .sidebar_icon {
                   color: #fff;
                 }
-              }
-              span {
-                display: none;
               }
             }
           }
@@ -104,7 +76,7 @@
             position: absolute;
             top: 0;
             left: 101%;
-            background: #212121;
+            background: #eaebed;
             padding: 10px;
             box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
               rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
@@ -115,11 +87,11 @@
             }
 
             a {
-              color: #a0a0a0;
+              color: #000;
             }
 
             li:hover {
-              background: #767676;
+              background: #a3bac3;
               transition: background 0.3s ease;
               color: #fff;
             }
@@ -128,44 +100,13 @@
       }
     }
   }
-  .sidebar {
-    transition: all 0.3s ease;
-    &.active {
-      width: 13%;
-      .sidebar_container_section_list {
-        ul {
-          li {
-            justify-content: start;
-            padding-left: 0.7vw;
-            .sidebar_icon {
-              padding-right: 10px;
-              font-size: 1em;
-            }
-            span {
-              display: block;
-              margin-left: 10px;
-            }
-            &.active-li {
-              flex-direction: row;
-              padding-left: 0.7vw;
-              font-size: 14px;
-
-              .sidebar_icon {
-                padding-right: 10px;
-                font-size: 1em;
-              }
-            }
-          }
-        }
-      }
-      .userpage-content-container {
-        width: 85%;
-      }
-    }
-  }
   .userpage-content-container {
-    width: 93%;
+    width: 85%;
     height: 100vh;
+    background-color: #ededed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
     overflow-y: scroll;
     overflow-y: auto;
     display: flex;

@@ -1,6 +1,4 @@
-import React from "react";
 import logo from "../../assets/images/logo.png";
-import "../../assets/sass/components/_footer.scss";
 const Footer = () => {
   return (
     <div className="footer">

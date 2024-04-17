@@ -31,14 +31,14 @@ export const options = {
         font: {
           size: 13,
         },
-        color: "#fff",
+        color: "#000",
       },
     },
     title: {
       display: true,
       text: "Bar Chart",
       position: "bottom",
-      color: "#fff",
+      color: "#000",
     },
   },
   scales: {
@@ -47,7 +47,7 @@ export const options = {
         display: false,
       },
       ticks: {
-        color: "#fff",
+        color: "#000",
       },
     },
     y: {
@@ -55,7 +55,7 @@ export const options = {
         display: false,
       },
       ticks: {
-        color: "#fff",
+        color: "#000",
       },
     },
   },
@@ -102,42 +102,42 @@ const BarChart = () => {
   const validationErrorData = responseData.map((dataItem) => dataItem.validationErrorCount);
   
   const data = {
-    labels,
+    labels: labels.length ? labels : ['No data'],
     datasets: [
       {
         label: "Accepted",
         data: acceptedData,
-        borderColor: "#38E54D",
-        backgroundColor: "#38E54D",
+        borderColor: "#4ecdc4",
+        backgroundColor: "#4ecdc4",
       },
       {
         label: "Pending",
         data: pendingData,
-        borderColor: "#CD5C08",
-        backgroundColor: "#CD5C08",
+        borderColor: "#00A8E8",
+        backgroundColor: "#00A8E8",
       },
       {
         label: "Rejected",
         data: rejectedData,
-        borderColor: "#bf302f",
-        backgroundColor: "#bf302f",
+        borderColor: "#DB7A6B",
+        backgroundColor: "#DB7A6B",
       },
       {
         label: "Validation Error",
         data: validationErrorData,
-        borderColor: "#F8DE22",
-        backgroundColor: "#F8DE22",
+        borderColor: "#6A8EAE",
+        backgroundColor: "#6A8EAE",
       },
       {
         label: "CBP Down",
         data: cbpDownData,
-        borderColor: "#12CAD6",
-        backgroundColor: "#12CAD6",
+        borderColor: "#004D66",
+        backgroundColor: "#004D66",
       },
     ],
   };
 
-  return <Bar options={options} data={data} />;
+  return <Bar options={options} data={data} style={{background:"#fff"}}/>;
 };
 
 export default BarChart;
