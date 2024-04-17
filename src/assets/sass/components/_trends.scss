@@ -1,9 +1,5 @@
 .trends {
-  background-color: #212121;
-  opacity: 0.9;
-  width: 95.5%;
-  padding: 24px;
-  height: fit-content;
+  width: 100%;
   &_container {
     &_section {
       &_section1 {
@@ -11,14 +7,16 @@
         padding-bottom: 1rem;
         .heading {
           width: 100%;
+          background-color: #fff;
+          padding-left: 1rem;
           h2 {
-            color: #a0a0a0;
-            font-size: 18px;
-            margin: 0;
+            color: #000;
+            font-size: 1rem;
           }
         }
       }
       &_section2 {
+        padding: 1rem;
         .card {
           display: flex;
           justify-content: start;
@@ -33,10 +31,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                font-size: 1.5rem;
+                font-size: 1rem;
                 padding: 5px;
                 border-radius: 50%;
-                background-color: #fff;
               }
               .heading {
                 margin-left: 10px;
@@ -64,6 +61,15 @@
         align-items: center;
         gap: 20px;
         padding-bottom: 1rem;
+        padding: 1rem;
+        button{
+          font-size: 10px;
+          font-weight: 600;
+          padding: 4px 12px;
+          border: 2px solid #007090;
+          border-radius: 20px;
+
+        }
       }
       .userId {
         input {
@@ -111,27 +117,29 @@
         align-items: center;
         gap: 10px;
         background-color: inherit;
+        padding: 1rem;
       }
       h3 {
         font-size: 18px;
         font-weight: 500;
         color: #a0a0a0;
-        padding-top: 1rem;
+        padding: 1rem;
       }
       .customized_trends {
         display: flex;
         gap: 20px;
+        padding: 1rem;
         .status_filter {
           .dropdown {
             width: 150px;
             position: relative;
-            color: #fff;
+            color: #000;
             height: 40.5px;
 
             .select {
               cursor: pointer;
               transition: 0.3s;
-              background-color: #414142;
+              background-color: #fff;
               border-radius: 5px;
               display: flex;
               padding: 8px 20px;
@@ -154,19 +162,19 @@
                 height: 0;
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
-                border-top: 6px solid #fff;
+                border-top: 6px solid #000;
                 transition: 0.3s;
               }
             }
 
             .menu {
               visibility: hidden;
-              background-color: #414142;
+              background-color: #fff;
               border-radius: 5px;
               overflow: hidden;
               position: absolute;
               width: 100%;
-              top: 65%;
+              top: 45%;
               opacity: 0;
               transition: visibility 0s, opacity 0.3s;
               z-index: 1;
@@ -176,7 +184,7 @@
                 cursor: pointer;
                 padding: 10px;
                 list-style: none;
-
+                font-size: 0.8rem;
                 &:hover {
                   background-color: rgb(203 213 225);
                   color: #020000;
@@ -207,12 +215,12 @@
             height: 34px;
             padding-left: 15px;
             border-radius: 5px;
-            background-color: #414142;
-            color: #fff;
+            background-color: #fff;
+            color: #000;
             border: none;
             &::placeholder {
               font-size: 12px;
-              color: #fff;
+              color: #000;
             }
             &:focus {
               outline: none;
@@ -232,10 +240,11 @@
               cursor: pointer;
               padding: 5px 8px;
               list-style: none;
-              background-color: #414142;
+              background-color: #fff;
               width: 200px;
-              color: #fff;
+              color: #000;
               border-bottom: 0.2px solid rgb(203 213 225);
+              font-size: 0.8rem;
               &:hover {
                 background-color: rgb(203 213 225);
                 color: #020000;

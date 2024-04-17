@@ -1,5 +1,5 @@
 .browsefile {
-  font-family: "Poppins", sans-serif;
+  font-family: inherit;
   .error-message {
     color: rgb(193, 6, 6);
     font-size: 14px;
@@ -13,7 +13,6 @@
       text-align: center;
       color: #414142;
       font-weight: 700;
-      // font-family:Georgia, 'Times New Roman', Times, serif;
     }
 
     &_section {
@@ -21,15 +20,13 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      // background-color:#b0cbd9;
       border: 0.5px dashed #7b8596;
       padding: 10px;
-      // background-color: #fff;
 
       .icon {
         .upload_icon {
           font-size: 2em;
-          color: #143369;
+          color: #007090;
           font-weight: 800;
         }
       }
@@ -43,7 +40,7 @@
 
       .browse {
         color: #fff;
-        background-color: #143369;
+        background-color: #007090;
         box-shadow: none;
         display: inline;
         text-decoration: none;
@@ -52,7 +49,7 @@
         padding: 5px 22px;
 
         &:hover {
-          background: #073c92;
+          background: #01A7C2;
           color: #fff;
           box-shadow: none;
         }
@@ -66,7 +63,7 @@
     }
 
     span {
-      color: #143369;
+      color: #007090;
       display: block;
       padding: 10px 0;
       font-size: 14px;
@@ -76,10 +73,10 @@
   .submit_btn {
     width: 50%;
     margin: 0 auto;
-    background: #143369;
+    background: #007090;
 
     &:hover {
-      background: #103290;
+      background: #01A7C2;
     }
   }
 

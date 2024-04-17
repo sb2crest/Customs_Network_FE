@@ -1,7 +1,7 @@
 .footer {
-  background-color: #181e2a;
-  color: #7b8596;
-  font-family: "Poppins",sans-serif;
+  background-color: $footer-background;
+  font-family: inherit;
+  color:$footer-text-color;
   &_container {
     display: flex;
     justify-content: center;
@@ -20,7 +20,7 @@
           font-size: 16px;
         }
         .social_section {
-          color: #ffffff;
+          color: $footer-social-color;
           margin-top: 20px;
           i {
             margin-right: 10px;
@@ -48,11 +48,11 @@
           font-size: 16px;
         }
         .phoneNumber {
-          color: #fff;
+          color: $footer-heading-color;
           font-size: 18px;
         }
         .email {
-          color: #e53d34;
+          color: $theme-color-light;
           font-size: 18px;
         }
       }

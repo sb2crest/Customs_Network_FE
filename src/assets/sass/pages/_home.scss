@@ -5,7 +5,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      font-family: "Poppins", sans-serif;
+      font-family: inherit;
 
       .card {
         width: 80%;
@@ -17,7 +17,7 @@
         height: 25vh;
         margin-top: -2vw;
         z-index: 3;
-        background-color: #ffffff;
+        background-color: $home-card-bg-color;
         border-radius: 5px;
         .left_image {
           width: 35%;
@@ -34,12 +34,12 @@
             font-weight: 700;
             letter-spacing: 0px;
             text-transform: none;
-            color: #e53d34;
+            color: $home-card-heading-color;
           }
           .content {
             font-size: 17px;
             text-transform: none;
-            color: #4f5d77;
+            color: $home-card-content-color;
             line-height: 1.7;
           }
         }
@@ -47,7 +47,7 @@
       .services {
         &_container {
           &_section {
-            background: url(../../images/map-bg.jpg);
+            background: url(src/assets/images/map-bg.jpg);
             background-position: top;
             display: flex;
             justify-content: space-evenly;
@@ -61,7 +61,7 @@
                 font-size: 23px;
                 font-weight: 700;
                 text-transform: none;
-                color: #252525;
+                color:$home-heading-color;
                 line-height: 1.55;
               }
               .content {
@@ -79,7 +79,7 @@
                 font-size: 14px;
               }
               .services_icon {
-                color: #e53d34;
+                color:$home-icon-color;
                 font-size: 50px;
               }
               .arrow_right {
@@ -95,18 +95,18 @@
               &_left {
                 width: 50%;
                 .left {
-                  background: url(../../images/all-vehicle.jpg);
+                  background: url(src/assets/images/all-vehicle.jpg);
                   background-position: center;
                   background-size: cover;
                   width: 49.5vw;
-                  height: 90vh;
+                  height: 85vh;
                 }
               }
               &_right {
                 border-radius: 5px 0 0;
                 background: linear-gradient(
-                  rgba(20, 51, 105, 1),
-                  rgba(20, 51, 105, 0.9)
+                  $theme-color-light,
+                  $theme-color
                 );
                 padding-top: 5vw;
                 padding: 100px;
@@ -116,18 +116,18 @@
                   font-weight: 700;
                   letter-spacing: 0px;
                   text-transform: none;
-                  color: #ffffff;
+                  color: $white;
                 }
                 .content {
                   font-size: 17px;
                   text-transform: none;
-                  color: #9bb4e0;
+                  color: $light-bg;
                   line-height: 1.7;
                 }
                 .content2 {
                   font-size: 15px;
                   text-transform: none;
-                  color: #c0cada;
+                  color: $gray-dark;
                   line-height: 1.7;
                 }
                 .form {
@@ -140,19 +140,17 @@
                     float: left;
                     width: 45%;
                     font-size: 16px;
-                    font-style: italic;
-                    padding: 13px 20px 18px;
+                    padding: 15px;
                     color: #727272;
-                    background: #fff;
+                    background: $white;
                   }
                   .tracknow {
-                    height: 49px;
                     width: 30%;
                     font-size: 14px;
                     font-weight: 600;
-                    background: #e53d34;
-                    color: #fff;
-                    padding: 13px 20px 18px;
+                    background:$dark-bg;
+                    color:  $white;
+                    padding: 15px;
                     border: none;
                   }
                 }
@@ -179,7 +177,7 @@
                   font-weight: 800;
                   margin-bottom: 8px;
                   position: relative;
-                  color: #ffffff;
+                  color: $white;
                   margin-top: 0px;
                 }
                 .content {
@@ -189,13 +187,12 @@
                   margin-top: 0px;
                 }
                 .service_icon {
-                  color: #ffffff;
+                  color: $white;
                   font-size: 3em;
                 }
                 .items_background_land {
-                  background-image: url(../../images/truck-bg.jpg);
+                  background-image: url(src/assets/images/truck-bg.jpg);
                   background-size: cover;
-                  opacity: 0;
                   position: absolute;
                   top: 0;
                   right: 0;
@@ -209,7 +206,7 @@
                   -webkit-transition: opacity 300ms;
                 }
                 .items_background_land_active {
-                  background-image: url(../../images/truck-bg.jpg);
+                  background-image: url(src/assets/images/truck-bg.jpg);
                   background-size: cover;
                   opacity: 1;
                   position: absolute;
@@ -217,7 +214,6 @@
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  opacity: 0;
                   background-size: cover;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
@@ -225,9 +221,8 @@
                   -webkit-transition: opacity 300ms;
                 }
                 .items_background_air {
-                  background-image: url(../../images/aeroplane-bg.jpg);
+                  background-image: url(src/assets/images/aeroplane-bg.jpg);
                   background-size: cover;
-                  opacity: 0;
                   position: absolute;
                   top: 0;
                   right: 0;
@@ -241,7 +236,7 @@
                   -webkit-transition: opacity 300ms;
                 }
                 .items_background_air_active {
-                  background-image: url(../../images/aeroplane-bg.jpg);
+                  background-image: url(src/assets/images/aeroplane-bg.jpg);
                   background-size: cover;
                   opacity: 1;
                   position: absolute;
@@ -249,7 +244,6 @@
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  opacity: 0;
                   background-size: cover;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
@@ -257,15 +251,14 @@
                   -webkit-transition: opacity 300ms;
                 }
                 .items_background_water {
-                  background-image: url(../../images/ship-bg.jpg);
+                  background-image: url(src/assets/images/ship-bg.jpg);
                   background-size: cover;
-                  opacity: 0;
                   position: absolute;
                   top: 0;
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  opacity: 0.6;
+                  opacity: 1;
                   background-size: cover;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
@@ -274,7 +267,7 @@
                   transition: transform 0.4s ease;
                 }
                 .items_background_water_active {
-                  background-image: url(../../images/ship-bg.jpg);
+                  background-image: url(src/assets/images/ship-bg.jpg);
                   background-size: cover;
                   opacity: 1;
                   position: absolute;
@@ -282,7 +275,6 @@
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  opacity: 0;
                   background-size: cover;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
@@ -291,9 +283,8 @@
                   transition: transform 0.4s ease;
                 }
                 .items_background {
-                  background-image: url(../../images/image.jpg);
+                  background-image: url(src/assets/images/image.jpg);
                   background-size: cover;
-                  opacity: 0;
                   position: absolute;
                   top: 0;
                   right: 0;
@@ -308,7 +299,7 @@
                   transition: transform 0.4s ease;
                 }
                 .items_background_active {
-                  background-image: url(../../images/image.jpg);
+                  background-image: url(src/assets/images/image.jpg);
                   background-size: cover;
                   opacity: 1;
                   position: absolute;
@@ -316,7 +307,6 @@
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  opacity: 0;
                   background-size: cover;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
@@ -325,70 +315,72 @@
                   transition: transform 0.4s ease;
                 }
                 .background_overlay {
-                  opacity: 0.6;
+                  opacity: 0.4;
                   position: absolute;
                   top: 0;
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  margin-right: -1px;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
                   -o-transition: opacity 300ms;
                   -webkit-transition: opacity 300ms;
                   background: linear-gradient(
-                    rgba(0, 0, 0, 0.6),
-                    rgba(0, 0, 0, 1)
-                  );
+                  #4990a0,
+                  #013f51
+                );
                   -moz-background: linear-gradient(
-                    rgba(0, 0, 0, 0.6),
-                    rgba(0, 0, 0, 1)
+                    #4990a0,
+                  #013f51
                   );
                   -o-background: linear-gradient(
-                    rgba(0, 0, 0, 0.6),
-                    rgba(0, 0, 0, 1)
+                    #4990a0,
+                    #013f51
                   );
                   -webkit-background: linear-gradient(
-                    rgba(0, 0, 0, 0.6),
-                    rgba(0, 0, 0, 1)
+                    #4990a0,
+                    #013f51
                   );
                   transition: transform 0.4s ease;
                 }
                 &.active .background_overlay_active {
-                  opacity: 0.77;
                   position: absolute;
                   top: 0;
                   right: 0;
                   bottom: 0;
                   left: 0;
-                  opacity: 1;
-                  margin-right: -1px;
                   transition: opacity 300ms;
                   -moz-transition: opacity 300ms;
                   -o-transition: opacity 300ms;
                   -webkit-transition: opacity 300ms;
+                  opacity: 0.7;
                   background: linear-gradient(
-                    rgba(20, 51, 105, 0.6),
-                    rgba(20, 51, 105, 1)
+                    $theme-color-light,
+                    $theme-color
                   );
                   -moz-background: linear-gradient(
-                    rgba(20, 51, 105, 0.6),
-                    rgba(20, 51, 105, 1)
+                    $theme-color-light,
+                    $theme-color
                   );
                   -o-background: linear-gradient(
-                    rgba(20, 51, 105, 0.6),
-                    rgba(20, 51, 105, 1)
+                    $theme-color-light,
+                    $theme-color
                   );
                   -webkit-background: linear-gradient(
-                    rgba(20, 51, 105, 0.6),
-                    rgba(20, 51, 105, 1)
+                    $theme-color-light,
+                    $theme-color
                   );
                   transition: transform 0.4s ease;
                 }
               }
             }
             &_description {
-              background-color: #143369;
+              background: linear-gradient(
+                $theme-color,
+                $theme-color-light
+                
+              );
+              opacity: 0.9;
               &_container {
                 display: flex;
                 justify-content: space-between;
@@ -400,13 +392,13 @@
                     font-size: 36px;
                     font-weight: 700;
                     margin-bottom: 5px;
-                    color: #fff;
+                    color: $white;
                     transition: transform 0.4s ease;
                   }
                   .content {
                     font-size: 20px;
                     font-weight: 500;
-                    color: #c4d8fc;
+                    color: $light-bg;
                     transition: transform 0.4s ease;
                   }
                 }
@@ -416,11 +408,11 @@
 
                   .first {
                     font-size: 20px;
-                    color: #c4d8fc;
+                    color: $light-bg;
                   }
                   .second {
                     font-size: 20px;
-                    color: #ffffff;
+                    color: $white;
                   }
                   .more_details {
                     display: flex;
@@ -434,8 +426,8 @@
                       border-radius: 3px;
                       -moz-border-radius: 3px;
                       -webkit-border-radius: 3px;
-                      background: #e53d34;
-                      color: #fff;
+                      background: $white;
+                      color: $theme-color;
                       border: none;
                       padding: 1.5em 2em;
                       text-transform: uppercase;
@@ -451,10 +443,10 @@
                       border-radius: 3px;
                       -moz-border-radius: 3px;
                       -webkit-border-radius: 3px;
-                      color: #fff;
-                      border: 2px solid #e53d34;
-                      background-color: #143369;
-                      padding: 1.3em 2em;
+                      border: none;
+                      color: $theme-color;
+                      background-color: $white;
+                      padding: 1.5em 2em;
                       cursor: pointer;
                       i {
                         margin-right: 5px;
@@ -469,13 +461,13 @@
       }
       .why_choose_us {
         &_container {
-          font-family: "Poppins", sans-serif;
+          font-family: inherit;
           &_section {
             display: flex;
             justify-content: center;
             align-items: center;
             .left_container {
-              background: url(../../images/whychooseus-bg.jpg);
+              background: url(src/assets/images/whychooseus-bg.jpg);
               width: 40%;
               background-size: cover;
               height: 100vh;
@@ -493,7 +485,7 @@
                 font-size: 28px;
                 font-weight: 700;
                 margin-bottom: 16px;
-                color: #fff;
+                color: $white;
                 margin: 0;
                 padding-left: 2.2em;
               }
@@ -501,7 +493,7 @@
                 width: 33px;
                 border-bottom-width: 2px;
                 border-bottom-style: solid;
-                border-color: #e53d34;
+                border-color: $theme-color-light;
                 margin-left: 4.2em;
                 margin-bottom: 5vh;
               }
@@ -520,12 +512,12 @@
                   background: #222;
                   color: #7d7d7d;
                   &:hover {
-                    background: #e53d34;
-                    color: #fff;
+                    background: $theme-color-light;
+                    color: $white;
                   }
                   &.active {
-                    background: #e53d34;
-                    color: #fff;
+                    background: $theme-color-light;
+                    color: $white;
                   }
                   i {
                     margin-right: 5px;
@@ -538,7 +530,7 @@
               padding: 0 4em;
               background-size: cover;
               .icon {
-                color: #e53d34;
+                color: $theme-color-light;
                 font-size: 4em;
               }
               .right_container_content {
@@ -576,7 +568,7 @@
       .aboutus {
         &_container {
           &_section {
-            font-family: "Poppins", sans-serif;
+            font-family: inherit;
             &_top {
               display: flex;
               justify-content: center;
@@ -584,19 +576,19 @@
               width: 100%;
               .left {
                 height: 100vh;
-                background: url(../../images/aboutus1.jpg);
+                background: url(src/assets/images/aboutus1.jpg);
                 background-size: cover;
                 width: 55%;
               }
               .right {
-                padding: 90px 60px 71.5px;
-                background-color: #143369;
+                padding: 61px;
+                background-color: $theme-color-light;
                 width: 45%;
                 .know_more {
                   font-size: 14px;
                   font-style: normal;
                   letter-spacing: 1px;
-                  color: #8aa7da;
+                  color: $black;
                   margin-bottom: 0px;
                 }
                 h3 {
@@ -604,33 +596,33 @@
                   font-weight: 700;
                   letter-spacing: 0px;
                   text-transform: none;
-                  color: #ffffff;
+                  color: $white;
                 }
                 .content1 {
                   margin-top: 0;
                   margin-bottom: 20px;
                   font-size: inherit;
                   line-height: 1.7;
-                  color: #c7d8ff;
+                  color: $light-bg;
                 }
                 .content2 {
                   margin-top: 0;
                   margin-bottom: 20px;
                   font-size: inherit;
                   line-height: 1.7;
-                  color: #ffffff;
+                  color: $light-bg;
                 }
                 button {
                   font-size: 13px;
                   font-weight: 700;
                   letter-spacing: 1px;
-                  color: #ffffff;
-                  padding: 13px 29px 18px 29px;
+                  color: $theme-color;
+                  padding: 13px 29px;
                   text-transform: uppercase;
                   border-radius: 3px;
                   -moz-border-radius: 3px;
                   -webkit-border-radius: 3px;
-                  background: #e53d34;
+                  background: $white;
                   border: none;
                 }
               }
@@ -654,7 +646,7 @@
                   font-size: 36px;
                   font-weight: 700;
                   letter-spacing: 0px;
-                  color: #143369;
+                  color: $theme-color;
                   margin-top: 5px;
                 }
                 .aboutus_items {
@@ -664,7 +656,7 @@
                   margin-bottom: 0.5em;
                   .icon {
                     font-size: 2.5em;
-                    color: #e53d34;
+                    color: $theme-color-light;
                     margin-right: 1em;
                   }
                   h5 {
@@ -682,10 +674,10 @@
                 }
               }
               .right {
-                background: url(../../images/aboutus2.jpg);
+                background: url(src/assets/images/aboutus2.jpg);
                 background-size: cover;
-                width: 55%;
-                height: 100vh;
+                width: 55.17%;
+                height: 87vh;
               }
             }
           }
@@ -739,18 +731,18 @@
                     padding: 3em;
                     width: 20%;
                     text-align: center;
-                    background-color: #fff;
-                    border-bottom: 2px solid #e53d34;
+                    background-color: $white;
+                    border-bottom: 2px solid $theme-color-light;
                     margin-bottom: 3em;
                     .icon{
                       font-size: 3em;
-                      color: #e53d34;
+                      color: $theme-color-light;
                     }
                     h5{
                       font-size: 22px;
                       font-weight: 700;
                       text-transform: capitalize;
-                      color: #143369;
+                      color: $theme-color;
                       line-height: 1.55;
                       margin-bottom: 20px;
                       margin-top: 0px;

@@ -1,7 +1,6 @@
 .topbar {
   &_container {
-    background-color: #852824;
-    font-family: "Poppins", sans-serif;
+    background-color: $top-bar-background;
     &_section {
       display: flex;
       justify-content: space-between;
@@ -11,6 +10,7 @@
         justify-content: center;
         align-items: center;
         gap: 15px;
+        color: $top-bar-text-color;
         .language_selector {
           cursor: pointer;
           i {
@@ -18,7 +18,7 @@
           }
           &_dropdown {
             position: absolute;
-            top: 40px;
+            top: 27px;
             left: 0px;
             width: 100%;
             list-style: none;
@@ -26,32 +26,35 @@
             padding: 0;
             z-index: 3;
             li {
-              padding: 8px 16px;
-              background-color: #2e2e2e;
+              padding: 4px 8px;
+              background-color: $top-bar-dropdown;
+              color: $top-bar-dropdown-color;
               &:hover {
-                background: #852824;
+                background: $top-bar-dropdown-hover;
               }
             }
           }
         }
-        .email{
+        .email {
           display: flex;
           align-items: center;
-          a{
+          a {
             text-decoration: none;
-            color: #ffffff;
+            color: $top-bar-text-color;
           }
         }
-        
+
         p {
           display: flex;
           align-items: center;
-          border-right: 1.5px solid #ffffff;
-          color: #ffffff;
+          border-right: 1.5px solid $top-bar-text-color;
+          color: $top-bar-text-color;
           padding: 0 1em;
           position: relative;
+          margin: 3px 0;
+          font-size: $f_size_md;
         }
-        i{
+        i {
           margin-right: 7px;
         }
       }
@@ -60,19 +63,23 @@
         align-items: center;
         gap: 15px;
         i {
-          color: #ffffff;
+          color: $top-bar-text-color;
           margin: 0 0.5em;
           cursor: pointer;
+          font-size: $f_size_md;
         }
         .Book_Demo {
           button {
-            background-color: #4b1313;
+            background-color: $top-bar-btn-bg;
             border: none;
-            color: #ffffff;
+            color: $top-bar-btn-color;
             font-size: 15px;
             font-weight: 600;
-            padding: 20px;
+            padding: 10px;
             cursor: pointer;
+            &:hover {
+              transform: scale(1.035);
+            }
           }
         }
       }

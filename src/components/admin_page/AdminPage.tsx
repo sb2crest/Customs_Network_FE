@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import "../../assets/sass/components/_user_page.scss";
 import { FaHistory } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaAngleLeft } from "react-icons/fa6";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import TokenExpirationPopup from "../../utilities/TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
@@ -94,16 +91,11 @@ const AdminPage = () => {
 
   return (
     <div className="userpage">
-      <div className={`sidebar ${hamburgerClick ? "active" : "sidebar"}`}>
+      <div className={"sidebar"}>
         <div className="sidebar_container">
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
-              {hamburgerClick ? (
-                <FaAngleLeft onClick={handleHamburgerClick} className="x-mark" />
-              ) : (
-                <GiHamburgerMenu onClick={handleHamburgerClick} />
-              )}
-              <span>Menu</span>
+              <span>Logo</span>
             </div>
             <div className="sidebar_container_section_list">
               <ul>

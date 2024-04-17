@@ -12,8 +12,8 @@ import Unauthorized from "./utilities/UnAuthorized";
 import RequireAuth from "./components/RequireAuth";
 import Layout from "./components/Layout";
 import Trends from "./components/user_page/Trends";
-import UserWrapper from "./utilities/UserWrapper";
-import AdminWrapper from "./utilities/AdminWrapper";
+import UserWrapper from "./components/user_page/UserWrapper";
+import AdminWrapper from "./components/admin_page/AdminWrapper";
 import AdminTrends from "./components/admin_page/AdminTrends";
 import AdminHistory from "./components/admin_page/AdminHistory";
 
@@ -32,7 +32,7 @@ function App() {
 
           <Route element={<RequireAuth allowedRoles={"USER"} />}>
             <Route path="/user-page" element={<UserWrapper />}>
-              <Route index element={<SubmitExcel />} />
+              <Route index element={<Trends />} />
               <Route path="submit-excel" element={<SubmitExcel />} />
               <Route path="submit-json" element={<SubmitJson />} />
               <Route path="paste-json" element={<PasteJson />} />

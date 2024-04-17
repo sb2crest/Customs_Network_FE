@@ -1,10 +1,10 @@
 .contactus {
   &_container {
     &_section {
-      font-family: "Poppins", sans-serif;
+      font-family: inherit;
       &_banner {
-        height: 60vh;
-        background: url(../../images/contact-us-bg.jpg) no-repeat;
+        height: 80vh;
+        background: url(src/assets/images/contact-us-bg.jpg) no-repeat;
         background-position: center;
         background-size: cover;
         display: flex;
@@ -13,18 +13,18 @@
         flex-direction: column;
         h1 {
           font-size: 6vw;
-          color: #fff;
+          color:$contactUs-banner-text-color;
         }
         p {
           margin-top: -4.5vw;
           font-size: 2.3vw;
-          color: #fff;
+          color:$contactUs-banner-text-color;
         }
         ul {
           margin-top: -2vw;
           list-style: none;
           display: flex;
-          color: #fff;
+          color:$contactUs-banner-text-color;
           padding-inline-start: 0px;
           align-items: center;
           li {
@@ -32,7 +32,7 @@
             font-weight: 600;
             a {
               text-decoration: none;
-              color: #fff;
+              color:$contactUs-banner-text-color;
             }
           }
         }
@@ -46,7 +46,7 @@
           margin: 5vw 0;
           text-align: center;
           h1 {
-            color: #143369;
+            color: $contactUs-heading-color;
           }
           .row {
             display: grid;
@@ -71,7 +71,7 @@
                 text-align: left;
                 .card-text {
                   text-decoration: none;
-                  color: #000000;
+                  color: $contactUs-content-color;
                   a {
                     text-decoration: none;
                     color: inherit;
@@ -83,10 +83,10 @@
                   }
                   a {
                     text-decoration: none;
-                    color: black;
+                    color:$contactUs-content-color;
                   }
                   i {
-                    color: #e53d34;
+                    color: $contactUs-icon-color;
                   }
                 }
               }
@@ -130,7 +130,7 @@
               padding: 19px 22px;
               font-size: 15px;
               color: #4e4e4e;
-              background-color: #fff;
+              background-color: $white;
               border: none;
               margin-bottom: 2vw;
             }
@@ -148,9 +148,9 @@
               height: 120px;
             }
             button {
-              background-color: #143369;
+              background-color:$contactUs-btn-bg-color;
               width: 100%;
-              color: #fff;
+              color: $white;
               border-width: 0;
               border-style: solid;
               cursor: pointer;
@@ -161,11 +161,16 @@
               padding: 19px 22px;
               display: inline-block;
               -webkit-appearance: none;
+              &:hover{
+                background-color: $contactUs-btn-bg-hover-color;
+              }
             }
           }
         }
         &_map{
-            width: 100%;
+            iframe{
+              border: none;
+            }
         }
         &_social{
             .social_media{
@@ -173,7 +178,7 @@
                 padding: 5vw 0;
                 a{
                     margin-right: 2vw;
-                    color: #143369;
+                    color: $contactUs-icon-color;
                 }
             }
         }

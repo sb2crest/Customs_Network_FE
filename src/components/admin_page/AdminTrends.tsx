@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-import "../../assets/sass/components/_trends.scss";
 import {
   MdOutlineStackedLineChart,
   MdOutlinePendingActions,
@@ -92,49 +91,37 @@ const AdminTrends = () => {
           </div>
           <div className="period">
             <Button
-              size="small"
               onClick={() => handleButtonToggle(0)}
               style={{
-                color: "#143369",
-                fontWeight: "bold",
-                padding: "4px 12px",
-                backgroundColor: activeButtons[0] ? "#fff" : "#a0a0a0",
+                backgroundColor: activeButtons[0] ? "#007090" : "",
+                color: activeButtons[0] ? "#fff" : "#007090",
               }}
             >
               Last 3 Days
             </Button>
             <Button
-              size="small"
               onClick={() => handleButtonToggle(1)}
               style={{
-                color: "#143369",
-                fontWeight: "bold",
-                padding: "4px 12px",
-                backgroundColor: activeButtons[1] ? "#fff" : "#a0a0a0",
+                backgroundColor: activeButtons[1] ? "#007090" : "",
+                color: activeButtons[1] ? "#fff" : "#007090",
               }}
             >
               Weekly
             </Button>
             <Button
-              size="small"
               onClick={() => handleButtonToggle(2)}
               style={{
-                color: "#143369",
-                fontWeight: "bold",
-                padding: "4px 12px",
-                backgroundColor: activeButtons[2] ? "#fff" : "#a0a0a0",
+                backgroundColor: activeButtons[2] ? "#007090" : "",
+                color: activeButtons[2] ? "#fff" : "#007090",
               }}
             >
               Monthly
             </Button>
             <Button
-              size="small"
               onClick={() => handleButtonToggle(3)}
               style={{
-                color: "#143369",
-                fontWeight: "bold",
-                padding: "4px 12px",
-                backgroundColor: activeButtons[3] ? "#fff" : "#a0a0a0",
+                backgroundColor: activeButtons[3] ? "#007090" : "",
+                color: activeButtons[3] ? "#fff" : "#007090",
               }}
             >
               Yearly
@@ -142,123 +129,122 @@ const AdminTrends = () => {
           </div>
           <div className="trends_container_section_section2">
             <div className="card">
-              <div className="item">
+            <div className="item">
                 <Card
-                  sx={{ width: 180, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 190 }}
                 >
                   <div className="content">
-                    <div className="icon">
-                      <LuSigma style={{ color: "#cccccc" }} />
+                    <div className="icon" style={{border:"1px solid #006989"}}>
+                      <LuSigma style={{ color: "#006989" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#cccccc" }}>
+                      <p style={{ color: "#006989" }}>
                         {responseData.allTransactions || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#cccccc" }}>Total Transaction</h4>
+                      <h4 style={{ color: "#006989" }}>Total Transaction</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 150 }}
                 >
                   <div className="content">
-                    <div className="icon">
-                      <FaCheckCircle style={{ color: "#38E54D" }} />
+                    <div className="icon" style={{border:"1px solid #4ecdc4"}}>
+                      <FaCheckCircle style={{ color: "#4ecdc4" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#38E54D" }}>
+                      <p style={{ color: "#4ecdc4" }}>
                         {responseData.totalAcceptedCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#38E54D" }}>Accepted</h4>
+                      <h4 style={{ color: "#4ecdc4" }}>Accepted</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 150 }}
                 >
                   <div className="content">
-                    <div className="icon">
-                      <MdOutlinePendingActions style={{ color: "#CD5C08" }} />
+                    <div className="icon" style={{border:"1px solid #00A8E8"}}>
+                      <MdOutlinePendingActions style={{ color: "#00A8E8" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#CD5C08" }}>
+                      <p style={{ color: "#00A8E8" }}>
                         {responseData.totalPendingCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#CD5C08" }}>Pending</h4>
+                      <h4 style={{ color: "#00A8E8" }}>Pending</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 150 }}
                 >
                   <div className="content">
-                    <div className="icon">
-                      <FaCircleXmark style={{ color: "#e53d34" }} />
+                    <div className="icon" style={{border:"1px solid #DB7A6B"}}>
+                      <FaCircleXmark style={{ color: "#DB7A6B" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#bf302f" }}>
+                      <p style={{ color: "#DB7A6B" }}>
                         {responseData.totalRejectedCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4  style={{ color: "#bf302f" }}>Rejected</h4>
+                      <h4 style={{ color: "#DB7A6B" }}>Rejected</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 180, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 180 }}
                 >
                   <div className="content">
-                    <div className="icon">
-                      <MdErrorOutline style={{ color: "#F8DE22" }} />
+                    <div className="icon" style={{border:"1px solid #6A8EAE"}}>
+                      <MdErrorOutline style={{ color: "#6A8EAE" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#F8DE22" }}>
+                      <p style={{ color: "#6A8EAE" }}>
                         {responseData.totalValidationErrorCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#F8DE22" }}>Validation Error</h4>
+                      <h4 style={{ color: "#6A8EAE" }}>Validation Error</h4>
                     </div>
                   </div>
                 </Card>
               </div>
               <div className="item">
                 <Card
-                  sx={{ width: 165, background: "rgba(255, 255, 255, 0.5)" }}
+                  sx={{ width: 150 }}
                 >
                   <div className="content">
-                    <div className="icon">
-                      <GiSandsOfTime style={{ color: "#12CAD6" }} />
+                    <div className="icon" style={{border:"1px solid #004D66"}}>
+                      <GiSandsOfTime style={{ color: "#004D66" }} />
                     </div>
                     <div className="heading">
-                      <p style={{ color: "#12CAD6" }}>
+                      <p style={{ color: "#004D66" }}>
                         {responseData.totalCbpDownCount || 0}
                         &nbsp;&nbsp;
                         <FaArrowTrendUp />
                       </p>
-                      <h4 style={{ color: "#12CAD6" }}>CBP Down</h4>
+                      <h4 style={{ color: "#004D66" }}>CBP Down</h4>
                     </div>
                   </div>
                 </Card>
               </div>
             </div>
           </div>
-
           <div className="charts">
             <div className="linechart">
               <Card

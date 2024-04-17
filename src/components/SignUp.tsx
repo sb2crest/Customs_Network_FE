@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "../assets/sass/components/_login_signup.scss";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { Box, IconButton, InputAdornment, Modal } from "@mui/material";
@@ -71,11 +70,12 @@ const SignUp = () => {
       email: "",
       password: "",
       checkbox: false,
+      isPortDetails: false,
     },
     validationSchema: validationSchema,
     onSubmit: () => {
       UserSignup();
-      },
+    },
   });
   const {
     handleSubmit,
@@ -116,14 +116,16 @@ const SignUp = () => {
             <img src={logo} alt="logo" width={220} height={50} />
             <div className="form_container">
               <div className="form_container_heading">
-                <h3>
-                  Sign <span style={{ color: "#e53d34" }}>Up</span>
+                <h3 style={{ color: "#01a7c2" }}>
+                  Sign <span style={{ color: "#A3BAC3" }}>Up</span>
                 </h3>
                 <div className="form_container_heading_section">
-                <div className="popup">
+                  <div className="popup">
                     {errorMessage && (
                       <p style={{ textAlign: "center", color: "red" }}>
-                        <IoIosWarning style={{ marginRight: "10px",fontSize:"22px" }} />
+                        <IoIosWarning
+                          style={{ marginRight: "10px", fontSize: "22px" }}
+                        />
                         {errorMessage}
                       </p>
                     )}
@@ -160,7 +162,7 @@ const SignUp = () => {
                           style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <PersonIcon />
+                              <PersonIcon sx={{ color: "#007090" }} />
                             </InputAdornment>
                           ),
                         }}
@@ -193,7 +195,7 @@ const SignUp = () => {
                           style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <PersonIcon />
+                              <PersonIcon sx={{ color: "#007090" }} />
                             </InputAdornment>
                           ),
                         }}
@@ -226,7 +228,7 @@ const SignUp = () => {
                           style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <VerifiedUserIcon />
+                              <VerifiedUserIcon sx={{ color: "#007090" }} />
                             </InputAdornment>
                           ),
                         }}
@@ -257,7 +259,7 @@ const SignUp = () => {
                           style: { fontWeight: "600" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <EmailIcon />
+                              <EmailIcon sx={{ color: "#007090" }} />
                             </InputAdornment>
                           ),
                         }}
@@ -292,9 +294,9 @@ const SignUp = () => {
                                 onMouseDown={handleMouseDownPassword}
                               >
                                 {showPassword ? (
-                                  <VisibilityOff />
+                                  <VisibilityOff sx={{ color: "#007090" }} />
                                 ) : (
-                                  <VisibilityIcon />
+                                  <VisibilityIcon sx={{ color: "#007090" }} />
                                 )}
                               </IconButton>
                             </InputAdornment>
@@ -318,12 +320,24 @@ const SignUp = () => {
                         onChange={handleChange}
                         onBlur={() => setFieldTouched("checkbox", true)}
                       />
-                      <label>I agree to the terms of service</label>
+                      <label style={{ fontSize: "15px" }}>
+                        I agree to the terms of service
+                      </label>
+                    </div>
+                    <div className="isPortDetails_container ">
+                      <input
+                        id="isPortDetails"
+                        type="checkbox"
+                        required
+                        checked={values.isPortDetails}
+                        onChange={handleChange}
+                      />
+                      <label style={{ fontSize: "15px" }}>
+                        Select to see Port Trends
+                      </label>
                     </div>
                     <div className="submit">
-                      <button type="submit">
-                        Sign Up
-                      </button>
+                      <button type="submit">Sign Up</button>
                     </div>
 
                     <p className="toggle_sentence">

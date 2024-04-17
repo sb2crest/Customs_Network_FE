@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import "../../assets/sass/components/_user_page.scss";
 import { PiMicrosoftExcelLogo } from "react-icons/pi";
 import { LuFileJson } from "react-icons/lu";
 import { FaHistory } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaAngleLeft } from "react-icons/fa6";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import TokenExpirationPopup from "../../utilities/TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
@@ -16,7 +14,6 @@ const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
 const UserPage = () => {
   const [activeLi, setActiveLi] = useState("");
-  const [hamburgerClick, setHamburgerClick] = useState(false);
   const [showSubmitFile, setShowSubmitFile] = useState(false);
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -51,10 +48,6 @@ const UserPage = () => {
     setShowPopup(false);
     setAuth({});
     navigate("/login");
-  };
-
-  const handleHamburgerClick = () => {
-    setHamburgerClick(!hamburgerClick);
   };
 
   const handleMouseEnter = () => {
@@ -117,22 +110,38 @@ const UserPage = () => {
 
   return (
     <div className="userpage">
-      <div className={`sidebar ${hamburgerClick ? "active" : ""}`}>
+      <div className={"sidebar"}>
         <div className="sidebar_container">
           <div className="sidebar_container_section">
             <div className="sidebar_container_section_logo">
-              {hamburgerClick ? (
-                <FaAngleLeft
-                  onClick={handleHamburgerClick}
-                  className="x-mark"
-                />
-              ) : (
-                <GiHamburgerMenu onClick={handleHamburgerClick} />
-              )}
-              <span>Menu</span>
+              <span>Logo</span>
             </div>
             <div className="sidebar_container_section_list">
               <ul>
+              <Link to="trends">
+                  <li
+                    className={activeLi === "trends" ? "active-li" : ""}
+                    onClick={() => {
+                      handleLiClick("trends");
+                      fetchTrendsData();
+                    }}
+                  >
+                    <IoBarChartOutline className="sidebar_icon" />
+                    <span>Trends</span>
+                  </li>
+                </Link>
+                <Link to="history">
+                  <li
+                    className={activeLi === "history" ? "active-li" : ""}
+                    onClick={() => {
+                      handleLiClick("history");
+                      fetchHistoryData();
+                    }}
+                  >
+                    <FaHistory className="sidebar_icon" />
+                    <span>History</span>
+                  </li>
+                </Link>
                 <Link to="submit-excel">
                   <li
                     className={activeLi === "submit-excel" ? "active-li" : ""}
@@ -184,30 +193,6 @@ const UserPage = () => {
                     </ul>
                   )}
                 </li>
-                <Link to="history">
-                  <li
-                    className={activeLi === "history" ? "active-li" : ""}
-                    onClick={() => {
-                      handleLiClick("history");
-                      fetchHistoryData();
-                    }}
-                  >
-                    <FaHistory className="sidebar_icon" />
-                    <span>History</span>
-                  </li>
-                </Link>
-                <Link to="trends">
-                  <li
-                    className={activeLi === "trends" ? "active-li" : ""}
-                    onClick={() => {
-                      handleLiClick("trends");
-                      fetchTrendsData();
-                    }}
-                  >
-                    <IoBarChartOutline className="sidebar_icon" />
-                    <span>Trends</span>
-                  </li>
-                </Link>
               </ul>
             </div>
           </div>
