@@ -481,10 +481,10 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="aboutus">
-              <div className="aboutus_container">
-                <div className="aboutus_container_section">
-                  <div className="aboutus_container_section_top">
+            <div className="home_aboutus">
+              <div className="home_aboutus_container">
+                <div className="home_aboutus_container_section">
+                  <div className="home_aboutus_container_section_top">
                     <div className="left"></div>
                     <div className="right">
                       <p className="know_more">KNOW US MORE</p>
@@ -503,47 +503,49 @@ const Home = () => {
                       <button type="button">More Details</button>
                     </div>
                   </div>
-                  <div className="aboutus_container_section_bottom">
+                  <div className="home_aboutus_container_section_bottom">
                     <div className="left">
-                      <p className="heading">WE ARE AN ADVANCED COMPANY</p>
-                      <h3>Using High Technology</h3>
-                      <div className="aboutus_items">
-                        <div className="icon">
-                          <RiBuilding2Line />
+                      <div className="container">
+                        <p className="heading">WE ARE AN ADVANCED COMPANY</p>
+                        <h3>Using High Technology</h3>
+                        <div className="aboutus_items">
+                          <div className="icon">
+                            <RiBuilding2Line />
+                          </div>
+                          <div className="content">
+                            <h5>We Use AI In The Line</h5>
+                            <p>
+                              That’s why customers trust us — we have more than
+                              80 years of experience in the logistics and
+                              transportation.
+                            </p>
+                          </div>
                         </div>
-                        <div className="content">
-                          <h5>We Use AI In The Line</h5>
-                          <p>
-                            That’s why customers trust us — we have more than 80
-                            years of experience in the logistics and
-                            transportation.
-                          </p>
+                        <div className="aboutus_items">
+                          <div className="icon">
+                            <FaWarehouse />
+                          </div>
+                          <div className="content">
+                            <h5>Smart Warehouse</h5>
+                            <p>
+                              That’s why customers trust us — we have more than
+                              80 years of experience in the logistics and
+                              transportation.
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="aboutus_items">
-                        <div className="icon">
-                          <FaWarehouse />
-                        </div>
-                        <div className="content">
-                          <h5>Smart Warehouse</h5>
-                          <p>
-                            That’s why customers trust us — we have more than 80
-                            years of experience in the logistics and
-                            transportation.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="aboutus_items">
-                        <div className="icon">
-                          <CiPercent />
-                        </div>
-                        <div className="content">
-                          <h5>100% Accuracy</h5>
-                          <p>
-                            That’s why customers trust us — we have more than 80
-                            years of experience in the logistics and
-                            transportation.
-                          </p>
+                        <div className="aboutus_items">
+                          <div className="icon">
+                            <CiPercent />
+                          </div>
+                          <div className="content">
+                            <h5>100% Accuracy</h5>
+                            <p>
+                              That’s why customers trust us — we have more than
+                              80 years of experience in the logistics and
+                              transportation.
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
