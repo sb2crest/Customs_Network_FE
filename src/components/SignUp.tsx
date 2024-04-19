@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -113,11 +112,16 @@ const SignUp = () => {
       <div className="signup_container">
         <div className="signup_container_section">
           <div className="signup_container_section_right">
-            <img src={logo} alt="logo" width={220} height={50} />
             <div className="form_container">
               <div className="form_container_heading">
-                <h3 style={{ color: "#01a7c2" }}>
-                  Sign <span style={{ color: "#A3BAC3" }}>Up</span>
+                <h3
+                  style={{
+                    color: "#007090",
+                    fontSize: "1.3rem",
+                    marginBottom: "1.5rem",
+                  }}
+                >
+                  Sign<span style={{ color: "#01a7c2" }}>Up</span>
                 </h3>
                 <div className="form_container_heading_section">
                   <div className="popup">
@@ -156,13 +160,14 @@ const SignUp = () => {
                         helperText={
                           formik.touched.firstName && formik.errors.firstName
                         }
-                        variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <PersonIcon sx={{ color: "#007090" }} />
+                              <PersonIcon
+                                sx={{ color: "#A3BAC3", fontSize: "1.2rem" }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -189,13 +194,14 @@ const SignUp = () => {
                         helperText={
                           formik.touched.lastName && formik.errors.lastName
                         }
-                        variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <PersonIcon sx={{ color: "#007090" }} />
+                              <PersonIcon
+                                sx={{ color: "#A3BAC3", fontSize: "1.2rem" }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -222,13 +228,14 @@ const SignUp = () => {
                         helperText={
                           formik.touched.userId && formik.errors.userId
                         }
-                        variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <VerifiedUserIcon sx={{ color: "#007090" }} />
+                              <VerifiedUserIcon
+                                sx={{ color: "#A3BAC3", fontSize: "1.2rem" }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -253,13 +260,14 @@ const SignUp = () => {
                         onBlur={() => setFieldTouched("email", true)}
                         error={formik.touched.email && !!formik.errors.email}
                         helperText={formik.touched.email && formik.errors.email}
-                        variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <EmailIcon sx={{ color: "#007090" }} />
+                              <EmailIcon
+                                sx={{ color: "#A3BAC3", fontSize: "1.2rem" }}
+                              />
                             </InputAdornment>
                           ),
                         }}
@@ -283,10 +291,9 @@ const SignUp = () => {
                         onBlur={() => setFieldTouched("password", true)}
                         error={touched.password && !!errors.password}
                         helperText={touched.password && errors.password}
-                        variant="standard"
                         fullWidth
                         InputProps={{
-                          style: { fontWeight: "600" },
+                          style: { fontWeight: "500" },
                           endAdornment: (
                             <InputAdornment position="end">
                               <IconButton
@@ -294,9 +301,19 @@ const SignUp = () => {
                                 onMouseDown={handleMouseDownPassword}
                               >
                                 {showPassword ? (
-                                  <VisibilityOff sx={{ color: "#007090" }} />
+                                  <VisibilityOff
+                                    sx={{
+                                      color: "#A3BAC3",
+                                      fontSize: "1.2rem",
+                                    }}
+                                  />
                                 ) : (
-                                  <VisibilityIcon sx={{ color: "#007090" }} />
+                                  <VisibilityIcon
+                                    sx={{
+                                      color: "#A3BAC3",
+                                      fontSize: "1.2rem",
+                                    }}
+                                  />
                                 )}
                               </IconButton>
                             </InputAdornment>
@@ -312,29 +329,32 @@ const SignUp = () => {
                     </div>
 
                     <div className="checkbox_container ">
-                      <input
-                        id="checkbox"
-                        type="checkbox"
-                        required
-                        checked={values.checkbox}
-                        onChange={handleChange}
-                        onBlur={() => setFieldTouched("checkbox", true)}
-                      />
-                      <label style={{ fontSize: "15px" }}>
-                        I agree to the terms of service
-                      </label>
-                    </div>
-                    <div className="isPortDetails_container ">
-                      <input
-                        id="isPortDetails"
-                        type="checkbox"
-                        required
-                        checked={values.isPortDetails}
-                        onChange={handleChange}
-                      />
-                      <label style={{ fontSize: "15px" }}>
-                        Select to see Port Trends
-                      </label>
+                      <div className="terms">
+                        <input
+                          id="checkbox"
+                          type="checkbox"
+                          required
+                          checked={values.checkbox}
+                          onChange={handleChange}
+                          onBlur={() => setFieldTouched("checkbox", true)}
+                        />
+                        <label
+                          style={{ fontSize: "16px", paddingRight: "10px",fontWeight:"540" }}
+                        >
+                          I Agree to T&C
+                        </label>
+                      </div>
+                      <div className="portdetails">
+                        <input
+                          id="isPortDetails"
+                          type="checkbox"
+                          checked={values.isPortDetails}
+                          onChange={handleChange}
+                        />
+                        <label style={{ fontSize: "16px" }}>
+                          View Port Trends
+                        </label>
+                      </div>
                     </div>
                     <div className="submit">
                       <button type="submit">Sign Up</button>
@@ -357,7 +377,7 @@ const SignUp = () => {
               <FaCheckCircle
                 className="icon"
                 style={{
-                  fontSize: "5em",
+                  fontSize: "3em",
                   color: "#82ce34",
                   background: "#fff",
                   marginTop: "-50%",
@@ -366,8 +386,8 @@ const SignUp = () => {
               />
             </div>
             <div className="successful_content">
-              <h1 style={{ color: "gray" }}>Awesome!</h1>
-              <p style={{ color: "#a0a0a0" }}>
+              <h1 style={{ color: "gray", fontSize: "1rem" }}>Awesome!</h1>
+              <p style={{ color: "#a0a0a0", fontSize: "0.65rem" }}>
                 Your registration was successful. You can now proceed to Login.
               </p>
               <button
