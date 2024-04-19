@@ -18,7 +18,7 @@ $media_sm:   "(max-width: 575px)";
 //=============================
 // Fonts
 //=============================
-$Montserrat:                                         "Montserrat", sans-serif;
+$Montserrat:                                         "Crimson Text", serif;
 
 $font_primary:                                        $Montserrat;
 
@@ -108,3 +108,10 @@ $aboutUs-icon-color: $theme-color-light;
 $aboutUs-right-bg-color: $dark-bg;
 $aboutUs-right-btn-bg: $white;
 $aboutUs-right-btn-border: $gray-dark;
+
+//login
+$login-banner-text-color: $white;
+$login-heading-color: $theme-color;
+$login-content-color: $gray-dark;
+$login-icon-color: $theme-color-light;
+$login-btn-bg-color: $theme-color;

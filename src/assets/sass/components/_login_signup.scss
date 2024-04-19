@@ -1,5 +1,6 @@
 .signup {
   font-family: inherit;
+
   &_container {
     &_section {
       background: url(src/assets/images/login-bg.jpg);
@@ -17,15 +18,13 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        img {
-          margin-left: -4vw;
-          padding-bottom: 1vw;
-        }
+
         .form_container {
           background: $white;
           border-radius: 20px;
           padding: 20px 30px;
           width: 50%;
+
           &_heading {
             h3 {
               font-size: 1.5rem;
@@ -33,10 +32,12 @@
               margin-bottom: 10px;
               margin-top: 0;
             }
+
             &_section {
               .popup {
                 display: flex;
                 justify-content: center;
+
                 p {
                   display: flex;
                   align-items: center;
@@ -47,44 +48,52 @@
                   margin: 8px 0;
                 }
               }
+
               form {
                 font-family: inherit;
                 opacity: 1;
+
                 input[type="text"],
                 input[type="password"] {
-                  padding: 8px 14px 8px;
-                  border-bottom: #fff;
+                  padding: 10px 10px;
                   border: none;
+                  font-size: 0.75rem;
+
                   &::placeholder {
                     color: #6c6e6e;
-                    font-size: 16px;
+                    font-size: 0.75rem;
                   }
                 }
+
                 .input_container,
                 .checkbox_container {
                   margin-bottom: 1rem;
                   position: relative;
                 }
+
                 .checkbox_container {
                   display: flex;
                   align-items: center;
                   margin-bottom: 5px;
                 }
+
                 .isPortDetails_container {
                   margin-bottom: 15px;
                 }
+
                 .submit {
                   button {
                     width: 100%;
                     padding: 10px;
                     border: none;
-                    background: #a0a0a0;
-                    color: #1e1e1e;
+                    background: linear-gradient(to right,#007090 , #01a7c2);
+                    color: #fff;
                     font-weight: 700;
                     font-size: 16px;
                     cursor: pointer;
+                    border-radius: 3px;
                     &:hover {
-                      background: #434343;
+                      background: linear-gradient(to right,#01a7c2 , #007090);
                       color: #fff;
                     }
                   }
@@ -94,26 +103,42 @@
                 .forgot_password {
                   font-size: 16px;
                 }
+
                 .toggle_sentence {
                   text-align: center;
+
                   a {
                     color: #01A7C2;
                   }
                 }
+
                 .forgot_password {
                   text-align: right;
                 }
+
                 button {
                   padding: 0;
                 }
-                .css-1d1r5q-MuiFormHelperText-root.Mui-error {
+
+                .css-1wc848c-MuiFormHelperText-root.Mui-error {
                   color: red;
                   font-size: 11px;
                   margin-left: 5px;
-                  font-weight: 550;
                   position: absolute;
-                  bottom: -45%;
+                  bottom: -50%;
                   left: 0;
+                }
+                .checkbox_container{
+                  display: flex;
+                  align-items: center;
+                  gap: 2rem;
+                  .terms,.portdetails{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 0.1rem;
+                    margin-bottom: 10px;
+                  }
                 }
               }
             }

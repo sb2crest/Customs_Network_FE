@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import useAuth from "../hooks/useAuth";
@@ -101,11 +100,10 @@ const Login = () => {
       <div className="signup_container">
         <div className="signup_container_section">
           <div className="signup_container_section_right">
-            <img src={logo} alt="logo" width={220} height={50} />
             <div className="form_container">
               <div className="form_container_heading">
-                <h3 style={{color:"#01a7c2"}}>
-                  Log<span style={{ color: "#A3BAC3" }}>in</span>
+                <h3 style={{color:"#007090",fontSize:"1.5rem",marginBottom:"1.5rem" }}>
+                  Log<span style={{ color: "#01a7c2" }}>in</span>
                 </h3>
                 <div className="form_container_heading_section">
                   <div className="popup">
@@ -135,7 +133,7 @@ const Login = () => {
                           style: { fontWeight: "500",fontSize:"14px" },
                           endAdornment: (
                             <InputAdornment position="end">
-                              <PersonIcon sx={{color:"#007090"}}/>
+                              <PersonIcon sx={{color:"#A3BAC3"}}/>
                             </InputAdornment>
                           ),
                         }}
@@ -170,9 +168,9 @@ const Login = () => {
                                 onMouseDown={handleMouseDownPassword}
                               >
                                 {showPassword ? (
-                                  <VisibilityOff sx={{color:"#007090"}}/>
+                                  <VisibilityOff sx={{color:"#A3BAC3"}}/>
                                 ) : (
-                                  <VisibilityIcon sx={{color:"#007090"}}/>
+                                  <VisibilityIcon sx={{color:"#A3BAC3"}}/>
                                 )}
                               </IconButton>
                             </InputAdornment>
