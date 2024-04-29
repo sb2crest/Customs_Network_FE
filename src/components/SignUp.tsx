@@ -1,10 +1,10 @@
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { Box, IconButton, InputAdornment, Modal } from "@mui/material";
-import React, { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -32,13 +32,14 @@ const SignUp = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  const [additionalEmails, setAdditionalEmails] = useState([]);
 
   const handleFocus = () => {
     setIsActive(true);
   };
-  const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
@@ -59,8 +60,10 @@ const SignUp = () => {
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    password: Yup.string().required("password is required"),
+    additionalEmails: Yup.string().email("Invalid email address"),
+    password: Yup.string().required("Password is required"),
   });
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -70,12 +73,14 @@ const SignUp = () => {
       password: "",
       checkbox: false,
       isPortDetails: false,
+      additionalEmails: "",
     },
     validationSchema: validationSchema,
     onSubmit: () => {
       UserSignup();
     },
   });
+
   const {
     handleSubmit,
     handleChange,
@@ -85,14 +90,30 @@ const SignUp = () => {
     setFieldTouched,
   } = formik;
 
+  const handleAddAdditionalEmail = () => {
+    const newEmail = formik.values.additionalEmails.trim();
+    if (newEmail && !additionalEmails.includes(newEmail)) {
+      setAdditionalEmails((prevEmails) => [...prevEmails, newEmail]);
+      formik.setFieldValue("additionalEmails", "");
+      formik.setFieldError("additionalEmails", "");
+    } else {
+      formik.setFieldError("additionalEmails", "Email already exists");
+    }
+  };  
+  
   const UserSignup = () => {
+    const formData = {
+      ...values,
+      additionalEmails: additionalEmails.join(","),
+    };
     axios
-      .post("http://localhost:8081/api/v1/auth/register", values)
+      .post("http://localhost:8081/api/v1/auth/register", formData)
       .then((res) => {
         console.log(res.data);
         if (res.status === 200) {
           formik.resetForm();
           handleOpen();
+          setAdditionalEmails([]);
         }
       })
       .catch((err) => {
@@ -327,7 +348,38 @@ const SignUp = () => {
                         }}
                       />
                     </div>
-
+                    <div className="additional_email_container">
+                      <TextField
+                        id="additionalEmails"
+                        type="text"
+                        name="additionalEmails"
+                        className="custom-placeholder"
+                        placeholder="Additional Email"
+                        value={formik.values.additionalEmails}
+                        error={!!formik.errors.additionalEmails}
+                        helperText={formik.errors.additionalEmails}
+                        onChange={handleChange}
+                        sx={{ width: "240px" }}
+                      />
+                      <button
+                        type="button"
+                        className="additional_email_button"
+                        onClick={handleAddAdditionalEmail}
+                      >
+                        Add
+                      </button>
+                    </div>
+                    {additionalEmails.length > 0 && (
+                      <div className="additional_emails_list">
+                        <div className="additional_emails_dropdown">
+                          <ul>
+                            {additionalEmails.map((email, index) => (
+                              <li key={index}>{email}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                     <div className="checkbox_container ">
                       <div className="terms">
                         <input
@@ -339,7 +391,11 @@ const SignUp = () => {
                           onBlur={() => setFieldTouched("checkbox", true)}
                         />
                         <label
-                          style={{ fontSize: "16px", paddingRight: "10px",fontWeight:"540" }}
+                          style={{
+                            fontSize: "14px",
+                            paddingRight: "10px",
+                            fontWeight: "540",
+                          }}
                         >
                           I Agree to T&C
                         </label>
@@ -351,7 +407,7 @@ const SignUp = () => {
                           checked={values.isPortDetails}
                           onChange={handleChange}
                         />
-                        <label style={{ fontSize: "16px" }}>
+                        <label style={{ fontSize: "14px" }}>
                           View Port Trends
                         </label>
                       </div>

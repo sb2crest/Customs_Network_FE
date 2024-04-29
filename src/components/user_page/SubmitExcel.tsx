@@ -235,8 +235,8 @@ const SubmitExcel = () => {
           </div>
 
           <FaXmark className="close_button" onClick={handleSuccessModalClose} />
-          <h2 id="modal-modal-title">File Uploaded Successfully!</h2>
-          <p id="modal-modal-description">
+          <h2 className="modal_title">File Uploaded Successfully!</h2>
+          <p className="modal_description">
             Your files have been successfully uploaded.
           </p>
         </Box>

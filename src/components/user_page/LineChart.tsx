@@ -90,6 +90,7 @@ const LineChart = () => {
           pendingCount: monthData.pendingCount,
           rejectedCount: monthData.rejectedCount,
           cbpDownCount: monthData.cbpDownCount,
+          validationErrorCount: monthData.validationErrorCount,
         };
       });
       setResponseData(data);

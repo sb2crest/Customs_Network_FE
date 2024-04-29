@@ -1,4 +1,4 @@
-import { axiosPrivate } from '../services/apiService';
+import { axiosPrivate1 } from '../services/apiService';
 import useAuth from './useAuth';
 
 const useRefreshToken = () => {
@@ -6,7 +6,7 @@ const useRefreshToken = () => {
 
     const refresh = async () => {
         try {
-            const response = await axiosPrivate.post('/api/v1/auth/refresh-token', {}, {
+            const response = await axiosPrivate1.post('/api/v1/auth/refresh-token', {}, {
                 headers: {
                     'Authorization': `Bearer ${auth.refreshToken}`
                 },
@@ -14,11 +14,14 @@ const useRefreshToken = () => {
             });
             setAuth(prev => ({
                 ...prev,
-                accessToken: response.data.accessToken
+                accessToken: response.data.access_token
             }));
-            return response.data.accessToken;
+            return response.data.access_token;
         } catch (error) {
             console.error("Token refresh failed:", error);
+            if (error.response && error.response.status === 401) {
+                window.location.href = '/login';
+            }
             return null;
         }
     }
