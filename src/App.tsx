@@ -16,6 +16,7 @@ import UserWrapper from "./components/user_page/UserWrapper";
 import AdminWrapper from "./components/admin_page/AdminWrapper";
 import AdminTrends from "./components/admin_page/AdminTrends";
 import AdminHistory from "./components/admin_page/AdminHistory";
+import Products from "./components/admin_page/Products";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/register" element={<SignUp />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
           <Route element={<RequireAuth allowedRoles={"USER"} />}>
@@ -46,6 +47,7 @@ function App() {
               <Route index element={<AdminTrends />} />
               <Route path="trends" element={<AdminTrends />} />
               <Route path="history" element={<AdminHistory />} />
+              <Route path="products" element={<Products />} />
             </Route>
           </Route>
 

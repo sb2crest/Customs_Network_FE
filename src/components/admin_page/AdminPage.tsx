@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaHistory } from "react-icons/fa";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -6,12 +6,11 @@ import TokenExpirationPopup from "../../utilities/TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
 import { useAdminContext } from "../../context/AdminContext";
 import { IoBarChartOutline } from "react-icons/io5";
-
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
 const AdminPage = () => {
-  const [hamburgerClick, setHamburgerClick] = useState(false);
-  const [activeLi, setActiveLi] = useState(""); 
+  const [activeLi, setActiveLi] = useState("");
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
@@ -19,7 +18,7 @@ const AdminPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { setAuth } = useAuth();
   const { setAdminHistoryData, setAdminTrendsData } = useAdminContext();
-  
+
   useEffect(() => {
     if (!userIdRef.current) {
       navigate("/login");
@@ -45,10 +44,6 @@ const AdminPage = () => {
     setShowPopup(false);
     setAuth({});
     navigate("/login");
-  };
-
-  const handleHamburgerClick = () => {
-    setHamburgerClick(!hamburgerClick);
   };
 
   const handleLiClick = (liName) => {
@@ -80,9 +75,9 @@ const AdminPage = () => {
     axiosPrivate
       .get(`/api/audit/get-all-transaction?period=today`)
       .then((response) => {
-        setAdminTrendsData(response.data)
+        setAdminTrendsData(response.data);
         navigate("trends");
-      }) 
+      })
       .catch((error) => {
         console.error("Error fetching trends data:", error);
         navigate("/login", { state: { from: location }, replace: true });
@@ -99,7 +94,7 @@ const AdminPage = () => {
             </div>
             <div className="sidebar_container_section_list">
               <ul>
-              <Link to="trends">
+                <Link to="trends">
                   <li
                     className={activeLi === "trends" ? "active-li" : ""}
                     onClick={() => {
@@ -121,6 +116,17 @@ const AdminPage = () => {
                   >
                     <FaHistory className="sidebar_icon" />
                     <span>History</span>
+                  </li>
+                </Link>
+                <Link to="products">
+                  <li
+                    className={activeLi === "products" ? "active-li" : ""}
+                    onClick={() => {
+                      handleLiClick("products");
+                    }}
+                  >
+                    <ShoppingCartOutlinedIcon className="sidebar_icon" />
+                    <span>Products</span>
                   </li>
                 </Link>
               </ul>
