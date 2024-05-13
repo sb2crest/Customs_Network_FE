@@ -151,10 +151,18 @@ const Trends = () => {
   };
 
   const fetchPortTrends = (input: string) => {
-    const endpoint =
-      selectedOption === "Port Code"
-        ? `/api/audit/getPortTransactionDetails?userId=${userId}&portCode=${input}`
-        : `/api/audit/getPortTransactionDetails?userId=${userId}&portName=${input}`;
+    let portCode;
+    let endpoint;
+  
+    const portCodeMatch = input.match(/\b\d{4}\b/);
+    if (portCodeMatch) {
+      portCode = portCodeMatch[0];
+    }
+    if (portCode) {
+      endpoint = `/api/audit/getPortTransactionDetails?userId=${userId}&portCode=${portCode}`;
+    } else {
+      endpoint = `/api/audit/getPortTransactionDetails?userId=${userId}&portName=${input}`;
+    }
 
     axiosPrivate
       .get(endpoint)

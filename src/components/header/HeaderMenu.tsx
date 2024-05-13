@@ -27,7 +27,7 @@ const HeaderMenu = () => {
                   <NavLink to="/login" activeClassName="active">Login</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/signup" activeClassName="active">Sign Up</NavLink>
+                  <NavLink to="/register" activeClassName="active">Register</NavLink>
                 </li>
               </ul>
             </div>

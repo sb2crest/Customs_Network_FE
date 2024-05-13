@@ -102,14 +102,15 @@
 .success_icon {
   color: green;
   text-align: center;
-  font-size: 3.5rem;
 }
 .close_button {
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
+  
 }
+
 .checkmark {
   display: flex;
   justify-content: center;
@@ -123,8 +124,8 @@
     justify-content: space-between;
     text-align: center;
     .check-background {
-      width: 100%;
-      height: calc(100% - 1.25rem);
+      width: 90%;
+      height: 70%;
       background: linear-gradient(to bottom right, #5de593, #41d67c);
       box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset,
         0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
@@ -137,7 +138,7 @@
       opacity: 0;
 
       svg {
-        width: 65%;
+        width: 50%;
         transform: translateY(0.25rem);
         stroke-dasharray: 80;
         stroke-dashoffset: 80;
@@ -221,4 +222,10 @@
       opacity: 0.25;
     }
   }
+}
+.modal_title{
+  font-size: 20px;
+}
+.modal_description{
+  font-size: 16px;
 }

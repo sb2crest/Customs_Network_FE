@@ -190,7 +190,7 @@ const Login = () => {
                     </div>
                     <p className="toggle_sentence">
                       Don't have an account?{" "}
-                      <Link to="/signup">Register here</Link>{" "}
+                      <Link to="/register">Register here</Link>{" "}
                     </p>
                   </form>
                 </div>
