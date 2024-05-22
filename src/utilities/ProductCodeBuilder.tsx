@@ -4,10 +4,24 @@ import { InputAdornment, TextField } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { axiosPrivate } from "../../services/apiService";
+import { axiosPrivate } from "../services/apiService";
 import { FaXmark } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
-import { Option1Modal, Option2Modal } from "../../utilities/ProductHelpfulTip";
+import { Option1Modal, Option2Modal } from "./ProductHelpfulTip";
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import { useProductCode } from "../context/ProductContext";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 200,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
 interface ProductCode {
   code1: string;
@@ -17,7 +31,8 @@ interface ProductCode {
   code5: string;
 }
 
-const Products = () => {
+const ProductCodeBuilder = () => {
+  const { inputProductCode, setInputProductCode} = useProductCode();
   const [tipOpen, setTipOpen] = React.useState(false);
   const [selectedOption, setSelectedOption] = React.useState<string | null>(
     null
@@ -53,19 +68,20 @@ const Products = () => {
   const [picName, setPicName] = useState<string>("");
   const [productCode, setProductCode] = useState<number | null>(null);
   const [productName, setProductName] = useState("");
-  const [inputProductCode, setInputProductCode] = useState({
-    code1: "",
-    code2: "",
-    code3: "",
-    code4: "",
-    code5: "",
-  });
+
+const [successProductCode,setSuccessProductCode] = useState(false);
+const [failedProductCode,setFailedProductCode] = useState(false);
+
 
   const handleOpen = (option: string) => {
     setSelectedOption(option);
     setTipOpen(true);
   };
-
+  const handleSubmit = () => {
+    const value = `${industryCode}${classCode}${subClassCode || "-"}${picCode || "-"}${productCode}`;
+    setInputProductCode(value);
+    setCurrentStep(0);
+  };
   const handleClose = () => setTipOpen(false);
 
   const toggleDropdown = (dropdownKey: string) => {
@@ -92,6 +108,13 @@ const Products = () => {
     toggleDropdown("dropdown1");
     setOptionDisabled([false, true]);
     setIndustryCode(industryCode);
+    setInputProductCode({
+      code1: "",
+      code2: "",
+      code3: "",
+      code4: "",
+      code5: "",
+    });
   };
 
   const handleProductByIndustryId = (
@@ -181,6 +204,10 @@ const Products = () => {
     setIsProductSelected(false);
   };
 
+useEffect(() =>{
+handleClearOption();
+},[]);
+
   const productByIndustryId = () => {
     axiosPrivate
       .get(`/fda/industryproduct/${industryCode}`)
@@ -193,23 +220,17 @@ const Products = () => {
         for (let i = 0; i < productData.length; i++) {
           const productClassCode = productData[i][3];
           const productGroupCode = productData[i][4];
-          console.log("Comparing product:", productData[i]);
-          console.log("Product Class Code:", productClassCode);
-          console.log("Product Group Code:", productGroupCode);
           if (
             productClassCode === classCodeToMatch &&
             productGroupCode === productCodeToMatch
           ) {
             matchedProduct = productData[i];
-            console.log("matchedProduct:", matchedProduct);
             break;
           }
         }
 
         if (matchedProduct) {
-          console.log("matchedProduct:", matchedProduct);
           const productName1 = matchedProduct[2];
-          console.log("the product name is " + productName1);
           const productCode = matchedProduct[4];
           setSelectedproduct(`${productName1}-${productCode}`);
           setProductName(productName1);
@@ -317,13 +338,24 @@ const Products = () => {
           setSubClassCode(inputProductCode.code3);
           setPicCode(inputProductCode.code4);
           setProductCode(parseInt(inputProductCode.code5));
-          setCurrentStep(3);
+          setSuccessProductCode(true);
+        }else{
+          setFailedProductCode(true);
         }
       })
       .catch((error) => {
         console.error("Error making API call:", error);
       });
   };
+
+  const productCodeModalClose = ()=>{
+    setSuccessProductCode(false);
+    setFailedProductCode(false);
+  }
+
+  const productCodeSubmit = ()=>{
+    setSuccessProductCode(false);
+  }
 
   const nextButtonApi = () => {
     const isOption1Filled = selectedIndustry !== "";
@@ -339,7 +371,7 @@ const Products = () => {
       setOptionDisabled([true, true]);
     } else if (isOption2Filled) {
       verifyProductCode();
-      setOptionDisabled([true, true]);
+      setOptionDisabled([true, false]);
     }
   };
   return (
@@ -510,6 +542,30 @@ const Products = () => {
                   ))}
                 </div>
               </div>
+              <Modal
+                open={successProductCode}
+                onClose={productCodeModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                 <h2>Success</h2>
+                 <p>It is valid Product code.</p>
+                 <button onClick={productCodeSubmit}>Submit</button>
+                </Box>
+              </Modal>
+              <Modal
+                open={failedProductCode}
+                onClose={productCodeModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                <h2>Failed</h2>
+                 <p>It is not a valid Product code!!!</p>
+                 <button onClick={productCodeModalClose}>Retry</button>
+                </Box>
+              </Modal>
             </div>
             <div className="clear_next_buttons">
               <button onClick={handleClearOption}>
@@ -1023,7 +1079,7 @@ const Products = () => {
                             <button onClick={prevStep}>PREVIOUS</button>
                           )}
                           {currentStep < 4 && (
-                            <button onClick={nextStep}>NEXT</button>
+                            <button onClick={handleSubmit}>SUBMIT</button>
                           )}
                         </div>
                       </div>
@@ -1039,4 +1095,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ProductCodeBuilder;

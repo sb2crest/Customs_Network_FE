@@ -12,11 +12,11 @@ import Unauthorized from "./utilities/UnAuthorized";
 import RequireAuth from "./components/RequireAuth";
 import Layout from "./components/Layout";
 import Trends from "./components/user_page/Trends";
-import UserWrapper from "./components/user_page/UserWrapper";
+import UserWrapper from "./components/user_page/wrappers/UserWrapper";
 import AdminWrapper from "./components/admin_page/AdminWrapper";
 import AdminTrends from "./components/admin_page/AdminTrends";
 import AdminHistory from "./components/admin_page/AdminHistory";
-import Products from "./components/admin_page/Products";
+import ProductWrapper from "./components/user_page/wrappers/ProductWrapper";
 
 function App() {
   return (
@@ -39,6 +39,7 @@ function App() {
               <Route path="paste-json" element={<PasteJson />} />
               <Route path="history" element={<History />} />
               <Route path="trends" element={<Trends />} />
+              <Route path="user-product" element={<ProductWrapper />} />
             </Route>
           </Route>
 
@@ -47,7 +48,6 @@ function App() {
               <Route index element={<AdminTrends />} />
               <Route path="trends" element={<AdminTrends />} />
               <Route path="history" element={<AdminHistory />} />
-              <Route path="products" element={<Products />} />
             </Route>
           </Route>
 

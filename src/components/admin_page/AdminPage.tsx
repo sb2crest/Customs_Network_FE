@@ -118,17 +118,6 @@ const AdminPage = () => {
                     <span>History</span>
                   </li>
                 </Link>
-                <Link to="products">
-                  <li
-                    className={activeLi === "products" ? "active-li" : ""}
-                    onClick={() => {
-                      handleLiClick("products");
-                    }}
-                  >
-                    <ShoppingCartOutlinedIcon className="sidebar_icon" />
-                    <span>Products</span>
-                  </li>
-                </Link>
               </ul>
             </div>
           </div>

@@ -1,16 +1,13 @@
 .products {
-  height: 100vh;
   width: 100%;
   background-color: #fff;
   &_container {
     &_section {
-      padding: 1.5rem;
       display: flex;
       justify-content: center;
       align-items: center;
       &_left {
         background-color: #f2f3f7;
-        width: 80%;
         input {
           font-size: 0.75rem;
         }
@@ -101,7 +98,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5rem 1rem;
+        padding: 1rem 1rem;
         button {
           font-size: 12px;
           cursor: pointer;
@@ -121,34 +118,11 @@
         }
       }
       &_left.with_right {
-        width: 35%;
-        input {
-          font-size: 0.6rem;
-          cursor: not-allowed;
-          padding: 12px 14px;
-        }
-        .heading {
-          width: 100%;
-          h2 {
-            margin: 0;
-          }
-        }
-        .option1,
-        .option2,
-        .option3,
-        .option4 {
-          flex-direction: column;
-          justify-content: center;
-        }
-        .clear_next_buttons {
-          display: none;
-        }
-        .textfield {
-          width: 100%;
-        }
+       display: none;
       }
       &_right {
         padding: 2rem;
+        max-height: 70vh;
         .right_container {
           background-color: #fff;
           padding: 2rem 2rem 1rem;
