@@ -8,6 +8,7 @@
       align-items: center;
       &_left {
         background-color: #f2f3f7;
+        
         input {
           font-size: 0.75rem;
         }
@@ -15,9 +16,7 @@
           cursor: not-allowed;
         }
         .option1,
-        .option2,
-        .option3,
-        .option4 {
+        .option2{
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -42,8 +41,7 @@
             }
           }
         }
-        .option2,
-        .option4 {
+        .option2{
           .input_fields {
             display: flex;
             gap: 5px;
@@ -51,6 +49,7 @@
               text-align: center;
             }
           }
+          
         }
         .option1 {
           input{
@@ -240,4 +239,39 @@
       }
     }
   }
+}
+.modal_heading_success{
+  color: #82dd55;
+  text-align: center;
+  margin: 0;
+  font-size: 28px;
+}
+.modal_heading_failed{
+  color: #d63124;
+  text-align: center;
+  margin: 0;
+  font-size: 28px;
+}
+.modal_body{
+  text-align: center;
+  font-size: 18px;
+  color: #808080;
+}
+.modal_btn_success{
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 10px;
+  font-weight: 600;
+  border: none;
+  color: #fff;
+  background-color: #82dd55;
+}
+.modal_btn_failed{
+  cursor: pointer;
+  width: 100%;
+  padding: 10px 10px;
+  font-weight: 600;
+  border: none;
+  color: #fff;
+  background-color: #d63124;
 }

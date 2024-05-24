@@ -12,6 +12,8 @@ import Modal from '@mui/material/Modal';
 import React from "react";
 import ProductCodeBuilder from "../../utilities/ProductCodeBuilder";
 import { useProductCode } from "../../context/ProductContext";
+import InputField from "../../utilities/InputField";
+import SelectField from "../../utilities/SelectField";
 
 dayjs.extend(customParseFormat);
 
@@ -36,6 +38,8 @@ const UserProduct = () => {
     productOrigin: true,
     productTradeNames: false,
     productCharacteristics: true,
+    licensePlateIssuer: false,
+    licensePlateNumber: false,
     entityData: true,
     entityAddress: true,
     pointOfContact: true,
@@ -44,14 +48,16 @@ const UserProduct = () => {
     productCondition: false,
     productPackaging: false,
     shippingContainerInformation: false,
+    expressCourierTrackingNumber: false,
+    expressCourierTrackingContainerDimensions: false,
+    containerDimensionsForAFnLACF: false,
     anticipatedArrivalInformation: true,
     additionalInformation: false,
     dataSubstitution: false,
   });
-  const { concatenatedProductCode,closeProductCode } = useProductCode();
+  const { concatenatedProductCode } = useProductCode();
   const [currentStep, setCurrentStep] = useState(1);
   const today = dayjs();
-
 
   //pga Identifier
   const [selectedGvtAgencyProgramCode, setSelectedGvtAgencyProgramCode] = useState<string>("");
@@ -62,12 +68,19 @@ const UserProduct = () => {
   const [intendedUseDescription,setIntendedUseDescription] = useState<string>("");
   const [correctionIndicator,setCorrectionIndicator] = useState<string>("");
   const [disclaimer,setDisclaimer] = useState<string>("");
-  const [governmentAgencyCode,setGovernmentAgencyCode] = useState<string>("FDP");
+  const [governmentAgencyCode,setGovernmentAgencyCode] = useState<string>("FDA");
 
   //product identifier
   const [openProductCodeBuilder, setOpenProductCodeBuilder] = React.useState(false);
   const [itemType,setItemType] = useState<string>("P");
-  const [productCodeQualifier,setProductCodeQualifiere] = useState<string>("FDP");
+  const [productCodeQualifier,setProductCodeQualifier] = useState<string>("FDP");
+
+  //Product Constituent Element
+  const [constituentActiveIngredientQualifier,setConstituentActiveIngredientQualifier] = useState<string>("");
+  const [constituentElementName,setConstituentElementName] = useState<string>("");
+  const [constituentElementQuantity,setConstituentElementQuantity] = useState<string>("");
+  const [constituentElementUnitOfMeasure,setConstituentElementUnitOfMeasure] = useState<string>("");
+  const [percentOfConstituentElement,setPercentOfConstituentElement] = useState<string>("");
 
   //Product Origin
   const [selectedSourceTypeCodes, setSelectedSourceTypeCodes] =useState<string>("");
@@ -75,11 +88,90 @@ const UserProduct = () => {
   const [countryCode, setCountryCode] = useState<string[]>([]);
   const [selectedCountryCode, setSelectedCountryCode] =useState<string>("");
 
-//Product Characteristics
-const [commodityDesc,setCommodityDesc] = useState<string>("");
+  //Product Trade Names
+  const [tradeOrBrandName, setTradeOrBrandName] =useState<string>("");
 
-//Entity Data
-// const [commodityDesc,setCommodityDesc] = useState<string>("");
+  //Product Characteristics
+  const [commodityDesc,setCommodityDesc] = useState<string>("");
+
+  //License Plate Issuer
+  const [issuerOfLPCO,setIssuerOfLPCO] = useState<string>("");
+  const [governmentGeographicCodeQualifier,setGovernmentGeographicCodeQualifier] = useState<string>("");
+  const [locationOfIssuerOfTheLPCO,setLocationOfIssuerOfTheLPCO] = useState<string>("");
+  const [issuingAgencyLocation,setIssuingAgencyLocation] = useState<string>("");
+  
+  //License Plate Number //PN Confirmation Number
+  const [transactionType,setTransactionType] = useState<string>("");
+  const [lpcoOrCodeType,setLpcoOrCodeType] = useState<string>("");
+  const [lpcoOrPncNumber,setLpcoOrPncNumber] = useState<string>("");
+
+  //Entity Data
+  const [partyIdentifierType,setPartyIdentifierType] = useState<string>("");
+  const [partyIdentifierNumber,setPartyIdentifierNumber] = useState<number|null>(null);
+  const [partyName,setPartyName] = useState<string>("");
+  const [address1,setAddress1] = useState<string>("");
+  const [partyType,setPartyType] = useState<string>("");
+  const [roleCodeData,setRoleCodeData] = useState<string[]>([]);
+  
+  //Entity Address
+  const [address2,setAddress2] = useState<string>("");
+  const [apartmentOrSuiteNo,setApartmentOrSuiteNo] = useState<string>("");
+  const [city,setCity] = useState<string>("");
+  const [country,setCountry] = useState<string>("");
+  const [stateCodeData,setStateCodeData] = useState<string[]>([]);
+  const [stateOrProvince,setStateOrProvince] = useState<string>("");
+  const [postalCode,setPostalCode] = useState<string>("");
+
+  //Point of Contact
+  const [contactPerson,setContactPerson] = useState<string>("");
+  const [telephoneNumber,setTelephoneNumber] = useState<string>("");
+  const [email,setEmail] = useState<string>("");
+  const [individualQualifier,setIndividualQualifier] = useState<string>("");
+
+  //Affirmation of Compliance
+  const [affirmationComplianceCode,setAffirmationComplianceCode] = useState<string>("");
+  const [affirmationComplianceQualifier,setAffirmationComplianceQualifier] = useState<string>("");
+  
+  //Remarks
+  const [remarksTypeCode,setRemarksTypeCode] = useState<string>("");
+  const [remarksText,setRemarksText] = useState<string>("");
+
+  //Product Condition
+  const [lotNumberQualifier,setLotNumberQualifier] = useState<string>("");
+  const [lotNumber,setLotNumber] = useState<string>("");
+  const [pgaLineValue,setPgaLineValue] = useState<string>("");
+  const [temperatureQualifier,setTemperatureQualifier] = useState<string>("");
+
+  //Product Packaging
+  const [packagingQualifier,setPackagingQualifier] = useState<string>("");
+  const [quantity,setQuantity] = useState<string>("");
+  const [uom,setUom] = useState<string>("");
+
+
+  //Shipping Container Information
+  const [containerNumberOne,setContainerNumberOne] = useState<string>("");
+  const [containerNumberTwo,setContainerNumberTwo] = useState<string>("");
+  const [containerNumberThree,setContainerNumberThree] = useState<string>("");
+
+  //Express Courier Tracking Number
+  const [packageTrackingNumber,setPackageTrackingNumber] = useState<string>("");
+  const [packageTrackingNumberCode,setPackageTrackingNumberCode] = useState<string>("");
+
+  //Express Courier Tracking and Container Dimensions – AF and LACF
+  const [containerDimensionsOne,setContainerDimensionsOne] = useState<string>("");
+  const [containerDimensionsTwo,setContainerDimensionsTwo] = useState<string>("");
+  const [containerDimensionsThree,setContainerDimensionsThreee] = useState<string>("");
+
+  //Anticipated Arrival Information
+  const [anticipatedArrivalInformation,setAnticipatedArrivalInformation] = useState<string>("");
+  const [anticipatedArrivalLocationCode,setAnticipatedArrivalLocationCode] = useState<string>("");
+  const [arrivalLocation,setArrivalLocation] = useState<string>("");
+  const [additionalInformationQualifierCode,setAdditionalInformationQualifierCode] = useState<string>("");
+  const [additionalInformation,setAdditionalInformation] = useState<string>("");
+
+  //Data Substitution
+  const [substitutionIndicator,setSubstitutionIndicator] = useState<string>("");
+  const [substitutionNumber,setSubstitutionNumber] = useState<string>("");
 
   const handleOpen = () => setOpenProductCodeBuilder(true);
   const handleClose = () => setOpenProductCodeBuilder(false);
@@ -104,20 +196,25 @@ const [commodityDesc,setCommodityDesc] = useState<string>("");
     }
   }, [selectedGvtAgencyProgramCode, selectedGvtAgencyProcessingCodes]);
 
-  const handleProgramCodeChange = (e) => {
+  const handleProgramCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGvtAgencyProgramCode(e.target.value);
     setIntendedUseCodes([]);
     setSelectedGvtAgencyProcessingCodes("");
   };
-  const GvtAgencyProcessingCodesChange = (e) => {
+  const GvtAgencyProcessingCodesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGvtAgencyProcessingCodes(e.target.value);
     setIntendedUseCodes([]);
   };
-  const intendedUseCodeschange = (e) => {
+  const intendedUseCodeschange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedIntendedUseCodes(e.target.value);
   };
-  const sourceTypeCodechange = (e) => {
+  const sourceTypeCodechange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedSourceTypeCodes(e.target.value);
+  };
+  const handlePartyIdentifierNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numericValue = value === '' ? null : Number(value);
+    setPartyIdentifierNumber(numericValue);
   };
   const gvtAgencyProgramCodeApi = (
     selectedGvtAgencyProgramCode: string,
@@ -146,6 +243,7 @@ if (
               );
               setIntendedUseCodes(programCodeData["Non-PN_Food"].intendedUseCodes);
               setSourceTypeCode(programCodeData["Non-PN_Food"].sourceTypeCode);
+              setRoleCodeData(programCodeData["Non-PN_Food"].entityRoleCode);
               break;
             case "FOOD":
               setGovernmentAgencyProcessingCodes(
@@ -153,6 +251,7 @@ if (
               );
               setIntendedUseCodes(programCodeData.Food.intendedUseCodes);
               setSourceTypeCode(programCodeData.Food.sourceTypeCode);
+              setRoleCodeData(programCodeData.Food.entityRoleCode);
               break;
             case "Standalone_PN":
               setGovernmentAgencyProcessingCodes(
@@ -160,6 +259,7 @@ if (
               );
               setIntendedUseCodes(programCodeData["Standalone-PN_Food"].intendedUseCodes);
               setSourceTypeCode(programCodeData["Standalone-PN_Food"].sourceTypeCode);
+              setRoleCodeData(programCodeData["Standalone-PN_Food"].entityRoleCode);
               break;
             default:
                 setGovernmentAgencyProcessingCodes(programCodeData.governmentAgencyProcessingCodes);
@@ -169,6 +269,7 @@ if (
         if (Array.isArray(programCodeData.intendedUseCodes)) {
           setIntendedUseCodes(programCodeData.intendedUseCodes);
           setSourceTypeCode(programCodeData.sourceTypeCode);
+          setRoleCodeData(programCodeData.entityRoleCode);
         } else if (
           selectedGvtAgencyProcessingCodes &&
           programCodeData.intendedUseCodes[selectedGvtAgencyProcessingCodes]
@@ -177,6 +278,7 @@ if (
             programCodeData.intendedUseCodes[selectedGvtAgencyProcessingCodes]
           );
           setSourceTypeCode(programCodeData.sourceTypeCode);
+          setRoleCodeData(programCodeData.entityRoleCode);
         } else {
           setIntendedUseCodes([]);
         }
@@ -192,6 +294,13 @@ const countryCodeApi = ()=>{
     console.log(err);
   });
 }
+const stateCodeApi = ()=>{
+  axiosPrivate.get(`/pgaIdentifier/get-state-codes?countryCode=${country}`).then((response)=>{
+    setStateCodeData(response.data.stateCodes);
+  }).catch((err) => {
+    console.log(err);
+  });
+};
   return (
     <div className="userproduct">
       <div className="userproduct_container">
@@ -210,7 +319,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("pgaIdentifier")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.pgaIdentifier ? "rotate" : ""}`}/>
                   </div>
                   <div className="dropdown_header_text">
                     <h3>PGA Identifier</h3>
@@ -219,10 +328,7 @@ const countryCodeApi = ()=>{
                 {dropdownStates.pgaIdentifier && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Government Agency Code</label>
-                        <input type="text" value={governmentAgencyCode} disabled />
-                      </div>
+                      <InputField type="text" label="Government Agency Code" value={governmentAgencyCode} disabled/>
                       <div className="select_dropdown">
                         <label>Government Agency Program Code</label>
                         <select
@@ -246,56 +352,32 @@ const countryCodeApi = ()=>{
                           <option value="VME">VME</option>
                         </select>
                       </div>
-                      <div className="select_dropdown">
-                        <label>Government Agency Processing Code</label>
-                        <select
-                          name="governmentAgencyProcessingCodes"
-                          id="governmentAgencyProcessingCodes"
-                          onChange={GvtAgencyProcessingCodesChange}
-                          value={selectedGvtAgencyProcessingCodes}
-                        >
-                          <option value="" selected>
-                            Select an option
-                          </option>
-                          {governmentAgencyProcessingCodes.map(
-                            (code, index) => (
-                              <option key={index} value={code}>
-                                {code}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      </div>
-                      <div className="select_dropdown">
-                        <label>Intended Use Code</label>
-                        <select name="intendedUseCodes" id="intendedUseCodes" onChange={intendedUseCodeschange} value={selectedIntendedUseCodes}>
-                          <option value="" selected>
-                            Select an option
-                          </option>
-                          {intendedUseCodes.map((code, index) => (
-                            <option key={index} value={code}>
-                              {code}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Intended Use Description</label>
-                        <input type="text" value={intendedUseDescription} onChange={(e)=>setIntendedUseDescription(e.target.value)}/>
-                      </div>
-                      <div className="input_field">
-                        <label>Correction Indicator</label>
-                        <input type="text" value={correctionIndicator} onChange={(e)=>setCorrectionIndicator(e.target.value)}/>
-                      </div>
-                      <div className="select_dropdown">
-                        <label>Disclaimer</label>
-                        <select name="disclaimer" id="disclaimer" value={disclaimer} onChange={(e)=>setDisclaimer(e.target.value)}>
-                          <option value="" selected>
-                            Select an option
-                          </option>
-                          <option value="A">A</option>
-                        </select>
-                      </div>
+                      <SelectField
+                         label="Government Agency Processing Code"
+                         name="governmentAgencyProcessingCodes"
+                         id="governmentAgencyProcessingCodes"
+                         onChange={GvtAgencyProcessingCodesChange}
+                         value={selectedGvtAgencyProcessingCodes}
+                         options={governmentAgencyProcessingCodes}
+                       />
+                      <SelectField
+                         label="Intended Use Code"
+                         name="intendedUseCodes"
+                         id="intendedUseCodes"
+                         onChange={intendedUseCodeschange}
+                         value={selectedIntendedUseCodes}
+                         options={intendedUseCodes}
+                       />
+                      <InputField type="text" label="Intended Use Description" value={intendedUseDescription} onChange={(e)=>setIntendedUseDescription(e.target.value)}/>
+                      <InputField type="text" label="Correction Indicator" value={correctionIndicator} onChange={(e)=>setCorrectionIndicator(e.target.value)}/>
+                      <SelectField
+                         label="Disclaimer"
+                         name="disclaimer"
+                         id="disclaimer"
+                         onChange={(e)=>setDisclaimer(e.target.value)}
+                         value={disclaimer}
+                         options={["A"]}
+                       />
                     </div>
                   </div>
                 )}
@@ -306,7 +388,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("productIdentifier")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productIdentifier ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Identifier</h3>
@@ -315,17 +397,9 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productIdentifier && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Item type</label>
-                        <input type="text" value={itemType} disabled />
-                      </div>
-                      <div className="input_field">
-                        <label>Product Code Qualifier</label>
-                        <input type="text" value={productCodeQualifier} disabled />
-                      </div>
-                      <div className="input_field">
-                        <label>Product Code Number</label>
-                        <input type="text" value={concatenatedProductCode} onClick={handleOpen} readOnly/>
+                      <InputField type="text" label="Item type" value={itemType} disabled/>
+                      <InputField type="text" label="Product Code Qualifier" value={productCodeQualifier} disabled/>
+                      <InputField type="text" label="Product Code Number" value={concatenatedProductCode} readOnly onClick={handleOpen}/>
                         <Modal
                             open={openProductCodeBuilder}
                             onClose={handleClose}
@@ -337,16 +411,16 @@ const countryCodeApi = ()=>{
                         </Modal>
                       </div>
                     </div>
-                  </div>
                 )}
               </div>
+              {(selectedGvtAgencyProgramCode === "BIO" || selectedGvtAgencyProgramCode === "DRU" || selectedGvtAgencyProgramCode === "VME") && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
                   onClick={() => toggleDropdown("productConstituentElement")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productConstituentElement ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Constituent Element</h3>
@@ -355,42 +429,30 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productConstituentElement && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Constituent Active Ingredient Qualifier</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Name of the Constituent Element</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Quantity of Constituent Element</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Unit of Measure</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Percent of Constituent Element</label>
-                        <input type="text" />
-                      </div>
+                      <SelectField
+                         label="Constituent Active Ingredient Qualifier"
+                         name="constituentActiveIngredientQualifier"
+                         id="constituentActiveIngredientQualifier"
+                         onChange={(e)=>setConstituentActiveIngredientQualifier(e.target.value)}
+                         value={constituentActiveIngredientQualifier}
+                         options={["A","B","C","D","E","F","G","H","I"]}
+                       />
+                      <InputField type="text" label="Name of the Constituent Element" value={constituentElementName} onChange={(e)=>setConstituentElementName(e.target.value)}/>
+                      <InputField type="text" label="Quantity of Constituent Element" value={constituentElementQuantity} onChange={(e)=>setConstituentElementQuantity(e.target.value)}/>
+                      <InputField type="text" label="Unit of Measure" value={constituentElementUnitOfMeasure} onChange={(e)=>setConstituentElementUnitOfMeasure(e.target.value)}/>
+                      <InputField type="text" label="Percent of Constituent Element" value={percentOfConstituentElement} onChange={(e)=>setPercentOfConstituentElement(e.target.value)}/>
                     </div>
                   </div>
                 )}
               </div>
+                )}
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
                   onClick={() => toggleDropdown("productOrigin")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productOrigin ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Origin</h3>
@@ -399,40 +461,35 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productOrigin && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Source Type Code</label>
-                        <select name="cars" id="cars" onChange={sourceTypeCodechange}
-                          value={selectedSourceTypeCodes}>
-                            <option value="" selected>select the option</option>
-                          {sourceTypeCode.map((code, index) => (
-                            <option key={index} value={code}>
-                              {code}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="select_dropdown">
-                        <label>Country Code</label>
-                        <select name="cars" id="cars" onClick={countryCodeApi} value={selectedCountryCode} onChange={(e)=>setSelectedCountryCode(e.target.value)}>
-                        <option value="" selected>select the option</option>
-                        {countryCode.map((code, index) => (
-                            <option key={index} value={code}>
-                              {code}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <SelectField
+                         label="Source Type Code"
+                         name="sourceTypeCode"
+                         id="sourceTypeCode"
+                         onChange={sourceTypeCodechange}
+                         value={selectedSourceTypeCodes}
+                         options={sourceTypeCode}
+                       />
+                      <SelectField
+                         label="Country Code"
+                         name="countryCode"
+                         id="countryCode"
+                         onClick={countryCodeApi}
+                         onChange={(e)=>setSelectedCountryCode(e.target.value)}
+                         value={selectedCountryCode}
+                         options={countryCode}
+                       />
                     </div>
                   </div>
                 )}
               </div>
+              {selectedGvtAgencyProgramCode !== "Standalone_PN" &&(
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
                   onClick={() => toggleDropdown("productTradeNames")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productTradeNames ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Trade Names</h3>
@@ -441,14 +498,12 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productTradeNames && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Trade Name/Brand Name</label>
-                        <input type="text" />
-                      </div>
+                      <InputField type="text" label="Trade Name/Brand Name" value={tradeOrBrandName} onChange={(e)=>setTradeOrBrandName(e.target.value)}/>
                     </div>
                   </div>
                 )}
               </div>
+              )}
               <div className="next_button">
                 <button onClick={nextButtonClick}>NEXT</button>
               </div>
@@ -462,7 +517,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("productCharacteristics")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productCharacteristics ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Characteristics</h3>
@@ -471,10 +526,33 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productCharacteristics && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Commodity Characteristic Description</label>
-                        <input type="text" value={commodityDesc} onChange={(e)=>setCommodityDesc(e.target.value)}/>
-                      </div>
+                      <InputField type="text" label="Commodity Characteristic Description"  value={commodityDesc} onChange={(e)=>setCommodityDesc(e.target.value)}/>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {(selectedGvtAgencyProgramCode === "Standalone_PN" || selectedGvtAgencyProgramCode === "FOOD") && (
+                <>
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
+                  onClick={() => toggleDropdown("licensePlateIssuer")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.licensePlateIssuer ? "rotate" : ""}`} />
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>License Plate Issuer</h3>
+                  </div>
+                </div>
+                {dropdownStates.licensePlateIssuer && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                     <InputField type="text" label="Issuer of LPCO" value={issuerOfLPCO} onChange={(e)=>setIssuerOfLPCO(e.target.value)}/>
+                     <InputField type="text" label="LPCO Issuer - Government Geographic Code Qualifier" value={governmentGeographicCodeQualifier} onChange={(e)=>setGovernmentGeographicCodeQualifier(e.target.value)}/>
+                     <InputField type="text" label="Location (Country/State/Provi nce) of Issuer of the LPCO" value={locationOfIssuerOfTheLPCO} onChange={(e)=>setLocationOfIssuerOfTheLPCO(e.target.value)}/>
+                     <InputField type="text" label="Regional description of location of Agency Issuing the LPCO" value={issuingAgencyLocation} onChange={(e)=>setIssuingAgencyLocation(e.target.value)}/>
+                     <InputField type="text" label="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -482,10 +560,58 @@ const countryCodeApi = ()=>{
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
+                  onClick={() => toggleDropdown("licensePlateNumber")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.licensePlateNumber ? "rotate" : ""}`} />
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>License Plate Number</h3>
+                  </div>
+                </div>
+                {dropdownStates.licensePlateNumber && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                     <InputField type="text" label="LPCO Transaction Type" value={transactionType} onChange={(e)=>setTransactionType(e.target.value)}/>
+                     <InputField type="text" label="LPCO Type" value={lpcoOrCodeType} onChange={(e)=>setLpcoOrCodeType(e.target.value)}/>
+                     <InputField type="text" label="LPCO Number (or Name)" value={lpcoOrPncNumber} onChange={(e)=>setLpcoOrPncNumber(e.target.value)}/>
+                    </div>
+                  </div>
+                )}
+              </div>
+              </>
+              )}
+               {selectedGvtAgencyProgramCode === "Non_PN"&& (
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
+                  onClick={() => toggleDropdown("licensePlateNumber")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.licensePlateNumber ? "rotate" : ""}`} />
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>PN Confirmation Number</h3>
+                  </div>
+                </div>
+                {dropdownStates.licensePlateNumber && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                    <InputField type="text" label="LPCO Transaction Type" value={transactionType} onChange={(e)=>setTransactionType(e.target.value)}/>
+                     <InputField type="text" label="LPCO Type" value={lpcoOrCodeType} onChange={(e)=>setLpcoOrCodeType(e.target.value)}/>
+                     <InputField type="text" label="LPCO Number (or Name)" value={lpcoOrPncNumber} onChange={(e)=>setLpcoOrPncNumber(e.target.value)}/>
+                    </div>
+                  </div>
+                )}
+              </div>
+               )}
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
                   onClick={() => toggleDropdown("entityData")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.entityData ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Entity Data</h3>
@@ -494,35 +620,25 @@ const countryCodeApi = ()=>{
                 {dropdownStates.entityData && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Entity Role Code</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Entity Identification Code</label>
-                        <select name="entityIdentificationCode" id="entityIdentificationCode">
-                          <option value="" selected>Select an option</option>
-                          <option value="16">16</option>
-                          <option value="47">47</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Entity Number</label>
-                        <input type="tel"/>
-                      </div>
-                      <div className="input_field">
-                        <label>Entity Name</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Entity Address 1</label>
-                        <input type="text" />
-                      </div>
+                      <SelectField
+                         label="Entity Role Code"
+                         name="partyType"
+                         id="partyType"
+                         onChange={(e)=>setPartyType(e.target.value)}
+                         value={partyType}
+                         options={roleCodeData}
+                       />
+                      <SelectField
+                         label="Entity Identification Code"
+                         name="entityIdentificationCode"
+                         id="entityIdentificationCode"
+                         onChange={(e)=>setPartyIdentifierType(e.target.value)}
+                         value={partyIdentifierType}
+                         options={["16","47"]}
+                       />
+                     <InputField type="tel" label="Entity Number" maxLength={9} value={partyIdentifierNumber !== null ? partyIdentifierNumber.toString() : ''} onChange={handlePartyIdentifierNumberChange}/>
+                     <InputField type="text" label="Entity Name" value={partyName} onChange={(e)=>setPartyName(e.target.value)}/>
+                     <InputField type="text" label="Entity Address 1" value={address1} onChange={(e)=>setAddress1(e.target.value)}/>
                     </div>
                   </div>
                 )}
@@ -533,7 +649,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("entityAddress")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.entityAddress ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Entity Address</h3>
@@ -542,44 +658,29 @@ const countryCodeApi = ()=>{
                 {dropdownStates.entityAddress && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Entity Address 2</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Entity Apartment Number</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Entity City</label>
-                        <input type="text" />
-                      </div>
-                      <div className="select_dropdown">
-                        <label>Entity State</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="select_dropdown">
-                        <label>Entity Country</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Entity Zip</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Filler</label>
-                        <input type="text" disabled/>
-                      </div>
+                     <InputField type="text" label="Entity Address 2" value={address2} onChange={(e)=>setAddress2(e.target.value)}/>
+                     <InputField type="text" label="Entity Apartment Number" value={apartmentOrSuiteNo} onChange={(e)=>setApartmentOrSuiteNo(e.target.value)}/>
+                     <InputField type="text" label="Entity City" value={city} onChange={(e)=>setCity(e.target.value)}/>
+                     <SelectField
+                         label="Entity Country"
+                         name="entityCountry"
+                         id="entityCountry"
+                         onChange={(e)=>setCountry(e.target.value)}
+                         value={country}
+                         options={countryCode}
+                         onClick={countryCodeApi}
+                       />
+                     <SelectField
+                         label="Entity State"
+                         name="entityState"
+                         id="entityState"
+                         onChange={(e)=>setStateOrProvince(e.target.value)}
+                         value={stateOrProvince}
+                         options={stateCodeData}
+                         onClick={stateCodeApi}
+                       />
+                     <InputField type="text" label="Entity Zip" value={postalCode} onChange={(e)=>setPostalCode(e.target.value)}/>
+                     <InputField type="text" label="Filler" disabled value={""}/>
                     </div>
                   </div>
                 )}
@@ -590,7 +691,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("pointOfContact")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.pointOfContact ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Point of Contact</h3>
@@ -599,27 +700,18 @@ const countryCodeApi = ()=>{
                 {dropdownStates.pointOfContact && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Individual Qualifier</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Individual Name</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Telephone Number</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Email</label>
-                        <input type="text" />
-                      </div>
+                      <SelectField
+                         label="Individual Qualifier"
+                         name="individualQualifier"
+                         id="individualQualifier"
+                         onChange={(e)=>setIndividualQualifier(e.target.value)}
+                         value={individualQualifier}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                         onClick={stateCodeApi}
+                       />
+                     <InputField type="text" label="Individual Name" value={contactPerson} onChange={(e)=>setContactPerson(e.target.value)}/>
+                     <InputField type="tel" label="Telephone Number" value={telephoneNumber} onChange={(e)=>setTelephoneNumber(e.target.value)}/>
+                     <InputField type="email" label="Email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
                     </div>
                   </div>
                 )}
@@ -637,7 +729,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("affirmationOfCompliance")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.affirmationOfCompliance ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Affirmation of Compliance</h3>
@@ -646,23 +738,17 @@ const countryCodeApi = ()=>{
                 {dropdownStates.affirmationOfCompliance && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Affirmation of Compliance Code</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Affirmation of Compliance Qualifier</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Filler</label>
-                        <input type="text" />
-                      </div>
+                      <SelectField
+                         label="Affirmation of Compliance Code"
+                         name="affirmationComplianceCode"
+                         id="affirmationComplianceCode"
+                         onChange={(e)=>setAffirmationComplianceCode(e.target.value)}
+                         value={affirmationComplianceCode}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                         onClick={stateCodeApi}
+                       />
+                     <InputField type="text" label="Affirmation of Compliance Qualifier" value={affirmationComplianceQualifier} onChange={(e)=>setAffirmationComplianceQualifier(e.target.value)}/>
+                     <InputField type="text" label="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -673,7 +759,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("remarks")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.remarks ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Remarks</h3>
@@ -682,14 +768,8 @@ const countryCodeApi = ()=>{
                 {dropdownStates.remarks && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Remarks Type Code</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Remarks Text</label>
-                        <input type="text" />
-                      </div>
+                     <InputField type="text" label="Remarks Type Code" value={remarksTypeCode} onChange={(e)=>setRemarksTypeCode(e.target.value)}/>
+                     <InputField type="text" label="Remarks Text" value={remarksText} onChange={(e)=>setRemarksText(e.target.value)}/>
                     </div>
                   </div>
                 )}
@@ -700,7 +780,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("productCondition")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productCondition ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Condition</h3>
@@ -709,27 +789,17 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productCondition && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Temperature Qualifier</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Lot Number Qualifier</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Lot Number</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>PGA Line Value</label>
-                        <input type="text" />
-                      </div>
+                      <SelectField
+                         label="Temperature Qualifier"
+                         name="temperatureQualifier"
+                         id="temperatureQualifier"
+                         onChange={(e)=>setTemperatureQualifier(e.target.value)}
+                         value={temperatureQualifier}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                       />
+                     <InputField type="text" label="Lot Number Qualifier" value={lotNumberQualifier} onChange={(e)=>setLotNumberQualifier(e.target.value)}/>
+                     <InputField type="text" label="Lot Number" value={lotNumber} onChange={(e)=>setLotNumber(e.target.value)}/>
+                     <InputField type="text" label="PGA Line Value" value={pgaLineValue} onChange={(e)=>setPgaLineValue(e.target.value)}/>
                     </div>
                   </div>
                 )}
@@ -740,7 +810,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("productPackaging")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.productPackaging ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Product Packaging</h3>
@@ -749,28 +819,23 @@ const countryCodeApi = ()=>{
                 {dropdownStates.productPackaging && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Packaging Qualifier</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Quantity</label>
-                        <input type="text" />
-                      </div>
-                      <div className="select_dropdown">
-                        <label>Unit of Measure (Packaging Level)</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
+                      <SelectField
+                         label="Packaging Qualifier"
+                         name="packagingQualifier"
+                         id="packagingQualifier"
+                         onChange={(e)=>setPackagingQualifier(e.target.value)}
+                         value={packagingQualifier}
+                         options={["1","2","3","4","5","6"]}
+                       />
+                     <InputField type="text" label="Quantity" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
+                      <SelectField
+                         label="Unit of Measure (Packaging Level)"
+                         name="uom"
+                         id="uom"
+                         onChange={(e)=>setUom(e.target.value)}
+                         value={uom}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                       />
                     </div>
                   </div>
                 )}
@@ -782,13 +847,14 @@ const countryCodeApi = ()=>{
           )}
           {currentStep === 4 && (
             <div className="step4">
+                {(selectedGvtAgencyProgramCode!== "DRU" && selectedGvtAgencyProgramCode!== "TOB" && selectedGvtAgencyProgramCode!== "VME") && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
                   onClick={() => toggleDropdown("shippingContainerInformation")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.shippingContainerInformation ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Shipping Container Information</h3>
@@ -797,26 +863,89 @@ const countryCodeApi = ()=>{
                 {dropdownStates.shippingContainerInformation && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Container-1 No.</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Container-2 No.</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Container-3 No.</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Filler</label>
-                        <input type="text" />
-                      </div>
+                     <InputField type="text" label="Container-1 No." value={containerNumberOne} onChange={(e)=>setContainerNumberOne(e.target.value)}/>
+                     <InputField type="text" label="Container-2 No." value={containerNumberTwo} onChange={(e)=>setContainerNumberTwo(e.target.value)}/>
+                     <InputField type="text" label="Container-3 No." value={containerNumberThree} onChange={(e)=>setContainerNumberThree(e.target.value)}/>
+                     <InputField type="text" label="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
               </div>
+              )}
+                {selectedGvtAgencyProgramCode=== "Standalone_PN" && (
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
+                  onClick={() => toggleDropdown("expressCourierTrackingNumber")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.expressCourierTrackingNumber ? "rotate" : ""}`} />
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>Express Courier Tracking Number</h3>
+                  </div>
+                </div>
+                {dropdownStates.expressCourierTrackingNumber && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                     <InputField type="text" label="Package Tracking Number Code" value={packageTrackingNumberCode} onChange={(e)=>setPackageTrackingNumberCode(e.target.value)}/>
+                     <InputField type="text" label="Package Tracking Number" value={packageTrackingNumber} onChange={(e)=>setPackageTrackingNumber(e.target.value)}/>
+                    </div>
+                  </div>
+                )}
+              </div>
+              )}
+                {selectedGvtAgencyProgramCode=== "FOOD" && (
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
+                  onClick={() => toggleDropdown("expressCourierTrackingContainerDimensions")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.expressCourierTrackingContainerDimensions ? "rotate" : ""}`} />
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>Express Courier Tracking and Container Dimensions – AF and LACF</h3>
+                  </div>
+                </div>
+                {dropdownStates.expressCourierTrackingContainerDimensions && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                     <InputField type="text" label="Container Dimensions #1" value={containerDimensionsOne} onChange={(e)=>setContainerDimensionsOne(e.target.value)}/>
+                     <InputField type="text" label="Container Dimensions #2" value={containerDimensionsTwo} onChange={(e)=>setContainerDimensionsTwo(e.target.value)}/>
+                     <InputField type="text" label="Container Dimensions #3" value={containerDimensionsThree} onChange={(e)=>setContainerDimensionsThreee(e.target.value)}/>
+                     <InputField type="text" label="Package Tracking Number Code" value={packageTrackingNumberCode} onChange={(e)=>setPackageTrackingNumberCode(e.target.value)}/>
+                     <InputField type="text" label="Package Tracking Number" value={packageTrackingNumber} onChange={(e)=>setPackageTrackingNumber(e.target.value)}/>
+
+                    </div>
+                  </div>
+                )}
+              </div>
+              )}
+                {selectedGvtAgencyProgramCode=== "Non_PN" && (
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
+                  onClick={() => toggleDropdown("containerDimensionsForAFnLACF")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.containerDimensionsForAFnLACF ? "rotate" : ""}`} />
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>Container Dimensions for AF and LACF</h3>
+                  </div>
+                </div>
+                {dropdownStates.containerDimensionsForAFnLACF && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                    <InputField type="text" label="Container Dimensions #1" value={containerDimensionsOne} onChange={(e)=>setContainerDimensionsOne(e.target.value)}/>
+                     <InputField type="text" label="Container Dimensions #2" value={containerDimensionsTwo} onChange={(e)=>setContainerDimensionsTwo(e.target.value)}/>
+                     <InputField type="text" label="Container Dimensions #3" value={containerDimensionsThree} onChange={(e)=>setContainerDimensionsThreee(e.target.value)}/>
+                    </div>
+                  </div>
+                )}
+              </div>
+              )}
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -825,7 +954,7 @@ const countryCodeApi = ()=>{
                   }
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.anticipatedArrivalInformation ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Anticipated Arrival Information</h3>
@@ -834,10 +963,7 @@ const countryCodeApi = ()=>{
                 {dropdownStates.anticipatedArrivalInformation && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="input_field">
-                        <label>Anticipated Arrival Information</label>
-                        <input type="text" />
-                      </div>
+                     <InputField type="text" label="Anticipated Arrival Information" value={anticipatedArrivalInformation} onChange={(e)=>setAnticipatedArrivalInformation(e.target.value)}/>
                       <div className="created_date">
                         <label>Anticipated Arrival Date at Port Entry</label>
                         <DatePicker defaultValue={today} format={dateFormat} />
@@ -847,25 +973,18 @@ const countryCodeApi = ()=>{
                         <TimePicker
                           format="HH:mm"
                           onChange={(value) => console.log(value)}
-                        />{" "}
+                        />
                       </div>
-                      <div className="input_field">
-                        <label>Arrival Location Code</label>
-                        <input type="text" />
-                      </div>
-                      <div className="select_dropdown">
-                        <label> Arrival Location</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Filler</label>
-                        <input type="text" />
-                      </div>
+                     <InputField type="text" label="Arrival Location Code" value={anticipatedArrivalLocationCode} onChange={(e)=>setAnticipatedArrivalLocationCode(e.target.value)}/>
+                      <SelectField
+                         label="Arrival Location"
+                         name="arrivalLocation"
+                         id="arrivalLocation"
+                         onChange={(e)=>setArrivalLocation(e.target.value)}
+                         value={arrivalLocation}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                       />
+                     <InputField type="text" label="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -883,7 +1002,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("affirmationOfCompliance")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.affirmationOfCompliance ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Additional Information</h3>
@@ -892,19 +1011,15 @@ const countryCodeApi = ()=>{
                 {dropdownStates.affirmationOfCompliance && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <div className="select_dropdown">
-                        <label>Additional information qualifier code</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Additional Information</label>
-                        <input type="text" />
-                      </div>
+                      <SelectField
+                         label="Additional information qualifier code"
+                         name="additionalInformationQualifierCode"
+                         id="additionalInformationQualifierCode"
+                         onChange={(e)=>setAdditionalInformationQualifierCode(e.target.value)}
+                         value={additionalInformationQualifierCode}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                       />
+                     <InputField type="text" label="Additional Information" value={additionalInformation} onChange={(e)=>setAdditionalInformation(e.target.value)}/>
                     </div>
                   </div>
                 )}
@@ -915,7 +1030,7 @@ const countryCodeApi = ()=>{
                   onClick={() => toggleDropdown("dataSubstitution")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className="dropdown_icon" />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.dataSubstitution ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
                     <h3>Data Substitution</h3>
@@ -923,24 +1038,17 @@ const countryCodeApi = ()=>{
                 </div>
                 {dropdownStates.dataSubstitution && (
                   <div className="dropdown_items">
-                    <div className="items">
-                      <div className="select_dropdown">
-                        <label>Substitution Indicator</label>
-                        <select name="cars" id="cars">
-                          <option value="volvo">Volvo</option>
-                          <option value="saab">Saab</option>
-                          <option value="mercedes">Mercedes</option>
-                          <option value="audi">Audi</option>
-                        </select>
-                      </div>
-                      <div className="input_field">
-                        <label>Substitution Number</label>
-                        <input type="text" />
-                      </div>
-                      <div className="input_field">
-                        <label>Filler</label>
-                        <input type="text" />
-                      </div>
+                    <div className="items">                  
+                      <SelectField
+                         label="Substitution Indicator"
+                         name="substitutionIndicator"
+                         id="substitutionIndicator"
+                         onChange={(e)=>setSubstitutionIndicator(e.target.value)}
+                         value={substitutionIndicator}
+                         options={["a","b","c","d","e","f","g","h","i"]}
+                       />
+                     <InputField type="text" label="Substitution Number" value={substitutionNumber} onChange={(e)=>setSubstitutionNumber(e.target.value)}/>
+                     <InputField type="text" label="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}

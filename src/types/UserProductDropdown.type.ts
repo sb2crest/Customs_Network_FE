@@ -5,6 +5,8 @@ export default interface IDropdownStates {
     productOrigin: boolean;
     productTradeNames: boolean;
     productCharacteristics: boolean;
+    licensePlateIssuer: boolean;
+    licensePlateNumber: boolean;
     entityData: boolean;
     entityAddress: boolean;
     pointOfContact: boolean;
@@ -13,6 +15,9 @@ export default interface IDropdownStates {
     productCondition: boolean;
     productPackaging: boolean;
     shippingContainerInformation: boolean;
+    expressCourierTrackingNumber: boolean;
+    expressCourierTrackingContainerDimensions: boolean;
+    containerDimensionsForAFnLACF: boolean;
     anticipatedArrivalInformation: boolean;
     additionalInformation: boolean;
     dataSubstitution: boolean;

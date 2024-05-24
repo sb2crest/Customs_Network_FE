@@ -19,8 +19,9 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 200,
   bgcolor: 'background.paper',
-  boxShadow: 24,
   p: 4,
+  borderRadius: '10px',
+  boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px;"
 };
 
 interface ProductCode {
@@ -29,6 +30,12 @@ interface ProductCode {
   code3: string;
   code4: string;
   code5: string;
+}
+interface dropdown {
+  dropdown1: boolean,
+    dropdown2: boolean,
+    dropdown3: boolean,
+    dropdown4: boolean,
 }
 
 const ProductCodeBuilder = () => {
@@ -50,7 +57,7 @@ const ProductCodeBuilder = () => {
   const [searchClassChecked, setSearchClassChecked] = useState(false);
   const [isProductSelected, setIsProductSelected] = useState(false);
   const [keepProductChecked, setKeepProductChecked] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState({
+  const [dropdownOpen, setDropdownOpen] = useState<dropdown>({
     dropdown1: false,
     dropdown2: false,
     dropdown3: false,
@@ -84,7 +91,7 @@ const [failedProductCode,setFailedProductCode] = useState(false);
   };
   const handleClose = () => setTipOpen(false);
 
-  const toggleDropdown = (dropdownKey: string) => {
+  const toggleDropdown = (dropdownKey: keyof dropdown ) => {
     setDropdownOpen((prevState) => ({
       ...prevState,
       [dropdownKey]: !prevState[dropdownKey],
@@ -549,9 +556,9 @@ handleClearOption();
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                 <h2>Success</h2>
-                 <p>It is valid Product code.</p>
-                 <button onClick={productCodeSubmit}>Submit</button>
+                 <h2 className="modal_heading_success">Success</h2>
+                 <p className="modal_body">It is valid Product code.</p>
+                 <button className="modal_btn_success" onClick={productCodeSubmit}>OKAY</button>
                 </Box>
               </Modal>
               <Modal
@@ -561,9 +568,9 @@ handleClearOption();
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                <h2>Failed</h2>
-                 <p>It is not a valid Product code!!!</p>
-                 <button onClick={productCodeModalClose}>Retry</button>
+                <h2 className="modal_heading_failed">Failed !!!</h2>
+                 <p className="modal_body">It is not a valid Product code.</p>
+                 <button className="modal_btn_failed" onClick={productCodeModalClose}>Retry</button>
                 </Box>
               </Modal>
             </div>

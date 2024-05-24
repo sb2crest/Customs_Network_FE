@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import useAuth from "../hooks/useAuth";
-import { axiosPrivate1 } from "../services/apiService";
+import useAuth from "../../hooks/useAuth";
+import { axiosPrivate1 } from "../../services/apiService";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import PersonIcon from "@mui/icons-material/Person";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { isValidEmail } from "../utilities/global";
+import { isValidEmail } from "../../utilities/global";
 import { IoIosWarning } from "react-icons/io";
 
 const LOGIN_URL = "/api/v1/auth/authenticate";
