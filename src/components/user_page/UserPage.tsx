@@ -9,6 +9,7 @@ import TokenExpirationPopup from "../../utilities/TokenExpirationPopup";
 import useAuth from "../../hooks/useAuth";
 import { useUserContext } from "../../context/UserContext";
 import { IoBarChartOutline } from "react-icons/io5";
+import { FaBoxOpen } from "react-icons/fa6";
 
 const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
@@ -193,6 +194,15 @@ const UserPage = () => {
                     </ul>
                   )}
                 </li>
+                <Link to="user-product">
+                  <li
+                    className={activeLi === "user-product" ? "active-li" : ""}
+                    onClick={() => handleLiClick("user-product")}
+                  >
+                    <FaBoxOpen className="sidebar_icon" />
+                    <span>Product</span>
+                  </li>
+                </Link>
               </ul>
             </div>
           </div>

@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { useUserContext } from "../../context/UserContext";
+} from 'chart.js';
+import { useUserContext } from '../../../context/UserContext';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
@@ -24,21 +26,21 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "top",
+      position: 'top',
       labels: {
-        boxWidth: 14,
-        boxHeight: 13,
+        boxWidth: 10,
+        boxHeight: 10,
         font: {
-          size: 13,
+          size: 12
         },
-        color: "#000",
-      },
+        color: '#000'
+      }
     },
     title: {
       display: true,
-      text: "Bar Chart",
-      position: "bottom",
-      color: "#000",
+      text: 'Line Chart ',
+      color: '#000',
+      position: 'bottom',
     },
   },
   scales: {
@@ -47,7 +49,7 @@ export const options = {
         display: false,
       },
       ticks: {
-        color: "#000",
+        color: '#000',
       },
     },
     y: {
@@ -55,13 +57,13 @@ export const options = {
         display: false,
       },
       ticks: {
-        color: "#000",
+        color: '#000',
       },
     },
   },
 };
 
-interface BarChartData {
+interface LineChartData {
   date: number;
   acceptedCount: number;
   pendingCount: number;
@@ -70,9 +72,9 @@ interface BarChartData {
   validationErrorCount: number;
 }
 
-const BarChart = () => {
+const LineChart = () => {
   const { trendsData } = useUserContext();
-  const [responseData, setResponseData] = useState<BarChartData[]>([]);
+  const [responseData, setResponseData] = useState<LineChartData[]>([]);
 
   useEffect(() => {
     if (trendsData && trendsData.dailyAuditData && trendsData.dailyAuditData.length > 0) {
@@ -101,7 +103,7 @@ const BarChart = () => {
   const rejectedData = responseData.map((dataItem) => dataItem.rejectedCount);
   const cbpDownData = responseData.map((dataItem) => dataItem.cbpDownCount);
   const validationErrorData = responseData.map((dataItem) => dataItem.validationErrorCount);
-  
+
   const data = {
     labels: labels.length ? labels : ['No data'],
     datasets: [
@@ -138,7 +140,9 @@ const BarChart = () => {
     ],
   };
 
-  return <Bar options={options} data={data} style={{background:"#fff"}}/>;
+  return (
+    <Line options={options} data={data} style={{background:"#fff"}}/>
+  );
 };
 
-export default BarChart;
+export default LineChart;

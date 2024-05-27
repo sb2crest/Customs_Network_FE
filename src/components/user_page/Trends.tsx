@@ -4,8 +4,8 @@ import { MdOutlinePendingActions } from "react-icons/md";
 import { LuSigma } from "react-icons/lu";
 import { GiSandsOfTime } from "react-icons/gi";
 import { FaArrowTrendUp, FaCircleXmark } from "react-icons/fa6";
-import LineChart from "./LineChart";
-import BarChart from "./BarChart";
+import LineChart from "./charts/LineChart";
+import BarChart from "./charts/BarChart";
 import Button from "@mui/material/Button";
 import { useEffect, useState, useRef } from "react";
 import { useUserContext } from "../../context/UserContext";
@@ -13,8 +13,8 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoBarChartOutline } from "react-icons/io5";
-import PortBarChart from "./PortBarChart";
-import PortLineChart from "./PortLineChart";
+import PortBarChart from "./charts/PortBarChart";
+import PortLineChart from "./charts/PortLineChart";
 import { MdErrorOutline } from "react-icons/md";
 
 const Trends = () => {

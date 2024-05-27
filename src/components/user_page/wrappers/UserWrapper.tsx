@@ -1,5 +1,5 @@
-import { UserProvider } from '../../context/UserContext';
-import UserPage from './UserPage';
+import { UserProvider } from '../../../context/UserContext';
+import UserPage from '../UserPage';
 
 const UserWrapper = () => {
   return (
