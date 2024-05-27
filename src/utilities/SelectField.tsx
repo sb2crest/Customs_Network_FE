@@ -3,7 +3,6 @@ import React from 'react';
 interface SelectFieldProps {
     label: string;
     name: string;
-    id: string;
     options: string[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     onClick?: (event: React.MouseEvent<HTMLSelectElement>) => void;
@@ -11,13 +10,12 @@ interface SelectFieldProps {
     disabled?: boolean;
   }
 
-const SelectField: React.FC<SelectFieldProps> = ({ label, name, id, options, onChange, onClick, value, disabled }) => {
+const SelectField: React.FC<SelectFieldProps> = ({ label, name, options, onChange, onClick, value, disabled }) => {
   return (
     <div className="select_dropdown">
       <label>{label}</label>
       <select
         name={name}
-        id={id}
         onChange={onChange}
         value={value}
         onClick={onClick}

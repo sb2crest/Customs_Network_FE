@@ -59,119 +59,107 @@ const UserProduct = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const today = dayjs();
 
+const [userProductForm,setUserProductForm] = useState({
   //pga Identifier
-  const [selectedGvtAgencyProgramCode, setSelectedGvtAgencyProgramCode] = useState<string>("");
-  const [governmentAgencyProcessingCodes, setGovernmentAgencyProcessingCodes] = useState<string[]>([]);
-  const [selectedGvtAgencyProcessingCodes,setSelectedGvtAgencyProcessingCodes] = useState<string>("");
-  const [intendedUseCodes, setIntendedUseCodes] = useState<string[]>([]);
-  const [selectedIntendedUseCodes,setSelectedIntendedUseCodes] = useState<string>("");
-  const [intendedUseDescription,setIntendedUseDescription] = useState<string>("");
-  const [correctionIndicator,setCorrectionIndicator] = useState<string>("");
-  const [disclaimer,setDisclaimer] = useState<string>("");
-  const [governmentAgencyCode,setGovernmentAgencyCode] = useState<string>("FDA");
-
+  pgaLineNumber:"001",
+  governmentAgencyCode:"FDA",
+  governmentAgencyProgramCode:"",
+  governmentAgencyProcessingCode:"",
+  intendedUseCode:"",
+  intendedUseDescription:"",
+  correctionIndicator:"",
+  disclaimer:"",
   //product identifier
-  const [openProductCodeBuilder, setOpenProductCodeBuilder] = React.useState(false);
-  const [itemType,setItemType] = useState<string>("P");
-  const [productCodeQualifier,setProductCodeQualifier] = useState<string>("FDP");
-
+  itemType:"P",
+  productCodeQualifier:"FDP",
   //Product Constituent Element
-  const [constituentActiveIngredientQualifier,setConstituentActiveIngredientQualifier] = useState<string>("");
-  const [constituentElementName,setConstituentElementName] = useState<string>("");
-  const [constituentElementQuantity,setConstituentElementQuantity] = useState<string>("");
-  const [constituentElementUnitOfMeasure,setConstituentElementUnitOfMeasure] = useState<string>("");
-  const [percentOfConstituentElement,setPercentOfConstituentElement] = useState<string>("");
-
+  constituentActiveIngredientQualifier:"",
+  constituentElementName:"",
+  constituentElementQuantity:"",
+  constituentElementUnitOfMeasure:"",
+  percentOfConstituentElement:"",
   //Product Origin
-  const [selectedSourceTypeCodes, setSelectedSourceTypeCodes] =useState<string>("");
-  const [sourceTypeCode, setSourceTypeCode] = useState<string[]>([]);
-  const [countryCode, setCountryCode] = useState<string[]>([]);
-  const [selectedCountryCode, setSelectedCountryCode] =useState<string>("");
-
+  sourceTypeCode:"",
+  countryCode:"",
   //Product Trade Names
-  const [tradeOrBrandName, setTradeOrBrandName] =useState<string>("");
-
+  tradeOrBrandName:"",
   //Product Characteristics
-  const [commodityDesc,setCommodityDesc] = useState<string>("");
-
+  commodityDesc:"",
   //License Plate Issuer
-  const [issuerOfLPCO,setIssuerOfLPCO] = useState<string>("");
-  const [governmentGeographicCodeQualifier,setGovernmentGeographicCodeQualifier] = useState<string>("");
-  const [locationOfIssuerOfTheLPCO,setLocationOfIssuerOfTheLPCO] = useState<string>("");
-  const [issuingAgencyLocation,setIssuingAgencyLocation] = useState<string>("");
-  
+  issuerOfLPCO:"",
+  governmentGeographicCodeQualifier:"",
+  locationOfIssuerOfTheLPCO:"",
+  issuingAgencyLocation:"",
   //License Plate Number //PN Confirmation Number
-  const [transactionType,setTransactionType] = useState<string>("");
-  const [lpcoOrCodeType,setLpcoOrCodeType] = useState<string>("");
-  const [lpcoOrPncNumber,setLpcoOrPncNumber] = useState<string>("");
-
+  transactionType:"",
+  lpcoOrCodeType:"",
+  lpcoOrPncNumber:"",
   //Entity Data
-  const [partyIdentifierType,setPartyIdentifierType] = useState<string>("");
-  const [partyIdentifierNumber,setPartyIdentifierNumber] = useState<number|null>(null);
-  const [partyName,setPartyName] = useState<string>("");
-  const [address1,setAddress1] = useState<string>("");
-  const [partyType,setPartyType] = useState<string>("");
-  const [roleCodeData,setRoleCodeData] = useState<string[]>([]);
-  
+  partyType:"",
+  partyIdentifierType:"",
+  partyIdentifierNumber:"",
+  partyName:"",
+  address1:"",
   //Entity Address
-  const [address2,setAddress2] = useState<string>("");
-  const [apartmentOrSuiteNo,setApartmentOrSuiteNo] = useState<string>("");
-  const [city,setCity] = useState<string>("");
-  const [country,setCountry] = useState<string>("");
-  const [stateCodeData,setStateCodeData] = useState<string[]>([]);
-  const [stateOrProvince,setStateOrProvince] = useState<string>("");
-  const [postalCode,setPostalCode] = useState<string>("");
-
+  address2:"",
+  apartmentOrSuiteNo:"",
+  city:"",
+  country:"",
+  stateOrProvince:"",
+  postalCode:"",
   //Point of Contact
-  const [contactPerson,setContactPerson] = useState<string>("");
-  const [telephoneNumber,setTelephoneNumber] = useState<string>("");
-  const [email,setEmail] = useState<string>("");
-  const [individualQualifier,setIndividualQualifier] = useState<string>("");
-
+  individualQualifier:"",
+  contactPerson:"",
+  telephoneNumber:"",
+  email:"",
   //Affirmation of Compliance
-  const [affirmationComplianceCode,setAffirmationComplianceCode] = useState<string>("");
-  const [affirmationComplianceQualifier,setAffirmationComplianceQualifier] = useState<string>("");
-  
+  affirmationComplianceCode:"",
+  affirmationComplianceQualifier:"",
   //Remarks
-  const [remarksTypeCode,setRemarksTypeCode] = useState<string>("");
-  const [remarksText,setRemarksText] = useState<string>("");
-
+  remarksTypeCode:"",
+  remarksText:"",
   //Product Condition
-  const [lotNumberQualifier,setLotNumberQualifier] = useState<string>("");
-  const [lotNumber,setLotNumber] = useState<string>("");
-  const [pgaLineValue,setPgaLineValue] = useState<string>("");
-  const [temperatureQualifier,setTemperatureQualifier] = useState<string>("");
-
+  temperatureQualifier:"",
+  degreeType:"",
+  negativeNumber:"",
+  actualTemperature:"",
+  lotNumberQualifier:"",
+  locationOfTemperatureRecording:"",
+  lotNumber:"",
+  pgaLineValue:"",
   //Product Packaging
-  const [packagingQualifier,setPackagingQualifier] = useState<string>("");
-  const [quantity,setQuantity] = useState<string>("");
-  const [uom,setUom] = useState<string>("");
-
-
+  packagingQualifier:"",
+  quantity:"",
+  uom:"",
   //Shipping Container Information
-  const [containerNumberOne,setContainerNumberOne] = useState<string>("");
-  const [containerNumberTwo,setContainerNumberTwo] = useState<string>("");
-  const [containerNumberThree,setContainerNumberThree] = useState<string>("");
-
+  containerNumberOne:"",
+  containerNumberTwo:"",
+  containerNumberThree:"",
   //Express Courier Tracking Number
-  const [packageTrackingNumber,setPackageTrackingNumber] = useState<string>("");
-  const [packageTrackingNumberCode,setPackageTrackingNumberCode] = useState<string>("");
-
+  packageTrackingNumberCode:"",
+  packageTrackingNumber:"",
   //Express Courier Tracking and Container Dimensions – AF and LACF
-  const [containerDimensionsOne,setContainerDimensionsOne] = useState<string>("");
-  const [containerDimensionsTwo,setContainerDimensionsTwo] = useState<string>("");
-  const [containerDimensionsThree,setContainerDimensionsThreee] = useState<string>("");
-
+  containerDimensionsOne:"",
+  containerDimensionsTwo:"",
+  containerDimensionsThree:"",
   //Anticipated Arrival Information
-  const [anticipatedArrivalInformation,setAnticipatedArrivalInformation] = useState<string>("");
-  const [anticipatedArrivalLocationCode,setAnticipatedArrivalLocationCode] = useState<string>("");
-  const [arrivalLocation,setArrivalLocation] = useState<string>("");
-  const [additionalInformationQualifierCode,setAdditionalInformationQualifierCode] = useState<string>("");
-  const [additionalInformation,setAdditionalInformation] = useState<string>("");
-
+  anticipatedArrivalInformation:"",
+  anticipatedArrivalLocationCode:"",
+  arrivalLocation:"",
+  //Additional Information
+  additionalInformationQualifierCode:"",
+  additionalInformation:"",
   //Data Substitution
-  const [substitutionIndicator,setSubstitutionIndicator] = useState<string>("");
-  const [substitutionNumber,setSubstitutionNumber] = useState<string>("");
+  substitutionIndicator:"",
+  substitutionNumber:"",
+});
+  const [gvtAgencyProcessingCodeData, setGvtAgencyProcessingCodeData] = useState<string[]>([]);
+  const [intendedUseCodeData, setIntendedUseCodeData] = useState<string[]>([]);
+  const [openProductCodeBuilder, setOpenProductCodeBuilder] = React.useState(false);
+  const [sourceTypeCodeData, setSourceTypeCodeData] = useState<string[]>([]);
+  const [countryCodeData, setCountryCodeData] = useState<string[]>([]);
+  const [roleCodeData,setRoleCodeData] = useState<string[]>([]);
+  const [stateCodeData,setStateCodeData] = useState<string[]>([]);
 
   const handleOpen = () => setOpenProductCodeBuilder(true);
   const handleClose = () => setOpenProductCodeBuilder(false);
@@ -188,99 +176,88 @@ const UserProduct = () => {
   };
 
   useEffect(() => {
-    if (selectedGvtAgencyProgramCode) {
+    if (userProductForm.governmentAgencyProgramCode) {
       gvtAgencyProgramCodeApi(
-        selectedGvtAgencyProgramCode,
-        selectedGvtAgencyProcessingCodes
+        userProductForm.governmentAgencyProgramCode,
+        userProductForm.governmentAgencyProcessingCode
       );``
     }
-  }, [selectedGvtAgencyProgramCode, selectedGvtAgencyProcessingCodes]);
+  }, [userProductForm.governmentAgencyProgramCode, userProductForm.governmentAgencyProcessingCode]);
 
   const handleProgramCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGvtAgencyProgramCode(e.target.value);
-    setIntendedUseCodes([]);
-    setSelectedGvtAgencyProcessingCodes("");
+    setUserProductForm({...userProductForm,governmentAgencyProgramCode:e.target.value, governmentAgencyProcessingCode:""});
+    setIntendedUseCodeData([]);
   };
   const GvtAgencyProcessingCodesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGvtAgencyProcessingCodes(e.target.value);
-    setIntendedUseCodes([]);
+    setUserProductForm({...userProductForm, governmentAgencyProcessingCode:e.target.value});
+    setIntendedUseCodeData([]);
   };
-  const intendedUseCodeschange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedIntendedUseCodes(e.target.value);
-  };
-  const sourceTypeCodechange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSourceTypeCodes(e.target.value);
-  };
-  const handlePartyIdentifierNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const numericValue = value === '' ? null : Number(value);
-    setPartyIdentifierNumber(numericValue);
-  };
+ 
   const gvtAgencyProgramCodeApi = (
-    selectedGvtAgencyProgramCode: string,
-    selectedGvtAgencyProcessingCodes: string
+    governmentAgencyProgramCode: string,
+    governmentAgencyProcessingCodes: string
   ) => {
     let requestParam;
 
 if (
-  selectedGvtAgencyProgramCode === "FOOD" ||
-  selectedGvtAgencyProgramCode === "Non_PN" ||
-  selectedGvtAgencyProgramCode === "Standalone_PN"
+  governmentAgencyProgramCode === "FOOD" ||
+  governmentAgencyProgramCode === "Non_PN" ||
+  governmentAgencyProgramCode === "Standalone_PN"
 ) {
   requestParam = "FOO";
 } else {
-  requestParam = selectedGvtAgencyProgramCode;
+  requestParam = governmentAgencyProgramCode;
 }
 
     axiosPrivate.get(`/pgaIdentifier/get-agency-program-code?governmentAgencyProgramCode=${requestParam}`)
       .then((res) => {
         const { programCodeData } = res.data;
         //For FOO code 
-        switch (selectedGvtAgencyProgramCode) {
+        switch (userProductForm.governmentAgencyProgramCode) {
             case "Non_PN":
-              setGovernmentAgencyProcessingCodes(
+              setGvtAgencyProcessingCodeData(
                 programCodeData["Non-PN_Food"].governmentAgencyProcessingCodes
               );
-              setIntendedUseCodes(programCodeData["Non-PN_Food"].intendedUseCodes);
-              setSourceTypeCode(programCodeData["Non-PN_Food"].sourceTypeCode);
+              setIntendedUseCodeData(programCodeData["Non-PN_Food"].intendedUseCodes);
+              setSourceTypeCodeData(programCodeData["Non-PN_Food"].sourceTypeCode);
               setRoleCodeData(programCodeData["Non-PN_Food"].entityRoleCode);
               break;
             case "FOOD":
-              setGovernmentAgencyProcessingCodes(
+              setGvtAgencyProcessingCodeData(
                 programCodeData.Food.governmentAgencyProcessingCodes
               );
-              setIntendedUseCodes(programCodeData.Food.intendedUseCodes);
-              setSourceTypeCode(programCodeData.Food.sourceTypeCode);
+              setIntendedUseCodeData(programCodeData.Food.intendedUseCodes);
+              setSourceTypeCodeData(programCodeData.Food.sourceTypeCode);
               setRoleCodeData(programCodeData.Food.entityRoleCode);
               break;
             case "Standalone_PN":
-              setGovernmentAgencyProcessingCodes(
+              setGvtAgencyProcessingCodeData(
                 programCodeData["Standalone-PN_Food"].governmentAgencyProcessingCodes
               );
-              setIntendedUseCodes(programCodeData["Standalone-PN_Food"].intendedUseCodes);
-              setSourceTypeCode(programCodeData["Standalone-PN_Food"].sourceTypeCode);
+              setIntendedUseCodeData(programCodeData["Standalone-PN_Food"].intendedUseCodes);
+              setSourceTypeCodeData(programCodeData["Standalone-PN_Food"].sourceTypeCode);
               setRoleCodeData(programCodeData["Standalone-PN_Food"].entityRoleCode);
               break;
             default:
-                setGovernmentAgencyProcessingCodes(programCodeData.governmentAgencyProcessingCodes);
+              setGvtAgencyProcessingCodeData(programCodeData.governmentAgencyProcessingCodes);
           }
 
           //For normal and DRU code
         if (Array.isArray(programCodeData.intendedUseCodes)) {
-          setIntendedUseCodes(programCodeData.intendedUseCodes);
-          setSourceTypeCode(programCodeData.sourceTypeCode);
+          setIntendedUseCodeData(programCodeData.intendedUseCodes);
+          setSourceTypeCodeData(programCodeData.sourceTypeCode);
           setRoleCodeData(programCodeData.entityRoleCode);
         } else if (
-          selectedGvtAgencyProcessingCodes &&
-          programCodeData.intendedUseCodes[selectedGvtAgencyProcessingCodes]
+          governmentAgencyProcessingCodes &&
+          programCodeData.intendedUseCodes[governmentAgencyProcessingCodes]
         ) {
-          setIntendedUseCodes(
-            programCodeData.intendedUseCodes[selectedGvtAgencyProcessingCodes]
+          setIntendedUseCodeData(
+            programCodeData.intendedUseCodes[governmentAgencyProcessingCodes]
           );
-          setSourceTypeCode(programCodeData.sourceTypeCode);
+          setSourceTypeCodeData(programCodeData.sourceTypeCode);
           setRoleCodeData(programCodeData.entityRoleCode);
         } else {
-          setIntendedUseCodes([]);
+          setIntendedUseCodeData([]);
         }
       })
       .catch((err) => {
@@ -289,17 +266,24 @@ if (
   };
 const countryCodeApi = ()=>{
   axiosPrivate.get(`/pgaIdentifier/get-all-country-codes`).then((response)=>{
-    setCountryCode(response.data);
+    setCountryCodeData(response.data);
   }).catch((err) => {
     console.log(err);
   });
 }
 const stateCodeApi = ()=>{
-  axiosPrivate.get(`/pgaIdentifier/get-state-codes?countryCode=${country}`).then((response)=>{
+  axiosPrivate.get(`/pgaIdentifier/get-state-codes?countryCode=${userProductForm.country}`).then((response)=>{
     setStateCodeData(response.data.stateCodes);
   }).catch((err) => {
     console.log(err);
   });
+};
+
+const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>)=>{
+  setUserProductForm({
+    ...userProductForm,
+    [e.target.name]: e.target.value
+  })
 };
   return (
     <div className="userproduct">
@@ -328,14 +312,14 @@ const stateCodeApi = ()=>{
                 {dropdownStates.pgaIdentifier && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <InputField type="text" label="Government Agency Code" value={governmentAgencyCode} disabled/>
+                      <InputField type="text" name="pgaLineNumber" label="PGA Line Number" value={userProductForm.pgaLineNumber} disabled/>
+                      <InputField type="text" name="governmentAgencyCode" label="Government Agency Code" value={userProductForm.governmentAgencyCode} disabled/>
                       <div className="select_dropdown">
                         <label>Government Agency Program Code</label>
                         <select
-                          name="gvt_agency_program_code"
-                          id="gvt_agency_program_code"
+                          name="governmentAgencyProgramCode"
                           onChange={handleProgramCodeChange}
-                          value={selectedGvtAgencyProgramCode}
+                          value={userProductForm.governmentAgencyProgramCode}
                         >
                           <option value="" disabled selected>
                             Select an option
@@ -354,28 +338,25 @@ const stateCodeApi = ()=>{
                       </div>
                       <SelectField
                          label="Government Agency Processing Code"
-                         name="governmentAgencyProcessingCodes"
-                         id="governmentAgencyProcessingCodes"
+                         name="governmentAgencyProcessingCode"
                          onChange={GvtAgencyProcessingCodesChange}
-                         value={selectedGvtAgencyProcessingCodes}
-                         options={governmentAgencyProcessingCodes}
+                         value={userProductForm.governmentAgencyProcessingCode}
+                         options={gvtAgencyProcessingCodeData}
                        />
                       <SelectField
                          label="Intended Use Code"
-                         name="intendedUseCodes"
-                         id="intendedUseCodes"
-                         onChange={intendedUseCodeschange}
-                         value={selectedIntendedUseCodes}
-                         options={intendedUseCodes}
+                         name="intendedUseCode"
+                         onChange={handleChangeFields}
+                         value={userProductForm.intendedUseCode}
+                         options={intendedUseCodeData}
                        />
-                      <InputField type="text" label="Intended Use Description" value={intendedUseDescription} onChange={(e)=>setIntendedUseDescription(e.target.value)}/>
-                      <InputField type="text" label="Correction Indicator" value={correctionIndicator} onChange={(e)=>setCorrectionIndicator(e.target.value)}/>
+                      <InputField type="text" label="Intended Use Description" name="intendedUseDescription" value={userProductForm.intendedUseDescription} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Correction Indicator" name="correctionIndicator" value={userProductForm.correctionIndicator} onChange={handleChangeFields}/>
                       <SelectField
                          label="Disclaimer"
                          name="disclaimer"
-                         id="disclaimer"
-                         onChange={(e)=>setDisclaimer(e.target.value)}
-                         value={disclaimer}
+                         onChange={handleChangeFields}
+                         value={userProductForm.disclaimer}
                          options={["A"]}
                        />
                     </div>
@@ -397,9 +378,9 @@ const stateCodeApi = ()=>{
                 {dropdownStates.productIdentifier && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <InputField type="text" label="Item type" value={itemType} disabled/>
-                      <InputField type="text" label="Product Code Qualifier" value={productCodeQualifier} disabled/>
-                      <InputField type="text" label="Product Code Number" value={concatenatedProductCode} readOnly onClick={handleOpen}/>
+                      <InputField type="text" label="Item type" name="itemType" value={userProductForm.itemType} disabled/>
+                      <InputField type="text" label="Product Code Qualifier" name="productCodeQualifier" value={userProductForm.productCodeQualifier} disabled/>
+                      <InputField type="text" label="Product Code Number" name="productCodeNumber" value={concatenatedProductCode} readOnly onClick={handleOpen}/>
                         <Modal
                             open={openProductCodeBuilder}
                             onClose={handleClose}
@@ -413,7 +394,7 @@ const stateCodeApi = ()=>{
                     </div>
                 )}
               </div>
-              {(selectedGvtAgencyProgramCode === "BIO" || selectedGvtAgencyProgramCode === "DRU" || selectedGvtAgencyProgramCode === "VME") && (
+              {(userProductForm.governmentAgencyProgramCode === "BIO" || userProductForm.governmentAgencyProgramCode === "DRU" || userProductForm.governmentAgencyProgramCode === "VME") && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -432,15 +413,14 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Constituent Active Ingredient Qualifier"
                          name="constituentActiveIngredientQualifier"
-                         id="constituentActiveIngredientQualifier"
-                         onChange={(e)=>setConstituentActiveIngredientQualifier(e.target.value)}
-                         value={constituentActiveIngredientQualifier}
+                         onChange={handleChangeFields}
+                         value={userProductForm.constituentActiveIngredientQualifier}
                          options={["A","B","C","D","E","F","G","H","I"]}
                        />
-                      <InputField type="text" label="Name of the Constituent Element" value={constituentElementName} onChange={(e)=>setConstituentElementName(e.target.value)}/>
-                      <InputField type="text" label="Quantity of Constituent Element" value={constituentElementQuantity} onChange={(e)=>setConstituentElementQuantity(e.target.value)}/>
-                      <InputField type="text" label="Unit of Measure" value={constituentElementUnitOfMeasure} onChange={(e)=>setConstituentElementUnitOfMeasure(e.target.value)}/>
-                      <InputField type="text" label="Percent of Constituent Element" value={percentOfConstituentElement} onChange={(e)=>setPercentOfConstituentElement(e.target.value)}/>
+                      <InputField type="text" label="Name of the Constituent Element" name="constituentElementName" value={userProductForm.constituentElementName} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Quantity of Constituent Element" name="constituentElementQuantity" value={userProductForm.constituentElementQuantity} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Unit of Measure" name="constituentElementUnitOfMeasure" value={userProductForm.constituentElementUnitOfMeasure} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Percent of Constituent Element" name="percentOfConstituentElement" value={userProductForm.percentOfConstituentElement} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -464,25 +444,23 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Source Type Code"
                          name="sourceTypeCode"
-                         id="sourceTypeCode"
-                         onChange={sourceTypeCodechange}
-                         value={selectedSourceTypeCodes}
-                         options={sourceTypeCode}
+                         onChange={handleChangeFields}
+                         value={userProductForm.sourceTypeCode}
+                         options={sourceTypeCodeData}
                        />
                       <SelectField
                          label="Country Code"
                          name="countryCode"
-                         id="countryCode"
                          onClick={countryCodeApi}
-                         onChange={(e)=>setSelectedCountryCode(e.target.value)}
-                         value={selectedCountryCode}
-                         options={countryCode}
+                         onChange={handleChangeFields}
+                         value={userProductForm.countryCode}
+                         options={countryCodeData}
                        />
                     </div>
                   </div>
                 )}
               </div>
-              {selectedGvtAgencyProgramCode !== "Standalone_PN" &&(
+              {userProductForm.governmentAgencyProgramCode !== "Standalone_PN" &&(
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -498,7 +476,7 @@ const stateCodeApi = ()=>{
                 {dropdownStates.productTradeNames && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <InputField type="text" label="Trade Name/Brand Name" value={tradeOrBrandName} onChange={(e)=>setTradeOrBrandName(e.target.value)}/>
+                      <InputField type="text" label="Trade Name/Brand Name" name="tradeOrBrandName" value={userProductForm.tradeOrBrandName} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -526,12 +504,12 @@ const stateCodeApi = ()=>{
                 {dropdownStates.productCharacteristics && (
                   <div className="dropdown_items">
                     <div className="items">
-                      <InputField type="text" label="Commodity Characteristic Description"  value={commodityDesc} onChange={(e)=>setCommodityDesc(e.target.value)}/>
+                      <InputField type="text" label="Commodity Characteristic Description" name="commodityDesc"  value={userProductForm.commodityDesc} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
               </div>
-              {(selectedGvtAgencyProgramCode === "Standalone_PN" || selectedGvtAgencyProgramCode === "FOOD") && (
+              {(userProductForm.governmentAgencyProgramCode === "Standalone_PN" || userProductForm.governmentAgencyProgramCode === "FOOD") && (
                 <>
               <div className="dropdown_container">
                 <div
@@ -548,11 +526,11 @@ const stateCodeApi = ()=>{
                 {dropdownStates.licensePlateIssuer && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Issuer of LPCO" value={issuerOfLPCO} onChange={(e)=>setIssuerOfLPCO(e.target.value)}/>
-                     <InputField type="text" label="LPCO Issuer - Government Geographic Code Qualifier" value={governmentGeographicCodeQualifier} onChange={(e)=>setGovernmentGeographicCodeQualifier(e.target.value)}/>
-                     <InputField type="text" label="Location (Country/State/Provi nce) of Issuer of the LPCO" value={locationOfIssuerOfTheLPCO} onChange={(e)=>setLocationOfIssuerOfTheLPCO(e.target.value)}/>
-                     <InputField type="text" label="Regional description of location of Agency Issuing the LPCO" value={issuingAgencyLocation} onChange={(e)=>setIssuingAgencyLocation(e.target.value)}/>
-                     <InputField type="text" label="Filler" disabled value={" "}/>
+                     <InputField type="text" label="Issuer of LPCO" name="issuerOfLPCO" value={userProductForm.issuerOfLPCO} onChange={handleChangeFields}/>
+                     <InputField type="text" label="LPCO Issuer - Government Geographic Code Qualifier" name="governmentGeographicCodeQualifier" value={userProductForm.governmentGeographicCodeQualifier} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Location (Country/State/Provi nce) of Issuer of the LPCO" name="locationOfIssuerOfTheLPCO" value={userProductForm.locationOfIssuerOfTheLPCO} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Regional description of location of Agency Issuing the LPCO" name="issuingAgencyLocation" value={userProductForm.issuingAgencyLocation} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -572,16 +550,16 @@ const stateCodeApi = ()=>{
                 {dropdownStates.licensePlateNumber && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="LPCO Transaction Type" value={transactionType} onChange={(e)=>setTransactionType(e.target.value)}/>
-                     <InputField type="text" label="LPCO Type" value={lpcoOrCodeType} onChange={(e)=>setLpcoOrCodeType(e.target.value)}/>
-                     <InputField type="text" label="LPCO Number (or Name)" value={lpcoOrPncNumber} onChange={(e)=>setLpcoOrPncNumber(e.target.value)}/>
+                     <InputField type="text" label="LPCO Transaction Type" name="transactionType" value={userProductForm.transactionType} onChange={handleChangeFields}/>
+                     <InputField type="text" label="LPCO Type" name="lpcoOrCodeType" value={userProductForm.lpcoOrCodeType} onChange={handleChangeFields}/>
+                     <InputField type="text" label="LPCO Number (or Name)" name="lpcoOrPncNumber" value={userProductForm.lpcoOrPncNumber} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
               </div>
               </>
               )}
-               {selectedGvtAgencyProgramCode === "Non_PN"&& (
+               {userProductForm.governmentAgencyProgramCode === "Non_PN"&& (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -597,9 +575,9 @@ const stateCodeApi = ()=>{
                 {dropdownStates.licensePlateNumber && (
                   <div className="dropdown_items">
                     <div className="items">
-                    <InputField type="text" label="LPCO Transaction Type" value={transactionType} onChange={(e)=>setTransactionType(e.target.value)}/>
-                     <InputField type="text" label="LPCO Type" value={lpcoOrCodeType} onChange={(e)=>setLpcoOrCodeType(e.target.value)}/>
-                     <InputField type="text" label="LPCO Number (or Name)" value={lpcoOrPncNumber} onChange={(e)=>setLpcoOrPncNumber(e.target.value)}/>
+                    <InputField type="text" label="Transaction Type" name="transactionType" value={userProductForm.transactionType} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Code Type" name="lpcoOrCodeType" value={userProductForm.lpcoOrCodeType} onChange={handleChangeFields}/>
+                     <InputField type="text" label="PNC Number" name="lpcoOrPncNumber" value={userProductForm.lpcoOrPncNumber} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -623,22 +601,20 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Entity Role Code"
                          name="partyType"
-                         id="partyType"
-                         onChange={(e)=>setPartyType(e.target.value)}
-                         value={partyType}
+                         onChange={handleChangeFields}
+                         value={userProductForm.partyType}
                          options={roleCodeData}
                        />
                       <SelectField
                          label="Entity Identification Code"
-                         name="entityIdentificationCode"
-                         id="entityIdentificationCode"
-                         onChange={(e)=>setPartyIdentifierType(e.target.value)}
-                         value={partyIdentifierType}
+                         name="partyIdentifierType"
+                         onChange={handleChangeFields}
+                         value={userProductForm.partyIdentifierType}
                          options={["16","47"]}
                        />
-                     <InputField type="tel" label="Entity Number" maxLength={9} value={partyIdentifierNumber !== null ? partyIdentifierNumber.toString() : ''} onChange={handlePartyIdentifierNumberChange}/>
-                     <InputField type="text" label="Entity Name" value={partyName} onChange={(e)=>setPartyName(e.target.value)}/>
-                     <InputField type="text" label="Entity Address 1" value={address1} onChange={(e)=>setAddress1(e.target.value)}/>
+                     <InputField type="tel" label="Entity Number" name="partyIdentifierNumber" maxLength={9} value={userProductForm.partyIdentifierNumber} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Entity Name" name="partyName" value={userProductForm.partyName} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Entity Address 1" name="address1" value={userProductForm.address1} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -658,29 +634,27 @@ const stateCodeApi = ()=>{
                 {dropdownStates.entityAddress && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Entity Address 2" value={address2} onChange={(e)=>setAddress2(e.target.value)}/>
-                     <InputField type="text" label="Entity Apartment Number" value={apartmentOrSuiteNo} onChange={(e)=>setApartmentOrSuiteNo(e.target.value)}/>
-                     <InputField type="text" label="Entity City" value={city} onChange={(e)=>setCity(e.target.value)}/>
+                     <InputField type="text" label="Entity Address 2" name="address2" value={userProductForm.address2} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Entity Apartment Number" name="apartmentOrSuiteNo" value={userProductForm.apartmentOrSuiteNo} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Entity City" value={userProductForm.city} name="city" onChange={handleChangeFields}/>
                      <SelectField
                          label="Entity Country"
-                         name="entityCountry"
-                         id="entityCountry"
-                         onChange={(e)=>setCountry(e.target.value)}
-                         value={country}
-                         options={countryCode}
+                         name="country"
+                         onChange={handleChangeFields}
+                         value={userProductForm.country}
+                         options={countryCodeData}
                          onClick={countryCodeApi}
                        />
                      <SelectField
                          label="Entity State"
-                         name="entityState"
-                         id="entityState"
-                         onChange={(e)=>setStateOrProvince(e.target.value)}
-                         value={stateOrProvince}
+                         name="stateOrProvince"
+                         onChange={handleChangeFields}
+                         value={userProductForm.stateOrProvince}
                          options={stateCodeData}
                          onClick={stateCodeApi}
                        />
-                     <InputField type="text" label="Entity Zip" value={postalCode} onChange={(e)=>setPostalCode(e.target.value)}/>
-                     <InputField type="text" label="Filler" disabled value={""}/>
+                     <InputField type="text" label="Entity Zip" name="postalCode" value={userProductForm.postalCode} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Filler" name="Filler" disabled value={""}/>
                     </div>
                   </div>
                 )}
@@ -703,15 +677,14 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Individual Qualifier"
                          name="individualQualifier"
-                         id="individualQualifier"
-                         onChange={(e)=>setIndividualQualifier(e.target.value)}
-                         value={individualQualifier}
+                         onChange={handleChangeFields}
+                         value={userProductForm.individualQualifier}
                          options={["a","b","c","d","e","f","g","h","i"]}
                          onClick={stateCodeApi}
                        />
-                     <InputField type="text" label="Individual Name" value={contactPerson} onChange={(e)=>setContactPerson(e.target.value)}/>
-                     <InputField type="tel" label="Telephone Number" value={telephoneNumber} onChange={(e)=>setTelephoneNumber(e.target.value)}/>
-                     <InputField type="email" label="Email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                     <InputField type="text" label="Individual Name" name="contactPerson" value={userProductForm.contactPerson} onChange={handleChangeFields}/>
+                     <InputField type="tel" label="Telephone Number" name="telephoneNumber" value={userProductForm.telephoneNumber} onChange={handleChangeFields}/>
+                     <InputField type="email" label="Email" name="email" value={userProductForm.email} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -741,14 +714,13 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Affirmation of Compliance Code"
                          name="affirmationComplianceCode"
-                         id="affirmationComplianceCode"
-                         onChange={(e)=>setAffirmationComplianceCode(e.target.value)}
-                         value={affirmationComplianceCode}
+                         onChange={handleChangeFields}
+                         value={userProductForm.affirmationComplianceCode}
                          options={["a","b","c","d","e","f","g","h","i"]}
                          onClick={stateCodeApi}
                        />
-                     <InputField type="text" label="Affirmation of Compliance Qualifier" value={affirmationComplianceQualifier} onChange={(e)=>setAffirmationComplianceQualifier(e.target.value)}/>
-                     <InputField type="text" label="Filler" disabled value={" "}/>
+                     <InputField type="text" label="Affirmation of Compliance Qualifier" name="affirmationComplianceQualifier" value={userProductForm.affirmationComplianceQualifier} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -768,8 +740,8 @@ const stateCodeApi = ()=>{
                 {dropdownStates.remarks && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Remarks Type Code" value={remarksTypeCode} onChange={(e)=>setRemarksTypeCode(e.target.value)}/>
-                     <InputField type="text" label="Remarks Text" value={remarksText} onChange={(e)=>setRemarksText(e.target.value)}/>
+                     <InputField type="text" label="Remarks Type Code" name="remarksTypeCode" value={userProductForm.remarksTypeCode} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Remarks Text" name="remarksText" value={userProductForm.remarksText} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -792,14 +764,21 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Temperature Qualifier"
                          name="temperatureQualifier"
-                         id="temperatureQualifier"
-                         onChange={(e)=>setTemperatureQualifier(e.target.value)}
-                         value={temperatureQualifier}
+                         onChange={handleChangeFields}
+                         value={userProductForm.temperatureQualifier}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
-                     <InputField type="text" label="Lot Number Qualifier" value={lotNumberQualifier} onChange={(e)=>setLotNumberQualifier(e.target.value)}/>
-                     <InputField type="text" label="Lot Number" value={lotNumber} onChange={(e)=>setLotNumber(e.target.value)}/>
-                     <InputField type="text" label="PGA Line Value" value={pgaLineValue} onChange={(e)=>setPgaLineValue(e.target.value)}/>
+                  {userProductForm.governmentAgencyProgramCode === "DRU" && (
+                     <>
+                     <InputField type="text" label="Degree Type" name="degreeType" value={userProductForm.degreeType} onChange={handleChangeFields} />
+                     <InputField type="text" label="Negative Number" name="negativeNumber" value={userProductForm.negativeNumber} onChange={handleChangeFields} />
+                     <InputField type="text" label="Actual Temperature" name="actualTemperature" value={userProductForm.actualTemperature} onChange={handleChangeFields} />
+                     <InputField type="text" label="Location of Temperature Recording" name="locationOfTemperatureRecording" value={userProductForm.locationOfTemperatureRecording} onChange={handleChangeFields} />
+                     </>
+                  )}
+                     <InputField type="text" label="Lot Number Qualifier" name="lotNumberQualifier" value={userProductForm.lotNumberQualifier} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Lot Number" name="lotNumber" value={userProductForm.lotNumber} onChange={handleChangeFields}/>
+                     <InputField type="text" label="PGA Line Value" name="pgaLineValue" value={userProductForm.pgaLineValue} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -822,18 +801,16 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Packaging Qualifier"
                          name="packagingQualifier"
-                         id="packagingQualifier"
-                         onChange={(e)=>setPackagingQualifier(e.target.value)}
-                         value={packagingQualifier}
+                         onChange={handleChangeFields}
+                         value={userProductForm.packagingQualifier}
                          options={["1","2","3","4","5","6"]}
                        />
-                     <InputField type="text" label="Quantity" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
+                     <InputField type="text" label="Quantity" name="quantity" value={userProductForm.quantity} onChange={handleChangeFields}/>
                       <SelectField
                          label="Unit of Measure (Packaging Level)"
                          name="uom"
-                         id="uom"
-                         onChange={(e)=>setUom(e.target.value)}
-                         value={uom}
+                         onChange={handleChangeFields}
+                         value={userProductForm.uom}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
                     </div>
@@ -847,7 +824,7 @@ const stateCodeApi = ()=>{
           )}
           {currentStep === 4 && (
             <div className="step4">
-                {(selectedGvtAgencyProgramCode!== "DRU" && selectedGvtAgencyProgramCode!== "TOB" && selectedGvtAgencyProgramCode!== "VME") && (
+                {(userProductForm.governmentAgencyProgramCode!== "DRU" && userProductForm.governmentAgencyProgramCode!== "TOB" && userProductForm.governmentAgencyProgramCode!== "VME") && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -863,16 +840,16 @@ const stateCodeApi = ()=>{
                 {dropdownStates.shippingContainerInformation && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Container-1 No." value={containerNumberOne} onChange={(e)=>setContainerNumberOne(e.target.value)}/>
-                     <InputField type="text" label="Container-2 No." value={containerNumberTwo} onChange={(e)=>setContainerNumberTwo(e.target.value)}/>
-                     <InputField type="text" label="Container-3 No." value={containerNumberThree} onChange={(e)=>setContainerNumberThree(e.target.value)}/>
-                     <InputField type="text" label="Filler" disabled value={" "}/>
+                     <InputField type="text" label="Container-1 No." name="containerNumberOne" value={userProductForm.containerNumberOne} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Container-2 No." name="containerNumberTwo" value={userProductForm.containerNumberTwo} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Container-3 No." name="containerNumberThree" value={userProductForm.containerNumberThree} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
               </div>
               )}
-                {selectedGvtAgencyProgramCode=== "Standalone_PN" && (
+                {userProductForm.governmentAgencyProgramCode=== "Standalone_PN" && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -888,14 +865,14 @@ const stateCodeApi = ()=>{
                 {dropdownStates.expressCourierTrackingNumber && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Package Tracking Number Code" value={packageTrackingNumberCode} onChange={(e)=>setPackageTrackingNumberCode(e.target.value)}/>
-                     <InputField type="text" label="Package Tracking Number" value={packageTrackingNumber} onChange={(e)=>setPackageTrackingNumber(e.target.value)}/>
+                     <InputField type="text" label="Package Tracking Number Code" name="packageTrackingNumberCode" value={userProductForm.packageTrackingNumberCode} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Package Tracking Number" name="packageTrackingNumber" value={userProductForm.packageTrackingNumber} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
               </div>
               )}
-                {selectedGvtAgencyProgramCode=== "FOOD" && (
+                {userProductForm.governmentAgencyProgramCode=== "FOOD" && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -911,18 +888,17 @@ const stateCodeApi = ()=>{
                 {dropdownStates.expressCourierTrackingContainerDimensions && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Container Dimensions #1" value={containerDimensionsOne} onChange={(e)=>setContainerDimensionsOne(e.target.value)}/>
-                     <InputField type="text" label="Container Dimensions #2" value={containerDimensionsTwo} onChange={(e)=>setContainerDimensionsTwo(e.target.value)}/>
-                     <InputField type="text" label="Container Dimensions #3" value={containerDimensionsThree} onChange={(e)=>setContainerDimensionsThreee(e.target.value)}/>
-                     <InputField type="text" label="Package Tracking Number Code" value={packageTrackingNumberCode} onChange={(e)=>setPackageTrackingNumberCode(e.target.value)}/>
-                     <InputField type="text" label="Package Tracking Number" value={packageTrackingNumber} onChange={(e)=>setPackageTrackingNumber(e.target.value)}/>
-
+                     <InputField type="text" label="Container Dimensions #1" name="containerDimensionsOne" value={userProductForm.containerDimensionsOne} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Container Dimensions #2" name="containerDimensionsTwo" value={userProductForm.containerDimensionsTwo} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Container Dimensions #3" name="containerDimensionsThree" value={userProductForm.containerDimensionsThree} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Package Tracking Number Code" name="packageTrackingNumberCode" value={userProductForm.packageTrackingNumberCode} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Package Tracking Number" name="packageTrackingNumber" value={userProductForm.packageTrackingNumber} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
               </div>
               )}
-                {selectedGvtAgencyProgramCode=== "Non_PN" && (
+                {userProductForm.governmentAgencyProgramCode=== "Non_PN" && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -938,9 +914,9 @@ const stateCodeApi = ()=>{
                 {dropdownStates.containerDimensionsForAFnLACF && (
                   <div className="dropdown_items">
                     <div className="items">
-                    <InputField type="text" label="Container Dimensions #1" value={containerDimensionsOne} onChange={(e)=>setContainerDimensionsOne(e.target.value)}/>
-                     <InputField type="text" label="Container Dimensions #2" value={containerDimensionsTwo} onChange={(e)=>setContainerDimensionsTwo(e.target.value)}/>
-                     <InputField type="text" label="Container Dimensions #3" value={containerDimensionsThree} onChange={(e)=>setContainerDimensionsThreee(e.target.value)}/>
+                    <InputField type="text" label="Container Dimensions #1" name="containerDimensionsOne" value={userProductForm.containerDimensionsOne} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Container Dimensions #2" name="containerDimensionsTwo" value={userProductForm.containerDimensionsTwo} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Container Dimensions #3" name="containerDimensionsThree" value={userProductForm.containerDimensionsThree} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -963,7 +939,7 @@ const stateCodeApi = ()=>{
                 {dropdownStates.anticipatedArrivalInformation && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Anticipated Arrival Information" value={anticipatedArrivalInformation} onChange={(e)=>setAnticipatedArrivalInformation(e.target.value)}/>
+                     <InputField type="text" label="Anticipated Arrival Information" name="anticipatedArrivalInformation" value={userProductForm.anticipatedArrivalInformation} onChange={handleChangeFields}/>
                       <div className="created_date">
                         <label>Anticipated Arrival Date at Port Entry</label>
                         <DatePicker defaultValue={today} format={dateFormat} />
@@ -975,16 +951,15 @@ const stateCodeApi = ()=>{
                           onChange={(value) => console.log(value)}
                         />
                       </div>
-                     <InputField type="text" label="Arrival Location Code" value={anticipatedArrivalLocationCode} onChange={(e)=>setAnticipatedArrivalLocationCode(e.target.value)}/>
+                     <InputField type="text" label="Arrival Location Code" name="anticipatedArrivalLocationCode" value={userProductForm.anticipatedArrivalLocationCode} onChange={handleChangeFields}/>
                       <SelectField
                          label="Arrival Location"
                          name="arrivalLocation"
-                         id="arrivalLocation"
-                         onChange={(e)=>setArrivalLocation(e.target.value)}
-                         value={arrivalLocation}
+                         onChange={handleChangeFields}
+                         value={userProductForm.arrivalLocation}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
-                     <InputField type="text" label="Filler" disabled value={" "}/>
+                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -1014,12 +989,11 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Additional information qualifier code"
                          name="additionalInformationQualifierCode"
-                         id="additionalInformationQualifierCode"
-                         onChange={(e)=>setAdditionalInformationQualifierCode(e.target.value)}
-                         value={additionalInformationQualifierCode}
+                         onChange={handleChangeFields}
+                         value={userProductForm.additionalInformationQualifierCode}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
-                     <InputField type="text" label="Additional Information" value={additionalInformation} onChange={(e)=>setAdditionalInformation(e.target.value)}/>
+                     <InputField type="text" label="Additional Information" name="additionalInformation" value={userProductForm.additionalInformation} onChange={handleChangeFields}/>
                     </div>
                   </div>
                 )}
@@ -1042,13 +1016,12 @@ const stateCodeApi = ()=>{
                       <SelectField
                          label="Substitution Indicator"
                          name="substitutionIndicator"
-                         id="substitutionIndicator"
-                         onChange={(e)=>setSubstitutionIndicator(e.target.value)}
-                         value={substitutionIndicator}
+                         onChange={handleChangeFields}
+                         value={userProductForm.substitutionIndicator}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
-                     <InputField type="text" label="Substitution Number" value={substitutionNumber} onChange={(e)=>setSubstitutionNumber(e.target.value)}/>
-                     <InputField type="text" label="Filler" disabled value={" "}/>
+                     <InputField type="text" label="Substitution Number" name="substitutionNumber" value={userProductForm.substitutionNumber} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
