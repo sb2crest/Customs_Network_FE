@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-const AdminContext = createContext();
+const AdminContext = createContext({});
 
 export const AdminProvider = ({ children }) => {
   const [adminHistoryData, setAdminHistoryData] = useState([]);

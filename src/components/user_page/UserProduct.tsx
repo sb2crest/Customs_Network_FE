@@ -3,6 +3,7 @@ import { BiSolidRightArrow } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import type { Dayjs } from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { TimePicker } from "antd";
 import IDropdownStates from "../../types/UserProductDropdown.type";
@@ -14,10 +15,12 @@ import ProductCodeBuilder from "../../utilities/ProductCodeBuilder";
 import { useProductCode } from "../../context/ProductContext";
 import InputField from "../../utilities/InputField";
 import SelectField from "../../utilities/SelectField";
+import { FaChevronRight,FaChevronLeft } from "react-icons/fa";
+import IProductField from "../../types/UserProductFields.types";
 
 dayjs.extend(customParseFormat);
 
-const dateFormat = "DD/MM/YYYY";
+const dateFormat = "MM/DD/YYYY";
 
 const style = {
     position: 'absolute',
@@ -58,8 +61,9 @@ const UserProduct = () => {
   const { concatenatedProductCode } = useProductCode();
   const [currentStep, setCurrentStep] = useState(1);
   const today = dayjs();
+  const userId = localStorage.getItem('userId');
 
-const [userProductForm,setUserProductForm] = useState({
+const [userProductForm,setUserProductForm] = useState<IProductField>({
   //pga Identifier
   pgaLineNumber:"001",
   governmentAgencyCode:"FDA",
@@ -116,7 +120,7 @@ const [userProductForm,setUserProductForm] = useState({
   affirmationComplianceCode:"",
   affirmationComplianceQualifier:"",
   //Remarks
-  remarksTypeCode:"",
+  remarksTypeCode:"GEN",
   remarksText:"",
   //Product Condition
   temperatureQualifier:"",
@@ -126,6 +130,8 @@ const [userProductForm,setUserProductForm] = useState({
   lotNumberQualifier:"",
   locationOfTemperatureRecording:"",
   lotNumber:"",
+  productionStartDate:null,
+  productionEndDate:null,
   pgaLineValue:"",
   //Product Packaging
   packagingQualifier:"",
@@ -144,8 +150,10 @@ const [userProductForm,setUserProductForm] = useState({
   containerDimensionsThree:"",
   //Anticipated Arrival Information
   anticipatedArrivalInformation:"",
+  anticipatedArrivalDate: today,
+  anticipatedArrivalTime:dayjs(),
   anticipatedArrivalLocationCode:"",
-  arrivalLocation:"",
+  anticipatedArrivalLocation:"",
   //Additional Information
   additionalInformationQualifierCode:"",
   additionalInformation:"",
@@ -153,13 +161,53 @@ const [userProductForm,setUserProductForm] = useState({
   substitutionIndicator:"",
   substitutionNumber:"",
 });
+const {
+  pgaLineNumber,
+  remarksTypeCode,
+  remarksText,
+  governmentAgencyCode,
+  governmentAgencyProgramCode,
+  governmentAgencyProcessingCode,
+  itemType,
+  tradeOrBrandName,
+  issuerOfLPCO,
+  governmentGeographicCodeQualifier,
+  locationOfIssuerOfTheLPCO,
+  issuingAgencyLocation,
+  transactionType,
+  lpcoOrCodeType,
+  lpcoOrPncNumber,
+  containerDimensionsOne,
+  containerDimensionsTwo,
+  containerDimensionsThree,
+  substitutionIndicator,
+  substitutionNumber,
+  commodityDesc,
+  productCodeQualifier,
+  packageTrackingNumberCode,
+  packageTrackingNumber,
+  intendedUseCode,
+  intendedUseDescription,
+  correctionIndicator,
+  disclaimer,
+} = userProductForm;
   const [gvtAgencyProcessingCodeData, setGvtAgencyProcessingCodeData] = useState<string[]>([]);
   const [intendedUseCodeData, setIntendedUseCodeData] = useState<string[]>([]);
+  const [individualQualifierData, setIndividualQualifierData] = useState<string[]>([]);
   const [openProductCodeBuilder, setOpenProductCodeBuilder] = React.useState(false);
   const [sourceTypeCodeData, setSourceTypeCodeData] = useState<string[]>([]);
   const [countryCodeData, setCountryCodeData] = useState<string[]>([]);
   const [roleCodeData,setRoleCodeData] = useState<string[]>([]);
   const [stateCodeData,setStateCodeData] = useState<string[]>([]);
+  const [productConstituentElements, setProductConstituentElements] = useState<Partial<IProductField>[]>([]);
+  const [productOrigin, setProductOrigin] = useState<Partial<IProductField>[]>([]);
+  const [partyDetails, setPartyDetails] = useState<Partial<IProductField>[]>([]);
+  const [affirmationOfComliance, setAffirmationOfComliance] = useState<Partial<IProductField>[]>([]);
+  const [productCondition, setProductCondition] = useState<Partial<IProductField>[]>([]);
+  const [productPackaging, setProductPackaging] = useState<Partial<IProductField>[]>([]);
+  const [containerInformation, setContainerInformation] = useState<Partial<IProductField>[]>([]);
+  const [anticipatedArrivalInformationArray, setAnticipatedArrivalInformationArray] = useState<Partial<IProductField>[]>([]);
+  const [additionalInformations, setAdditionalInformations] = useState<Partial<IProductField>[]>([]);
 
   const handleOpen = () => setOpenProductCodeBuilder(true);
   const handleClose = () => setOpenProductCodeBuilder(false);
@@ -174,6 +222,9 @@ const [userProductForm,setUserProductForm] = useState({
   const nextButtonClick = () => {
     setCurrentStep(currentStep + 1);
   };
+  const backButtonClick = () => {
+    setCurrentStep(currentStep - 1);
+  };
 
   useEffect(() => {
     if (userProductForm.governmentAgencyProgramCode) {
@@ -187,81 +238,68 @@ const [userProductForm,setUserProductForm] = useState({
   const handleProgramCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUserProductForm({...userProductForm,governmentAgencyProgramCode:e.target.value, governmentAgencyProcessingCode:""});
     setIntendedUseCodeData([]);
+    setSourceTypeCodeData([]);
+    setRoleCodeData([]);
   };
   const GvtAgencyProcessingCodesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUserProductForm({...userProductForm, governmentAgencyProcessingCode:e.target.value});
     setIntendedUseCodeData([]);
+    setSourceTypeCodeData([]);
+    setRoleCodeData([]);
   };
  
   const gvtAgencyProgramCodeApi = (
     governmentAgencyProgramCode: string,
     governmentAgencyProcessingCodes: string
   ) => {
-    let requestParam;
+    const requestParam = ["FOOD", "Non_PN", "Standalone_PN"].includes(governmentAgencyProgramCode) ? "FOO" : governmentAgencyProgramCode;
 
-if (
-  governmentAgencyProgramCode === "FOOD" ||
-  governmentAgencyProgramCode === "Non_PN" ||
-  governmentAgencyProgramCode === "Standalone_PN"
-) {
-  requestParam = "FOO";
-} else {
-  requestParam = governmentAgencyProgramCode;
-}
 
     axiosPrivate.get(`/pgaIdentifier/get-agency-program-code?governmentAgencyProgramCode=${requestParam}`)
       .then((res) => {
         const { programCodeData } = res.data;
         //For FOO code 
         switch (userProductForm.governmentAgencyProgramCode) {
-            case "Non_PN":
-              setGvtAgencyProcessingCodeData(
-                programCodeData["Non-PN_Food"].governmentAgencyProcessingCodes
-              );
-              setIntendedUseCodeData(programCodeData["Non-PN_Food"].intendedUseCodes);
-              setSourceTypeCodeData(programCodeData["Non-PN_Food"].sourceTypeCode);
-              setRoleCodeData(programCodeData["Non-PN_Food"].entityRoleCode);
-              break;
-            case "FOOD":
-              setGvtAgencyProcessingCodeData(
-                programCodeData.Food.governmentAgencyProcessingCodes
-              );
-              setIntendedUseCodeData(programCodeData.Food.intendedUseCodes);
-              setSourceTypeCodeData(programCodeData.Food.sourceTypeCode);
-              setRoleCodeData(programCodeData.Food.entityRoleCode);
-              break;
-            case "Standalone_PN":
-              setGvtAgencyProcessingCodeData(
-                programCodeData["Standalone-PN_Food"].governmentAgencyProcessingCodes
-              );
-              setIntendedUseCodeData(programCodeData["Standalone-PN_Food"].intendedUseCodes);
-              setSourceTypeCodeData(programCodeData["Standalone-PN_Food"].sourceTypeCode);
-              setRoleCodeData(programCodeData["Standalone-PN_Food"].entityRoleCode);
-              break;
-            default:
-              setGvtAgencyProcessingCodeData(programCodeData.governmentAgencyProcessingCodes);
-          }
+          case "Non_PN":
+            setGvtAgencyProcessingCodeData(programCodeData["Non-PN_Food"].governmentAgencyProcessingCodes || []);
+            setIntendedUseCodeData(programCodeData["Non-PN_Food"].intendedUseCodes || []);
+            setRoleCodeData(programCodeData["Non-PN_Food"].entityRoleCode || []);
+            setSourceTypeCodeData(programCodeData["Non-PN_Food"].sourceTypeCode || []);
+            break;
+          case "FOOD":
+            setGvtAgencyProcessingCodeData(programCodeData.Food.governmentAgencyProcessingCodes || []);
+            setIntendedUseCodeData(programCodeData.Food.intendedUseCodes || []);
+            setSourceTypeCodeData(programCodeData.Food.sourceTypeCode || []);
+            setRoleCodeData(programCodeData.Food.entityRoleCode || []);
+            break;
+          case "Standalone_PN":
+            setGvtAgencyProcessingCodeData(programCodeData["Standalone-PN_Food"].governmentAgencyProcessingCodes || []);
+            setIntendedUseCodeData(programCodeData["Standalone-PN_Food"].intendedUseCodes || []);
+            setSourceTypeCodeData(programCodeData["Standalone-PN_Food"].sourceTypeCode || []);
+            setRoleCodeData(programCodeData["Standalone-PN_Food"].entityRoleCode || []);
+            break;
+          default:
+            setGvtAgencyProcessingCodeData(programCodeData.governmentAgencyProcessingCodes || []);
+            setIntendedUseCodeData(programCodeData.intendedUseCodes[governmentAgencyProcessingCodes] || []);
+            setSourceTypeCodeData(programCodeData.sourceTypeCode || []);
+            setRoleCodeData(programCodeData.entityRoleCode || []);
+            break;
+        }
 
           //For normal and DRU code
         if (Array.isArray(programCodeData.intendedUseCodes)) {
           setIntendedUseCodeData(programCodeData.intendedUseCodes);
           setSourceTypeCodeData(programCodeData.sourceTypeCode);
           setRoleCodeData(programCodeData.entityRoleCode);
-        } else if (
-          governmentAgencyProcessingCodes &&
-          programCodeData.intendedUseCodes[governmentAgencyProcessingCodes]
-        ) {
-          setIntendedUseCodeData(
-            programCodeData.intendedUseCodes[governmentAgencyProcessingCodes]
-          );
-          setSourceTypeCodeData(programCodeData.sourceTypeCode);
-          setRoleCodeData(programCodeData.entityRoleCode);
-        } else {
-          setIntendedUseCodeData([]);
-        }
+          setIndividualQualifierData(programCodeData.individualQualifier);
+        } 
       })
       .catch((err) => {
         console.log(err);
+        setIntendedUseCodeData([]);
+        setSourceTypeCodeData([]);
+        setRoleCodeData([]);
+        setIndividualQualifierData([]);
       });
   };
 const countryCodeApi = ()=>{
@@ -279,12 +317,113 @@ const stateCodeApi = ()=>{
   });
 };
 
-const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>)=>{
-  setUserProductForm({
-    ...userProductForm,
-    [e.target.name]: e.target.value
-  })
+const handleChangeFields = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const { name, value } = e.target;
+  setUserProductForm(prevState => ({
+    ...prevState,
+    [name]: value,
+  }));
 };
+
+const handleDateChange = (date: Dayjs | null) => {
+  setUserProductForm(prevState => ({
+    ...prevState,
+    anticipatedArrivalDate: date,
+  }));
+};
+
+const handleTimeChange = (time: Dayjs | null) => {
+  setUserProductForm(prevState => ({
+    ...prevState,
+    anticipatedArrivalTime: time,
+  }));
+};
+
+const handleAddArrayData = (
+  formDataArray: Partial<IProductField>[],
+  setFormDataArray: React.Dispatch<React.SetStateAction<Partial<IProductField>[]>>,
+  fieldsToReset: string[]
+) => {
+  const newData: Partial<IProductField> = {};
+
+  fieldsToReset.forEach(field => {
+    newData[field] = userProductForm[field];
+  });
+
+  setFormDataArray([...formDataArray, newData]);
+
+  const resetForm: Partial<IProductField> = {};
+  fieldsToReset.forEach(field => {
+    resetForm[field] = '';
+  });
+
+  setUserProductForm(prevState => ({
+    ...prevState,
+    ...resetForm
+  }));
+};
+
+
+const saveInputFieldsData = ()=>{
+  const payload = {
+    productCode:concatenatedProductCode,
+    userId: userId,
+    productInfo: {
+      baseUOM: "",
+      anticipatedArrivalInformation:anticipatedArrivalInformationArray,
+      baseQuantity: 0,
+      productConstituentElements,
+      productOrigin,
+      tradeOrBrandName,
+      partyDetails,
+      productPackaging,
+      commodityDesc,
+      productCodeNumber:concatenatedProductCode,
+      productCodeQualifier,
+      commercialDesc: "",
+      priorNoticeNumber: 1,
+      packageTrackingNumberCode,
+      packageTrackingNumber,
+      intendedUseCode,
+      intendedUseDescription,
+      correctionIndicator,
+      disclaimer,
+      affirmationOfComliance,
+      productCondition,
+      containerInformation,
+      additionalInformations,
+      pgaLineNumber,
+      remarksTypeCode,
+      remarksText,
+      governmentAgencyCode,
+      governmentAgencyProgramCode,
+      governmentAgencyProcessingCode,
+      itemType,
+      issuerOfLPCO,
+      governmentGeographicCodeQualifier,
+      locationOfIssuerOfTheLPCO,
+      issuingAgencyLocation,
+      transactionType,
+      lpcoOrCodeType,
+      lpcoOrPncNumber,
+      containerDimensionsOne,
+      containerDimensionsTwo,
+      containerDimensionsThree,
+      substitutionIndicator,
+      substitutionNumber,
+    },
+  };
+  axiosPrivate.post(`/products/save`, payload).then((response)=>{
+    console.log(response.data);
+  }).catch((error)=>{
+    console.log(error);
+  });
+}
+
+const isAnyFieldFilled = (fields:string[]) => {
+  return fields.some(field => !!userProductForm[field]);
+};
+
   return (
     <div className="userproduct">
       <div className="userproduct_container">
@@ -394,7 +533,7 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                     </div>
                 )}
               </div>
-              {(userProductForm.governmentAgencyProgramCode === "BIO" || userProductForm.governmentAgencyProgramCode === "DRU" || userProductForm.governmentAgencyProgramCode === "VME") && (
+              {(["BIO", "VME"].includes(userProductForm.governmentAgencyProgramCode) || ["OTC", "PRE", "INV", "RND"].includes(userProductForm.governmentAgencyProcessingCode)) && (
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -415,12 +554,29 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          name="constituentActiveIngredientQualifier"
                          onChange={handleChangeFields}
                          value={userProductForm.constituentActiveIngredientQualifier}
-                         options={["A","B","C","D","E","F","G","H","I"]}
+                         options={userProductForm.governmentAgencyProcessingCode==="PHN" ? [] : ["Y"]}
                        />
                       <InputField type="text" label="Name of the Constituent Element" name="constituentElementName" value={userProductForm.constituentElementName} onChange={handleChangeFields}/>
                       <InputField type="text" label="Quantity of Constituent Element" name="constituentElementQuantity" value={userProductForm.constituentElementQuantity} onChange={handleChangeFields}/>
                       <InputField type="text" label="Unit of Measure" name="constituentElementUnitOfMeasure" value={userProductForm.constituentElementUnitOfMeasure} onChange={handleChangeFields}/>
                       <InputField type="text" label="Percent of Constituent Element" name="percentOfConstituentElement" value={userProductForm.percentOfConstituentElement} onChange={handleChangeFields}/>
+                      <button 
+                          onClick={() => handleAddArrayData(productConstituentElements, setProductConstituentElements, [
+                              'constituentActiveIngredientQualifier',
+                              'constituentElementName',
+                              'constituentElementQuantity',
+                              'constituentElementUnitOfMeasure',
+                              'percentOfConstituentElement',
+                          ])}
+                          disabled={!isAnyFieldFilled([
+                              'constituentActiveIngredientQualifier',
+                              'constituentElementName',
+                              'constituentElementQuantity',
+                              'constituentElementUnitOfMeasure',
+                              'percentOfConstituentElement',
+                          ])}
+                      >Add More +
+                   </button>
                     </div>
                   </div>
                 )}
@@ -456,6 +612,15 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          value={userProductForm.countryCode}
                          options={countryCodeData}
                        />
+                       <button onClick={() => handleAddArrayData(productOrigin, setProductOrigin, [
+                        'countryCode',
+                        'sourceTypeCode'
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'countryCode',
+                        'sourceTypeCode'
+                    ])}
+                      >Add More +</button>
                     </div>
                   </div>
                 )}
@@ -483,7 +648,7 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
               </div>
               )}
               <div className="next_button">
-                <button onClick={nextButtonClick}>NEXT</button>
+                <button onClick={nextButtonClick} >NEXT &nbsp;<FaChevronRight /></button>
               </div>
             </div>
           )}
@@ -530,7 +695,6 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                      <InputField type="text" label="LPCO Issuer - Government Geographic Code Qualifier" name="governmentGeographicCodeQualifier" value={userProductForm.governmentGeographicCodeQualifier} onChange={handleChangeFields}/>
                      <InputField type="text" label="Location (Country/State/Provi nce) of Issuer of the LPCO" name="locationOfIssuerOfTheLPCO" value={userProductForm.locationOfIssuerOfTheLPCO} onChange={handleChangeFields}/>
                      <InputField type="text" label="Regional description of location of Agency Issuing the LPCO" name="issuingAgencyLocation" value={userProductForm.issuingAgencyLocation} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
@@ -654,7 +818,6 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          onClick={stateCodeApi}
                        />
                      <InputField type="text" label="Entity Zip" name="postalCode" value={userProductForm.postalCode} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Filler" name="Filler" disabled value={""}/>
                     </div>
                   </div>
                 )}
@@ -679,18 +842,56 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          name="individualQualifier"
                          onChange={handleChangeFields}
                          value={userProductForm.individualQualifier}
-                         options={["a","b","c","d","e","f","g","h","i"]}
-                         onClick={stateCodeApi}
+                         options={individualQualifierData}
                        />
                      <InputField type="text" label="Individual Name" name="contactPerson" value={userProductForm.contactPerson} onChange={handleChangeFields}/>
                      <InputField type="tel" label="Telephone Number" name="telephoneNumber" value={userProductForm.telephoneNumber} onChange={handleChangeFields}/>
                      <InputField type="email" label="Email" name="email" value={userProductForm.email} onChange={handleChangeFields}/>
+                     <button
+                      onClick={() => handleAddArrayData(partyDetails, setPartyDetails, [
+                        'partyType',
+                        'partyIdentifierType',
+                        'partyIdentifierNumber',
+                        'partyName',
+                        'address1',
+                        'address2',
+                        'apartmentOrSuiteNo',
+                        'city',
+                        'country',
+                        'stateOrProvince',
+                        'postalCode',
+                        'individualQualifier',
+                        'contactPerson',
+                        'telephoneNumber',
+                        'email',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'partyType',
+                        'partyIdentifierType',
+                        'partyIdentifierNumber',
+                        'partyName',
+                        'address1',
+                        'address2',
+                        'apartmentOrSuiteNo',
+                        'city',
+                        'country',
+                        'stateOrProvince',
+                        'postalCode',
+                        'individualQualifier',
+                        'contactPerson',
+                        'telephoneNumber',
+                        'email',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="next_button">
-                <button onClick={nextButtonClick}>NEXT</button>
+              <div className="next_previous_button">
+              <button onClick={backButtonClick}><FaChevronLeft /> &nbsp;BACK</button>
+                <button onClick={nextButtonClick}>NEXT &nbsp;<FaChevronRight /></button>
               </div>
             </div>
           )}
@@ -720,7 +921,18 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          onClick={stateCodeApi}
                        />
                      <InputField type="text" label="Affirmation of Compliance Qualifier" name="affirmationComplianceQualifier" value={userProductForm.affirmationComplianceQualifier} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
+                     <button
+                      onClick={() => handleAddArrayData(affirmationOfComliance, setAffirmationOfComliance, [
+                        'affirmationComplianceCode',
+                        'affirmationComplianceQualifier',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'affirmationComplianceCode',
+                        'affirmationComplianceQualifier',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
@@ -740,7 +952,7 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                 {dropdownStates.remarks && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Remarks Type Code" name="remarksTypeCode" value={userProductForm.remarksTypeCode} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Remarks Type Code" name="remarksTypeCode" value={userProductForm.remarksTypeCode} onChange={handleChangeFields} readOnly/>
                      <InputField type="text" label="Remarks Text" name="remarksText" value={userProductForm.remarksText} onChange={handleChangeFields}/>
                     </div>
                   </div>
@@ -766,7 +978,7 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          name="temperatureQualifier"
                          onChange={handleChangeFields}
                          value={userProductForm.temperatureQualifier}
-                         options={["a","b","c","d","e","f","g","h","i"]}
+                         options={["A","F","R","D","H","U","P"]}
                        />
                   {userProductForm.governmentAgencyProgramCode === "DRU" && (
                      <>
@@ -774,11 +986,57 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                      <InputField type="text" label="Negative Number" name="negativeNumber" value={userProductForm.negativeNumber} onChange={handleChangeFields} />
                      <InputField type="text" label="Actual Temperature" name="actualTemperature" value={userProductForm.actualTemperature} onChange={handleChangeFields} />
                      <InputField type="text" label="Location of Temperature Recording" name="locationOfTemperatureRecording" value={userProductForm.locationOfTemperatureRecording} onChange={handleChangeFields} />
+                     <div className="created_date">
+                        <label>Production Start date of the Lot</label>
+                        <DatePicker
+                            defaultValue={userProductForm.productionStartDate}
+                            format={dateFormat}
+                            onChange={handleDateChange}
+                          />            
+                      </div>
+                      <div className="created_date">
+                        <label>Production End Date of the Lot</label>
+                        <DatePicker
+                            defaultValue={userProductForm.productionEndDate}
+                            format={dateFormat}
+                            onChange={handleDateChange}
+                          />            
+                      </div>
                      </>
                   )}
-                     <InputField type="text" label="Lot Number Qualifier" name="lotNumberQualifier" value={userProductForm.lotNumberQualifier} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Lot Number" name="lotNumber" value={userProductForm.lotNumber} onChange={handleChangeFields}/>
+                     <SelectField label="Lot Number Qualifier" name="lotNumberQualifier" value={userProductForm.lotNumberQualifier} onChange={handleChangeFields} 
+                     options={((["FOOD", "Non_PN"].includes(userProductForm.governmentAgencyProgramCode) && userProductForm.governmentAgencyProcessingCode === "NSF") ||
+                      userProductForm.governmentAgencyProgramCode === "TOB") ? ["3"] : ["1"]}/>
+                     <InputField type="text" label="Lot Number" name="lotNumber" value={userProductForm.lotNumber} onChange={handleChangeFields} />
                      <InputField type="text" label="PGA Line Value" name="pgaLineValue" value={userProductForm.pgaLineValue} onChange={handleChangeFields}/>
+                     <button
+                      onClick={() => handleAddArrayData(productCondition, setProductCondition, [
+                        'temperatureQualifier',
+                        'lotNumberQualifier',
+                        'lotNumber',
+                        'pgaLineValue',
+                        'productionStartDate',
+                        'productionEndDate',
+                        'degreeType',
+                        'negativeNumber',
+                        'actualTemperature',
+                        'locationOfTemperatureRecording',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'temperatureQualifier',
+                        'lotNumberQualifier',
+                        'lotNumber',
+                        'pgaLineValue',
+                        'productionStartDate',
+                        'productionEndDate',
+                        'degreeType',
+                        'negativeNumber',
+                        'actualTemperature',
+                        'locationOfTemperatureRecording',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
@@ -813,12 +1071,27 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          value={userProductForm.uom}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
+                       <button
+                      onClick={() => handleAddArrayData(productPackaging, setProductPackaging, [
+                        'packagingQualifier',
+                        'uom',
+                        'quantity',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'packagingQualifier',
+                        'uom',
+                        'quantity',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="next_button">
-                <button onClick={nextButtonClick}>NEXT</button>
+              <div className="next_previous_button">
+              <button onClick={backButtonClick}><FaChevronLeft /> &nbsp;BACK</button>
+                <button onClick={nextButtonClick}>NEXT &nbsp;<FaChevronRight /></button>
               </div>
             </div>
           )}
@@ -843,7 +1116,20 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                      <InputField type="text" label="Container-1 No." name="containerNumberOne" value={userProductForm.containerNumberOne} onChange={handleChangeFields}/>
                      <InputField type="text" label="Container-2 No." name="containerNumberTwo" value={userProductForm.containerNumberTwo} onChange={handleChangeFields}/>
                      <InputField type="text" label="Container-3 No." name="containerNumberThree" value={userProductForm.containerNumberThree} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
+                     <button
+                      onClick={() => handleAddArrayData(containerInformation, setContainerInformation, [
+                        'containerNumberOne',
+                        'containerNumberTwo',
+                        'containerNumberThree',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'containerNumberOne',
+                        'containerNumberTwo',
+                        'containerNumberThree',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
@@ -939,33 +1225,59 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                 {dropdownStates.anticipatedArrivalInformation && (
                   <div className="dropdown_items">
                     <div className="items">
-                     <InputField type="text" label="Anticipated Arrival Information" name="anticipatedArrivalInformation" value={userProductForm.anticipatedArrivalInformation} onChange={handleChangeFields}/>
+                     <SelectField label="Anticipated Arrival Information" name="anticipatedArrivalInformation" value={userProductForm.anticipatedArrivalInformation} onChange={handleChangeFields} 
+                     options={["FOOD", "Standalone_PN"].includes(userProductForm.governmentAgencyProgramCode) ? ["A"] :  
+                     ["BIO", "COS","DRU","Non_PN","DEV","TOB","RAD","VME"].includes(userProductForm.governmentAgencyProgramCode) ? ["A","F"] : []}
+                     />
                       <div className="created_date">
                         <label>Anticipated Arrival Date at Port Entry</label>
-                        <DatePicker defaultValue={today} format={dateFormat} />
+                        <DatePicker
+                            defaultValue={userProductForm.anticipatedArrivalDate}
+                            format={dateFormat}
+                            onChange={handleDateChange}
+                          />            
                       </div>
                       <div className="created_date">
                         <label>Anticipated Arrival Time at Port Entry</label>
                         <TimePicker
                           format="HH:mm"
-                          onChange={(value) => console.log(value)}
+                          value={userProductForm.anticipatedArrivalTime}
+                          onChange={handleTimeChange}
                         />
                       </div>
-                     <InputField type="text" label="Arrival Location Code" name="anticipatedArrivalLocationCode" value={userProductForm.anticipatedArrivalLocationCode} onChange={handleChangeFields}/>
+                     <SelectField label="Arrival Location Code" name="anticipatedArrivalLocationCode" value={userProductForm.anticipatedArrivalLocationCode} onChange={handleChangeFields} options={["FOOD", "Standalone_PN"].includes(userProductForm.governmentAgencyProgramCode) ? ["2"] : ["4"]}/>
                       <SelectField
                          label="Arrival Location"
-                         name="arrivalLocation"
+                         name="anticipatedArrivalLocation"
                          onChange={handleChangeFields}
-                         value={userProductForm.arrivalLocation}
+                         value={userProductForm.anticipatedArrivalLocation}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
-                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
+                      <button
+                      onClick={() => handleAddArrayData(anticipatedArrivalInformationArray, setAnticipatedArrivalInformationArray, [
+                        'anticipatedArrivalInformation',
+                        'anticipatedArrivalDate',
+                        'anticipatedArrivalTime',
+                        'anticipatedArrivalLocation',
+                        'anticipatedArrivalLocationCode',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'anticipatedArrivalInformation',
+                        'anticipatedArrivalDate',
+                        'anticipatedArrivalTime',
+                        'anticipatedArrivalLocation',
+                        'anticipatedArrivalLocationCode',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="next_button">
-                <button onClick={nextButtonClick}>NEXT</button>
+              <div className="next_previous_button">
+              <button onClick={backButtonClick}><FaChevronLeft /> &nbsp;BACK</button>
+                <button onClick={nextButtonClick}>NEXT &nbsp;<FaChevronRight /></button>
               </div>
             </div>
           )}
@@ -994,6 +1306,18 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
                      <InputField type="text" label="Additional Information" name="additionalInformation" value={userProductForm.additionalInformation} onChange={handleChangeFields}/>
+                     <button
+                      onClick={() => handleAddArrayData(additionalInformations, setAdditionalInformations, [
+                        'additionalInformationQualifierCode',
+                        'additionalInformation',
+                      ])}
+                      disabled={!isAnyFieldFilled([
+                        'additionalInformationQualifierCode',
+                        'additionalInformation',
+                    ])}
+                    >
+                      Add More +
+                    </button>
                     </div>
                   </div>
                 )}
@@ -1021,13 +1345,13 @@ const handleChangeFields = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputEl
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
                      <InputField type="text" label="Substitution Number" name="substitutionNumber" value={userProductForm.substitutionNumber} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Filler" name="Filler" disabled value={" "}/>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="next_button">
-                <button>SUBMIT</button>
+              <div className="next_previous_button">
+              <button onClick={backButtonClick}><FaChevronLeft /> &nbsp;BACK</button>
+               <button onClick={saveInputFieldsData}>SUBMIT</button>
               </div>
             </div>
           )}
