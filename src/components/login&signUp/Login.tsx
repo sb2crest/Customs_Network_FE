@@ -85,6 +85,7 @@ const Login = () => {
           isPortDetails: response.data.isPortDetails,
         },
       });
+      localStorage.setItem("userId", response.data.user_id);
     } catch (err) {
       console.log("Login failed", err);
       if (err.response && err.response.data) {
