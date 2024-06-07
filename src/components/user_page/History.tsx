@@ -89,7 +89,6 @@ const History = () => {
     setCurrentPage(1);
     fetchData();
   };
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     fetchData(page);

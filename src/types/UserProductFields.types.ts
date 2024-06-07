@@ -2,8 +2,10 @@ import dayjs from "dayjs";
 import type { Dayjs } from 'dayjs';
 
 export default interface IProductField{
-    pgaLineNumber:"001",
-    governmentAgencyCode:"FDA",
+    commercialDesc: string;
+    controlIdentifier:string;
+    pgaLineNumber:"001";
+    governmentAgencyCode:"FDA";
     governmentAgencyProgramCode: string;
     governmentAgencyProcessingCode: string;
     intendedUseCode: string;
@@ -71,8 +73,8 @@ export default interface IProductField{
     anticipatedArrivalInformation: string;
     anticipatedArrivalDate: Dayjs | null;
     anticipatedArrivalTime: Dayjs | null;
-    anticipatedArrivalLocationCode: string;
-    anticipatedArrivalLocation: string;
+    inspectionOrArrivalLocationCode: string;
+    inspectionOrArrivalLocation: string;
     additionalInformationQualifierCode: string;
     additionalInformation: string;
     substitutionIndicator: string;

@@ -1,4 +1,5 @@
 export default interface IDropdownStates {
+    recordIdentifier: boolean;
     pgaIdentifier: boolean;
     productIdentifier: boolean;
     productConstituentElement: boolean;
@@ -7,6 +8,7 @@ export default interface IDropdownStates {
     productCharacteristics: boolean;
     licensePlateIssuer: boolean;
     licensePlateNumber: boolean;
+    parties: boolean;
     entityData: boolean;
     entityAddress: boolean;
     pointOfContact: boolean;

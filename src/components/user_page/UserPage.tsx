@@ -10,6 +10,7 @@ import useAuth from "../../hooks/useAuth";
 import { useUserContext } from "../../context/UserContext";
 import { IoBarChartOutline } from "react-icons/io5";
 import { FaBoxOpen } from "react-icons/fa6";
+import { MdOutlineWorkHistory } from "react-icons/md";
 
 const TOKEN_EXPIRATION_THRESHOLD = 1000000;
 
@@ -201,6 +202,15 @@ const UserPage = () => {
                   >
                     <FaBoxOpen className="sidebar_icon" />
                     <span>Product</span>
+                  </li>
+                </Link>
+                <Link to="product-history">
+                  <li
+                    className={activeLi === "product-history" ? "active-li" : ""}
+                    onClick={() => handleLiClick("product-history")}
+                  >
+                    <MdOutlineWorkHistory className="sidebar_icon" />
+                    <span>Product History</span>
                   </li>
                 </Link>
               </ul>

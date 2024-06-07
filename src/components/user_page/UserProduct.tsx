@@ -8,8 +8,6 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { TimePicker } from "antd";
 import IDropdownStates from "../../types/UserProductDropdown.type";
 import { axiosPrivate } from "../../services/apiService";
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import React from "react";
 import ProductCodeBuilder from "../../utilities/ProductCodeBuilder";
 import { useProductCode } from "../../context/ProductContext";
@@ -17,24 +15,38 @@ import InputField from "../../utilities/InputField";
 import SelectField from "../../utilities/SelectField";
 import { FaChevronRight,FaChevronLeft } from "react-icons/fa";
 import IProductField from "../../types/UserProductFields.types";
-
+import { Box, Fab, Modal, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Tooltip } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 dayjs.extend(customParseFormat);
 
 const dateFormat = "MM/DD/YYYY";
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 600,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-  };
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+const partyModalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 3,
+  borderRadius: "10px",
+};
 
 const UserProduct = () => {
   const [dropdownStates, setDropdownStates] = useState<IDropdownStates>({
+    recordIdentifier:true,
     pgaIdentifier: true,
     productIdentifier: true,
     productConstituentElement: false,
@@ -43,9 +55,10 @@ const UserProduct = () => {
     productCharacteristics: true,
     licensePlateIssuer: false,
     licensePlateNumber: false,
+    parties: true,
     entityData: true,
-    entityAddress: true,
-    pointOfContact: true,
+    entityAddress: false,
+    pointOfContact: false,
     affirmationOfCompliance: false,
     remarks: false,
     productCondition: false,
@@ -58,109 +71,113 @@ const UserProduct = () => {
     additionalInformation: false,
     dataSubstitution: false,
   });
-  const { concatenatedProductCode } = useProductCode();
+  const { concatenatedProductCode ,setInputProductCode} = useProductCode();
   const [currentStep, setCurrentStep] = useState(1);
   const today = dayjs();
-  const userId = localStorage.getItem('userId');
+  const uniqueUserIdentifier = localStorage.getItem("uniqueUserIdentifier");
+  const [editingIndex, setEditingIndex] = useState(-1);
 
-const [userProductForm,setUserProductForm] = useState<IProductField>({
-  //pga Identifier
-  pgaLineNumber:"001",
-  governmentAgencyCode:"FDA",
-  governmentAgencyProgramCode:"",
-  governmentAgencyProcessingCode:"",
-  intendedUseCode:"",
-  intendedUseDescription:"",
-  correctionIndicator:"",
-  disclaimer:"",
+ const getInitialProductFormState = (): IProductField => ({
+  controlIdentifier:"",
+  commercialDesc:"",
+    //pga Identifier
+  pgaLineNumber: "001",
+  governmentAgencyCode: "FDA",
+  governmentAgencyProgramCode: "",
+  governmentAgencyProcessingCode: "",
+  intendedUseCode: "",
+  intendedUseDescription: "",
+  correctionIndicator: "",
+  disclaimer: "",
   //product identifier
-  itemType:"P",
-  productCodeQualifier:"FDP",
+  itemType: "P",
+  productCodeQualifier: "FDP",
   //Product Constituent Element
-  constituentActiveIngredientQualifier:"",
-  constituentElementName:"",
-  constituentElementQuantity:"",
-  constituentElementUnitOfMeasure:"",
-  percentOfConstituentElement:"",
+  constituentActiveIngredientQualifier: "",
+  constituentElementName: "",
+  constituentElementQuantity: "",
+  constituentElementUnitOfMeasure: "",
+  percentOfConstituentElement: "",
   //Product Origin
-  sourceTypeCode:"",
-  countryCode:"",
+  sourceTypeCode: "",
+  countryCode: "",
   //Product Trade Names
-  tradeOrBrandName:"",
+  tradeOrBrandName: "",
   //Product Characteristics
-  commodityDesc:"",
+  commodityDesc: "",
   //License Plate Issuer
-  issuerOfLPCO:"",
-  governmentGeographicCodeQualifier:"",
-  locationOfIssuerOfTheLPCO:"",
-  issuingAgencyLocation:"",
+  issuerOfLPCO: "",
+  governmentGeographicCodeQualifier: "",
+  locationOfIssuerOfTheLPCO: "",
+  issuingAgencyLocation: "",
   //License Plate Number //PN Confirmation Number
-  transactionType:"",
-  lpcoOrCodeType:"",
-  lpcoOrPncNumber:"",
+  transactionType: "",
+  lpcoOrCodeType: "",
+  lpcoOrPncNumber: "",
   //Entity Data
-  partyType:"",
-  partyIdentifierType:"",
-  partyIdentifierNumber:"",
-  partyName:"",
-  address1:"",
+  partyType: "",
+  partyIdentifierType: "",
+  partyIdentifierNumber: "",
+  partyName: "",
+  address1: "",
   //Entity Address
-  address2:"",
-  apartmentOrSuiteNo:"",
-  city:"",
-  country:"",
-  stateOrProvince:"",
-  postalCode:"",
+  address2: "",
+  apartmentOrSuiteNo: "",
+  city: "",
+  country: "",
+  stateOrProvince: "",
+  postalCode: "",
   //Point of Contact
-  individualQualifier:"",
-  contactPerson:"",
-  telephoneNumber:"",
-  email:"",
+  individualQualifier: "",
+  contactPerson: "",
+  telephoneNumber: "",
+  email: "",
   //Affirmation of Compliance
-  affirmationComplianceCode:"",
-  affirmationComplianceQualifier:"",
+  affirmationComplianceCode: "",
+  affirmationComplianceQualifier: "",
   //Remarks
-  remarksTypeCode:"GEN",
-  remarksText:"",
+  remarksTypeCode: "GEN",
+  remarksText: "",
   //Product Condition
-  temperatureQualifier:"",
-  degreeType:"",
-  negativeNumber:"",
-  actualTemperature:"",
-  lotNumberQualifier:"",
-  locationOfTemperatureRecording:"",
-  lotNumber:"",
-  productionStartDate:null,
-  productionEndDate:null,
-  pgaLineValue:"",
+  temperatureQualifier: "",
+  degreeType: "",
+  negativeNumber: "",
+  actualTemperature: "",
+  lotNumberQualifier: "",
+  locationOfTemperatureRecording: "",
+  lotNumber: "",
+  productionStartDate: null,
+  productionEndDate: null,
+  pgaLineValue: "",
   //Product Packaging
-  packagingQualifier:"",
-  quantity:"",
-  uom:"",
+  packagingQualifier: "",
+  quantity: "",
+  uom: "",
   //Shipping Container Information
-  containerNumberOne:"",
-  containerNumberTwo:"",
-  containerNumberThree:"",
+  containerNumberOne: "",
+  containerNumberTwo: "",
+  containerNumberThree: "",
   //Express Courier Tracking Number
-  packageTrackingNumberCode:"",
-  packageTrackingNumber:"",
+  packageTrackingNumberCode: "",
+  packageTrackingNumber: "",
   //Express Courier Tracking and Container Dimensions – AF and LACF
-  containerDimensionsOne:"",
-  containerDimensionsTwo:"",
-  containerDimensionsThree:"",
+  containerDimensionsOne: "",
+  containerDimensionsTwo: "",
+  containerDimensionsThree: "",
   //Anticipated Arrival Information
-  anticipatedArrivalInformation:"",
+  anticipatedArrivalInformation: "",
   anticipatedArrivalDate: today,
-  anticipatedArrivalTime:dayjs(),
-  anticipatedArrivalLocationCode:"",
-  anticipatedArrivalLocation:"",
+  anticipatedArrivalTime: dayjs(),
+  inspectionOrArrivalLocationCode: "",
+  inspectionOrArrivalLocation: "",
   //Additional Information
-  additionalInformationQualifierCode:"",
-  additionalInformation:"",
+  additionalInformationQualifierCode: "",
+  additionalInformation: "",
   //Data Substitution
-  substitutionIndicator:"",
-  substitutionNumber:"",
+  substitutionIndicator: "",
+  substitutionNumber: "",
 });
+const [userProductForm, setUserProductForm] = useState<IProductField>(getInitialProductFormState());
 const {
   pgaLineNumber,
   remarksTypeCode,
@@ -195,6 +212,7 @@ const {
   const [intendedUseCodeData, setIntendedUseCodeData] = useState<string[]>([]);
   const [individualQualifierData, setIndividualQualifierData] = useState<string[]>([]);
   const [openProductCodeBuilder, setOpenProductCodeBuilder] = React.useState(false);
+  const [openPartiesModal, setOpenPartiesModal] = React.useState(false);
   const [sourceTypeCodeData, setSourceTypeCodeData] = useState<string[]>([]);
   const [countryCodeData, setCountryCodeData] = useState<string[]>([]);
   const [roleCodeData,setRoleCodeData] = useState<string[]>([]);
@@ -211,11 +229,28 @@ const {
 
   const handleOpen = () => setOpenProductCodeBuilder(true);
   const handleClose = () => setOpenProductCodeBuilder(false);
-
+  const handleOpenPartiesModal = () => setOpenPartiesModal(true);
+  const handleClosePartiesModal = () => {
+    setOpenPartiesModal(false);
+    setEditingIndex(-1);
+  };
   const toggleDropdown = (dropdownName: keyof IDropdownStates) => {
     setDropdownStates({
       ...dropdownStates,
       [dropdownName]: !dropdownStates[dropdownName],
+    });
+  };
+
+  const partiesDropdown = (dropdown: keyof IDropdownStates) => {
+    setDropdownStates((prevState) => {
+      const newState = {
+        ...prevState,
+        entityData: false,
+        entityAddress: false,
+        pointOfContact: false,
+      };
+      newState[dropdown] = !prevState[dropdown];
+      return newState;
     });
   };
 
@@ -231,9 +266,10 @@ const {
       gvtAgencyProgramCodeApi(
         userProductForm.governmentAgencyProgramCode,
         userProductForm.governmentAgencyProcessingCode
-      );``
+      );
+      ``;
     }
-  }, [userProductForm.governmentAgencyProgramCode, userProductForm.governmentAgencyProcessingCode]);
+  }, [userProductForm.governmentAgencyProgramCode,userProductForm.governmentAgencyProcessingCode]);
 
   const handleProgramCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUserProductForm({...userProductForm,governmentAgencyProgramCode:e.target.value, governmentAgencyProcessingCode:""});
@@ -248,11 +284,9 @@ const {
     setRoleCodeData([]);
   };
  
-  const gvtAgencyProgramCodeApi = (
-    governmentAgencyProgramCode: string,
-    governmentAgencyProcessingCodes: string
-  ) => {
-    const requestParam = ["FOOD", "Non_PN", "Standalone_PN"].includes(governmentAgencyProgramCode) ? "FOO" : governmentAgencyProgramCode;
+  const gvtAgencyProgramCodeApi = (governmentAgencyProgramCode: string,governmentAgencyProcessingCodes: string) => {
+  
+   const requestParam = ["FOOD", "Non_PN", "Standalone_PN"].includes(governmentAgencyProgramCode) ? "FOO" : governmentAgencyProgramCode;
 
 
     axiosPrivate.get(`/pgaIdentifier/get-agency-program-code?governmentAgencyProgramCode=${requestParam}`)
@@ -265,24 +299,28 @@ const {
             setIntendedUseCodeData(programCodeData["Non-PN_Food"].intendedUseCodes || []);
             setRoleCodeData(programCodeData["Non-PN_Food"].entityRoleCode || []);
             setSourceTypeCodeData(programCodeData["Non-PN_Food"].sourceTypeCode || []);
+            setIndividualQualifierData(programCodeData["Non-PN_Food"].individualQualifier || []);
             break;
           case "FOOD":
             setGvtAgencyProcessingCodeData(programCodeData.Food.governmentAgencyProcessingCodes || []);
             setIntendedUseCodeData(programCodeData.Food.intendedUseCodes || []);
             setSourceTypeCodeData(programCodeData.Food.sourceTypeCode || []);
             setRoleCodeData(programCodeData.Food.entityRoleCode || []);
+            setIndividualQualifierData(programCodeData.Food.individualQualifier || []);
             break;
           case "Standalone_PN":
             setGvtAgencyProcessingCodeData(programCodeData["Standalone-PN_Food"].governmentAgencyProcessingCodes || []);
             setIntendedUseCodeData(programCodeData["Standalone-PN_Food"].intendedUseCodes || []);
             setSourceTypeCodeData(programCodeData["Standalone-PN_Food"].sourceTypeCode || []);
             setRoleCodeData(programCodeData["Standalone-PN_Food"].entityRoleCode || []);
+            setIndividualQualifierData(programCodeData["Standalone-PN_Food"].individualQualifier || []);
             break;
           default:
             setGvtAgencyProcessingCodeData(programCodeData.governmentAgencyProcessingCodes || []);
             setIntendedUseCodeData(programCodeData.intendedUseCodes[governmentAgencyProcessingCodes] || []);
             setSourceTypeCodeData(programCodeData.sourceTypeCode || []);
             setRoleCodeData(programCodeData.entityRoleCode || []);
+            setIndividualQualifierData(programCodeData.individualQualifier || []);
             break;
         }
 
@@ -317,14 +355,18 @@ const stateCodeApi = ()=>{
   });
 };
 
-const handleChangeFields = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const { name, value } = e.target;
-  setUserProductForm(prevState => ({
-    ...prevState,
+const handleChangeFields = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const { name, value } = event.target;
+  setUserProductForm({
+    ...userProductForm,
     [name]: value,
-  }));
+  });
+  if (editingIndex !== -1) {
+    const newPartyDetails = [...partyDetails];
+    newPartyDetails[editingIndex][name] = value;
+    setPartyDetails(newPartyDetails);
+  }
 };
-
 const handleDateChange = (date: Dayjs | null) => {
   setUserProductForm(prevState => ({
     ...prevState,
@@ -361,13 +403,14 @@ const handleAddArrayData = (
     ...prevState,
     ...resetForm
   }));
+  handleClosePartiesModal();
+  setEditingIndex(-1);
 };
-
 
 const saveInputFieldsData = ()=>{
   const payload = {
     productCode:concatenatedProductCode,
-    userId: userId,
+    uniqueUserIdentifier: uniqueUserIdentifier,
     productInfo: {
       baseUOM: "",
       anticipatedArrivalInformation:anticipatedArrivalInformationArray,
@@ -380,7 +423,7 @@ const saveInputFieldsData = ()=>{
       commodityDesc,
       productCodeNumber:concatenatedProductCode,
       productCodeQualifier,
-      commercialDesc: "",
+      commercialDesc,
       priorNoticeNumber: 1,
       packageTrackingNumberCode,
       packageTrackingNumber,
@@ -415,6 +458,9 @@ const saveInputFieldsData = ()=>{
   };
   axiosPrivate.post(`/products/save`, payload).then((response)=>{
     console.log(response.data);
+    setUserProductForm(getInitialProductFormState());
+    setInputProductCode("")
+    setCurrentStep(1);
   }).catch((error)=>{
     console.log(error);
   });
@@ -424,6 +470,90 @@ const isAnyFieldFilled = (fields:string[]) => {
   return fields.some(field => !!userProductForm[field]);
 };
 
+const handleDeleteRow = (index: number) => {
+  const newPartyDetails = partyDetails.filter((_, i) => i !== index);
+  setPartyDetails(newPartyDetails);
+};
+
+const handleEditRow = (party: Partial<IProductField>, index: number) => {
+  setUserProductForm({
+    ...userProductForm,
+    partyType: party.partyType || userProductForm.partyType,
+    partyIdentifierType: party.partyIdentifierType || userProductForm.partyIdentifierType,
+    partyIdentifierNumber: party.partyIdentifierNumber || userProductForm.partyIdentifierNumber,
+    partyName: party.partyName || userProductForm.partyName,
+    address1: party.address1 || userProductForm.address1,
+    address2: party.address2 || userProductForm.address2,
+    apartmentOrSuiteNo: party.apartmentOrSuiteNo || userProductForm.apartmentOrSuiteNo,
+    city: party.city || userProductForm.city,
+    country: party.country || userProductForm.country,
+    stateOrProvince: party.stateOrProvince || userProductForm.stateOrProvince,
+    postalCode: party.postalCode || userProductForm.postalCode,
+    individualQualifier: party.individualQualifier || userProductForm.individualQualifier,
+    contactPerson: party.contactPerson || userProductForm.contactPerson,
+    telephoneNumber: party.telephoneNumber || userProductForm.telephoneNumber,
+    email: party.email || userProductForm.email,
+  });
+  setEditingIndex(index);
+  setOpenPartiesModal(true);
+};
+
+
+const renderTable = () => {
+  return (
+    <TableContainer component={Paper}>
+    <Table sx={{ minWidth: 700 }} size="small" aria-label="a dense table">
+      <TableHead>
+        <TableRow>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>PartyType</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>IdentifierType</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>IdentifierNumber</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>Name</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>IndividualQualifier</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>ContactPerson</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>Telephone</TableCell>
+          <TableCell align="center" sx={{ fontSize: "14px" }}>Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {partyDetails.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={10} align="center">
+              <h6 style={{margin:"5px",color:"rgba(2, 118, 164, 0.5)"}}>Add Party Details</h6>
+            </TableCell>
+          </TableRow>
+        ) : (
+          partyDetails.map((party, index) => (
+            <TableRow key={index}>
+              <TableCell className="truncate" component="th" scope="row">
+                {party.partyType}
+              </TableCell>
+              <TableCell className="truncate" align="center" sx={{ fontSize: "12px" }}>{party.partyIdentifierType}</TableCell>
+              <TableCell className="truncate" align="center" sx={{ fontSize: "12px" }}>{party.partyIdentifierNumber}</TableCell>
+              <TableCell className="truncate" align="center" sx={{ fontSize: "12px" }}>{party.partyName}</TableCell>
+              <TableCell className="truncate" align="center" sx={{ fontSize: "12px" }}>{party.individualQualifier}</TableCell>
+              <TableCell className="truncate" align="center" sx={{ fontSize: "12px" }}>{party.contactPerson}</TableCell>
+              <TableCell className="truncate" align="center" sx={{ fontSize: "12px" }}>{party.telephoneNumber}</TableCell>
+              <TableCell align="center" sx={{ fontSize: "12px", display:"flex" }}>
+                <Tooltip title="Edit">
+                  <IconButton onClick={() => handleEditRow(party, index)} size="small">
+                    <EditIcon fontSize="inherit"/>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton onClick={() => handleDeleteRow(index)} size="small">
+                    <DeleteIcon fontSize="inherit"/>
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            </TableRow>
+          ))
+        )}
+      </TableBody>
+    </Table>
+  </TableContainer>  
+  );
+};
   return (
     <div className="userproduct">
       <div className="userproduct_container">
@@ -436,6 +566,27 @@ const isAnyFieldFilled = (fields:string[]) => {
         <div className="userproduct_container_section">
           {currentStep === 1 && (
             <div className="step1">
+              <div className="dropdown_container">
+                <div
+                  className="dropdown_header"
+                  onClick={() => toggleDropdown("recordIdentifier")}
+                >
+                  <div className="dropdown_header_icon">
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.recordIdentifier ? "rotate" : ""}`}/>
+                  </div>
+                  <div className="dropdown_header_text">
+                    <h3>Record Identifier</h3>
+                  </div>
+                </div>
+                {dropdownStates.recordIdentifier && (
+                  <div className="dropdown_items">
+                    <div className="items">
+                      <InputField type="text" name="controlIdentifier" label="Control Identifier" value={userProductForm.controlIdentifier} onChange={handleChangeFields}/>
+                      <InputField type="text" name="commercialDesc" label="Commercial Description" value={userProductForm.commercialDesc} onChange={handleChangeFields}/>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
@@ -647,14 +798,7 @@ const isAnyFieldFilled = (fields:string[]) => {
                 )}
               </div>
               )}
-              <div className="next_button">
-                <button onClick={nextButtonClick} >NEXT &nbsp;<FaChevronRight /></button>
-              </div>
-            </div>
-          )}
-          {currentStep === 2 && (
-            <div className="step2">
-              <div className="dropdown_container">
+               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
                   onClick={() => toggleDropdown("productCharacteristics")}
@@ -693,7 +837,7 @@ const isAnyFieldFilled = (fields:string[]) => {
                     <div className="items">
                      <InputField type="text" label="Issuer of LPCO" name="issuerOfLPCO" value={userProductForm.issuerOfLPCO} onChange={handleChangeFields}/>
                      <InputField type="text" label="LPCO Issuer - Government Geographic Code Qualifier" name="governmentGeographicCodeQualifier" value={userProductForm.governmentGeographicCodeQualifier} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Location (Country/State/Provi nce) of Issuer of the LPCO" name="locationOfIssuerOfTheLPCO" value={userProductForm.locationOfIssuerOfTheLPCO} onChange={handleChangeFields}/>
+                     <InputField type="text" label="Location (Country/State/Province) of Issuer of the LPCO" name="locationOfIssuerOfTheLPCO" value={userProductForm.locationOfIssuerOfTheLPCO} onChange={handleChangeFields}/>
                      <InputField type="text" label="Regional description of location of Agency Issuing the LPCO" name="issuingAgencyLocation" value={userProductForm.issuingAgencyLocation} onChange={handleChangeFields}/>
                     </div>
                   </div>
@@ -747,152 +891,198 @@ const isAnyFieldFilled = (fields:string[]) => {
                 )}
               </div>
                )}
-              <div className="dropdown_container">
-                <div
-                  className="dropdown_header"
-                  onClick={() => toggleDropdown("entityData")}
-                >
-                  <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.entityData ? "rotate" : ""}`} />
-                  </div>
-                  <div className="dropdown_header_text">
-                    <h3>Entity Data</h3>
-                  </div>
-                </div>
-                {dropdownStates.entityData && (
-                  <div className="dropdown_items">
-                    <div className="items">
-                      <SelectField
-                         label="Entity Role Code"
-                         name="partyType"
-                         onChange={handleChangeFields}
-                         value={userProductForm.partyType}
-                         options={roleCodeData}
-                       />
-                      <SelectField
-                         label="Entity Identification Code"
-                         name="partyIdentifierType"
-                         onChange={handleChangeFields}
-                         value={userProductForm.partyIdentifierType}
-                         options={["16","47"]}
-                       />
-                     <InputField type="tel" label="Entity Number" name="partyIdentifierNumber" maxLength={9} value={userProductForm.partyIdentifierNumber} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Entity Name" name="partyName" value={userProductForm.partyName} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Entity Address 1" name="address1" value={userProductForm.address1} onChange={handleChangeFields}/>
-                    </div>
-                  </div>
-                )}
+              <div className="next_button">
+                <button onClick={nextButtonClick} >NEXT &nbsp;<FaChevronRight /></button>
               </div>
+            </div>
+          )}
+          {currentStep === 2 && (
+            <div className="step2">
               <div className="dropdown_container">
                 <div
                   className="dropdown_header"
-                  onClick={() => toggleDropdown("entityAddress")}
+                  onClick={() => toggleDropdown("parties")}
                 >
                   <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.entityAddress ? "rotate" : ""}`} />
+                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.parties ? "rotate" : ""}`} />
                   </div>
                   <div className="dropdown_header_text">
-                    <h3>Entity Address</h3>
+                    <h3>Parties</h3>
                   </div>
                 </div>
-                {dropdownStates.entityAddress && (
-                  <div className="dropdown_items">
+                {dropdownStates.parties && (
+                  <div className="dropdown_items flex-column">
                     <div className="items">
-                     <InputField type="text" label="Entity Address 2" name="address2" value={userProductForm.address2} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Entity Apartment Number" name="apartmentOrSuiteNo" value={userProductForm.apartmentOrSuiteNo} onChange={handleChangeFields}/>
-                     <InputField type="text" label="Entity City" value={userProductForm.city} name="city" onChange={handleChangeFields}/>
-                     <SelectField
-                         label="Entity Country"
-                         name="country"
-                         onChange={handleChangeFields}
-                         value={userProductForm.country}
-                         options={countryCodeData}
-                         onClick={countryCodeApi}
-                       />
-                     <SelectField
-                         label="Entity State"
-                         name="stateOrProvince"
-                         onChange={handleChangeFields}
-                         value={userProductForm.stateOrProvince}
-                         options={stateCodeData}
-                         onClick={stateCodeApi}
-                       />
-                     <InputField type="text" label="Entity Zip" name="postalCode" value={userProductForm.postalCode} onChange={handleChangeFields}/>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="dropdown_container">
-                <div
-                  className="dropdown_header"
-                  onClick={() => toggleDropdown("pointOfContact")}
-                >
-                  <div className="dropdown_header_icon">
-                    <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.pointOfContact ? "rotate" : ""}`} />
-                  </div>
-                  <div className="dropdown_header_text">
-                    <h3>Point of Contact</h3>
-                  </div>
-                </div>
-                {dropdownStates.pointOfContact && (
-                  <div className="dropdown_items">
-                    <div className="items">
-                      <SelectField
-                         label="Individual Qualifier"
-                         name="individualQualifier"
-                         onChange={handleChangeFields}
-                         value={userProductForm.individualQualifier}
-                         options={individualQualifierData}
-                       />
-                     <InputField type="text" label="Individual Name" name="contactPerson" value={userProductForm.contactPerson} onChange={handleChangeFields}/>
-                     <InputField type="tel" label="Telephone Number" name="telephoneNumber" value={userProductForm.telephoneNumber} onChange={handleChangeFields}/>
-                     <InputField type="email" label="Email" name="email" value={userProductForm.email} onChange={handleChangeFields}/>
-                     <button
-                      onClick={() => handleAddArrayData(partyDetails, setPartyDetails, [
-                        'partyType',
-                        'partyIdentifierType',
-                        'partyIdentifierNumber',
-                        'partyName',
-                        'address1',
-                        'address2',
-                        'apartmentOrSuiteNo',
-                        'city',
-                        'country',
-                        'stateOrProvince',
-                        'postalCode',
-                        'individualQualifier',
-                        'contactPerson',
-                        'telephoneNumber',
-                        'email',
-                      ])}
-                      disabled={!isAnyFieldFilled([
-                        'partyType',
-                        'partyIdentifierType',
-                        'partyIdentifierNumber',
-                        'partyName',
-                        'address1',
-                        'address2',
-                        'apartmentOrSuiteNo',
-                        'city',
-                        'country',
-                        'stateOrProvince',
-                        'postalCode',
-                        'individualQualifier',
-                        'contactPerson',
-                        'telephoneNumber',
-                        'email',
-                    ])}
-                    >
-                      Add More +
-                    </button>
-                    </div>
-                  </div>
+                      <div className="add_details">
+                     <Box sx={{ '& > :not(style)': { m: 1 } }} onClick={handleOpenPartiesModal}>
+                        <Fab variant="extended" sx={{padding:0}}>
+                          <AddIcon sx={{ mr: 0.5,fontSize:"16px" }} />
+                          Add Details
+                        </Fab>
+                     </Box>
+                     </div>
+                   </div>
+               {renderTable()}
+                 </div>
                 )}
               </div>
               <div className="next_previous_button">
-              <button onClick={backButtonClick}><FaChevronLeft /> &nbsp;BACK</button>
-                <button onClick={nextButtonClick}>NEXT &nbsp;<FaChevronRight /></button>
+              <button onClick={backButtonClick}><FaChevronLeft/> &nbsp;BACK</button>
+              <button onClick={nextButtonClick}>NEXT &nbsp;<FaChevronRight/></button>
               </div>
+              <Modal
+                 open={openPartiesModal}
+                 onClose={handleClosePartiesModal}
+                 aria-labelledby="modal-modal-title"
+                 aria-describedby="modal-modal-description"
+               >
+                <Box sx={partyModalStyle}>
+               <div className="dropdown_container">
+                 <div
+                   className="dropdown_header"
+                   onClick={() => partiesDropdown("entityData")}
+                 >
+                   <div className="dropdown_header_icon">
+                     <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.entityData ? "rotate" : ""}`} />
+                   </div>
+                   <div className="dropdown_header_text">
+                     <h3>Entity Data</h3>
+                   </div>
+                 </div>
+                 {dropdownStates.entityData && (
+                   <div className="dropdown_items">
+                     <div className="items">
+                       <SelectField
+                          label="Entity Role Code"
+                          name="partyType"
+                          onChange={handleChangeFields}
+                          value={userProductForm.partyType}
+                          options={roleCodeData}
+                        />
+                       <SelectField
+                          label="Entity Identification Code"
+                          name="partyIdentifierType"
+                          onChange={handleChangeFields}
+                          value={userProductForm.partyIdentifierType}
+                          options={["16","47"]}
+                        />
+                      <InputField type="tel" label="Entity Number" name="partyIdentifierNumber" maxLength={9} value={userProductForm.partyIdentifierNumber} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Entity Name" name="partyName" value={userProductForm.partyName} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Entity Address 1" name="address1" value={userProductForm.address1} onChange={handleChangeFields}/>
+                     </div>
+                   </div>
+                 )}
+               </div>
+               <div className="dropdown_container">
+                 <div
+                   className="dropdown_header"
+                   onClick={() => partiesDropdown("entityAddress")}
+                 >
+                   <div className="dropdown_header_icon">
+                     <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.entityAddress ? "rotate" : ""}`} />
+                   </div>
+                   <div className="dropdown_header_text">
+                     <h3>Entity Address</h3>
+                   </div>
+                 </div>
+                 {dropdownStates.entityAddress && (
+                   <div className="dropdown_items">
+                     <div className="items">
+                      <InputField type="text" label="Entity Address 2" name="address2" value={userProductForm.address2} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Entity Apartment Number" name="apartmentOrSuiteNo" value={userProductForm.apartmentOrSuiteNo} onChange={handleChangeFields}/>
+                      <InputField type="text" label="Entity City" value={userProductForm.city} name="city" onChange={handleChangeFields}/>
+                      <SelectField
+                          label="Entity Country"
+                          name="country"
+                          onChange={handleChangeFields}
+                          value={userProductForm.country}
+                          options={countryCodeData}
+                          onClick={countryCodeApi}
+                        />
+                      <SelectField
+                          label="Entity State"
+                          name="stateOrProvince"
+                          onChange={handleChangeFields}
+                          value={userProductForm.stateOrProvince}
+                          options={stateCodeData}
+                          onClick={stateCodeApi}
+                        />
+                      <InputField type="text" label="Entity Zip" name="postalCode" value={userProductForm.postalCode} onChange={handleChangeFields}/>
+                     </div>
+                   </div>
+                 )}
+               </div>
+               <div className="dropdown_container">
+                 <div
+                   className="dropdown_header"
+                   onClick={() => partiesDropdown("pointOfContact")}
+                 >
+                   <div className="dropdown_header_icon">
+                     <BiSolidRightArrow className={`dropdown_icon ${dropdownStates.pointOfContact ? "rotate" : ""}`} />
+                   </div>
+                   <div className="dropdown_header_text">
+                     <h3>Point of Contact</h3>
+                   </div>
+                 </div>
+                 {dropdownStates.pointOfContact && (
+                   <div className="dropdown_items">
+                     <div className="items">
+                       <SelectField
+                          label="Individual Qualifier"
+                          name="individualQualifier"
+                          onChange={handleChangeFields}
+                          value={userProductForm.individualQualifier}
+                          options={individualQualifierData}
+                        />
+                      <InputField type="text" label="Individual Name" name="contactPerson" value={userProductForm.contactPerson} onChange={handleChangeFields}/>
+                      <InputField type="tel" label="Telephone Number" name="telephoneNumber" value={userProductForm.telephoneNumber} onChange={handleChangeFields}/>
+                      <InputField type="email" label="Email" name="email" value={userProductForm.email} onChange={handleChangeFields}/>
+                     </div>
+                   </div>
+                 )}
+               </div>
+               {editingIndex !== -1 ? (
+                    <button className="saveChanges" onClick={handleClosePartiesModal}>Save Changes</button>
+                  ):(
+                    <button className="saveDetails" onClick={() => handleAddArrayData(partyDetails, setPartyDetails, [
+                      'partyType',
+                      'partyIdentifierType',
+                      'partyIdentifierNumber',
+                      'partyName',
+                      'address1',
+                      'address2',
+                      'apartmentOrSuiteNo',
+                      'city',
+                      'country',
+                      'stateOrProvince',
+                      'postalCode',
+                      'individualQualifier',
+                      'contactPerson',
+                      'telephoneNumber',
+                      'email',
+                    ])}
+                    disabled={!isAnyFieldFilled([
+                      'partyType',
+                      'partyIdentifierType',
+                      'partyIdentifierNumber',
+                      'partyName',
+                      'address1',
+                      'address2',
+                      'apartmentOrSuiteNo',
+                      'city',
+                      'country',
+                      'stateOrProvince',
+                      'postalCode',
+                      'individualQualifier',
+                      'contactPerson',
+                      'telephoneNumber',
+                      'email',
+                    ])}>
+            Save Details
+           </button>
+                  )}
+               </Box>
+               </Modal>
             </div>
           )}
           {currentStep === 3 && (
@@ -1245,12 +1435,12 @@ const isAnyFieldFilled = (fields:string[]) => {
                           onChange={handleTimeChange}
                         />
                       </div>
-                     <SelectField label="Arrival Location Code" name="anticipatedArrivalLocationCode" value={userProductForm.anticipatedArrivalLocationCode} onChange={handleChangeFields} options={["FOOD", "Standalone_PN"].includes(userProductForm.governmentAgencyProgramCode) ? ["2"] : ["4"]}/>
+                     <SelectField label="Arrival Location Code" name="inspectionOrArrivalLocationCode" value={userProductForm.inspectionOrArrivalLocationCode} onChange={handleChangeFields} options={["FOOD", "Standalone_PN"].includes(userProductForm.governmentAgencyProgramCode) ? ["2"] : ["4"]}/>
                       <SelectField
                          label="Arrival Location"
-                         name="anticipatedArrivalLocation"
+                         name="inspectionOrArrivalLocation"
                          onChange={handleChangeFields}
-                         value={userProductForm.anticipatedArrivalLocation}
+                         value={userProductForm.inspectionOrArrivalLocation}
                          options={["a","b","c","d","e","f","g","h","i"]}
                        />
                       <button
@@ -1258,15 +1448,15 @@ const isAnyFieldFilled = (fields:string[]) => {
                         'anticipatedArrivalInformation',
                         'anticipatedArrivalDate',
                         'anticipatedArrivalTime',
-                        'anticipatedArrivalLocation',
-                        'anticipatedArrivalLocationCode',
+                        'inspectionOrArrivalLocation',
+                        'inspectionOrArrivalLocationCode',
                       ])}
                       disabled={!isAnyFieldFilled([
                         'anticipatedArrivalInformation',
                         'anticipatedArrivalDate',
                         'anticipatedArrivalTime',
-                        'anticipatedArrivalLocation',
-                        'anticipatedArrivalLocationCode',
+                        'inspectionOrArrivalLocation',
+                        'inspectionOrArrivalLocationCode',
                     ])}
                     >
                       Add More +
@@ -1303,7 +1493,7 @@ const isAnyFieldFilled = (fields:string[]) => {
                          name="additionalInformationQualifierCode"
                          onChange={handleChangeFields}
                          value={userProductForm.additionalInformationQualifierCode}
-                         options={["a","b","c","d","e","f","g","h","i"]}
+                         options={["ENA","AD1","AD2","AD3","AD4","AD5","ECI","INA","EMA","TBN"]}
                        />
                      <InputField type="text" label="Additional Information" name="additionalInformation" value={userProductForm.additionalInformation} onChange={handleChangeFields}/>
                      <button
@@ -1342,7 +1532,7 @@ const isAnyFieldFilled = (fields:string[]) => {
                          name="substitutionIndicator"
                          onChange={handleChangeFields}
                          value={userProductForm.substitutionIndicator}
-                         options={["a","b","c","d","e","f","g","h","i"]}
+                         options={["S","E","R"]}
                        />
                      <InputField type="text" label="Substitution Number" name="substitutionNumber" value={userProductForm.substitutionNumber} onChange={handleChangeFields}/>
                     </div>

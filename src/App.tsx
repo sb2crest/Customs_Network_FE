@@ -17,6 +17,7 @@ import AdminWrapper from "./components/admin_page/AdminWrapper";
 import AdminTrends from "./components/admin_page/AdminTrends";
 import AdminHistory from "./components/admin_page/AdminHistory";
 import ProductWrapper from "./components/user_page/wrappers/ProductWrapper";
+import UserProductHistory from "./components/user_page/UserProductHistory";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               <Route path="history" element={<History />} />
               <Route path="trends" element={<Trends />} />
               <Route path="user-product" element={<ProductWrapper />} />
+              <Route path="product-history" element={<UserProductHistory />} />
             </Route>
           </Route>
 
