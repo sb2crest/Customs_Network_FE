@@ -1,19 +1,20 @@
 import dayjs from "dayjs";
 import type { Dayjs } from 'dayjs';
 
-export default interface IProductField{
+export default interface IProductField {
     commercialDesc: string;
-    controlIdentifier:string;
-    pgaLineNumber:"001";
-    governmentAgencyCode:"FDA";
+    controlIdentifier: string;
+    pgaLineNumber: string;
+    governmentAgencyCode: string;
     governmentAgencyProgramCode: string;
+    productCodeNumber: string;
     governmentAgencyProcessingCode: string;
     intendedUseCode: string;
     intendedUseDescription: string;
     correctionIndicator: string;
     disclaimer: string;
-    itemType: "P";
-    productCodeQualifier: "FDP";
+    itemType: string;
+    productCodeQualifier: string;
     constituentActiveIngredientQualifier: string;
     constituentElementName: string;
     constituentElementQuantity: string;
@@ -80,4 +81,4 @@ export default interface IProductField{
     substitutionIndicator: string;
     substitutionNumber: string;
     [key: string]: string | dayjs.Dayjs | Date | null | undefined;
-  }
+}
