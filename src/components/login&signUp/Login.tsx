@@ -86,6 +86,7 @@ const Login = () => {
         },
       });
       localStorage.setItem("userId", response.data.user_id);
+      localStorage.setItem("uniqueUserIdentifier", response.data.uniqueUserIdentifier);
     } catch (err) {
       console.log("Login failed", err);
       if (err.response && err.response.data) {
