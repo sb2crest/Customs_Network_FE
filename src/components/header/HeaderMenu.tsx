@@ -12,22 +12,52 @@ const HeaderMenu = () => {
             <div className="list_right">
               <ul>
                 <li>
-                  <NavLink to="/home" activeClassName="active">Home</NavLink>
+                  <NavLink 
+                    to="/home" 
+                    className={({ isActive }) => isActive ? "active" : ""}
+                  >
+                    Home
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/services" activeClassName="active">Services</NavLink>
+                  <NavLink 
+                    to="/services" 
+                    className={({ isActive }) => isActive ? "active" : ""}
+                  >
+                    Services
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/aboutUs" activeClassName="active">About Us</NavLink>
+                  <NavLink 
+                    to="/aboutUs" 
+                    className={({ isActive }) => isActive ? "active" : ""}
+                  >
+                    About Us
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/contactUs" activeClassName="active">Contact Us</NavLink>
+                  <NavLink 
+                    to="/contactUs" 
+                    className={({ isActive }) => isActive ? "active" : ""}
+                  >
+                    Contact Us
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/login" activeClassName="active">Login</NavLink>
+                  <NavLink 
+                    to="/login" 
+                    className={({ isActive }) => isActive ? "active" : ""}
+                  >
+                    Login
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/register" activeClassName="active">Register</NavLink>
+                  <NavLink 
+                    to="/register" 
+                    className={({ isActive }) => isActive ? "active" : ""}
+                  >
+                    Register
+                  </NavLink>
                 </li>
               </ul>
             </div>

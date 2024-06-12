@@ -5,7 +5,7 @@ const Banner = () => {
         <div className="banner_container_section">
           <div className="banner_container_section_left">
             <p className="heading">
-              We Provide One Stop Logistic & Warehousing Services .
+              We Provide One Stop Logistic & Warehousing Services.
             </p>
             <p className="content">Guaranteed by more than a hundred awards</p>
             <button>LEARN MORE</button>

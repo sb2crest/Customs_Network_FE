@@ -1,10 +1,11 @@
 //=================================================
 // Theme variables
 //=================================================
+
 // Variables
 @import "variables";
 
-//Components SCSS imports
+// Components SCSS imports
 
 /*=============================
 // banner styles
@@ -71,12 +72,7 @@
 =============================*/
 @import "components/user_product_history";
 
-
-
-// ===========================================================================================================
-// ===========================================================================================================
-
-//Pages SCSS imports
+// Pages SCSS imports
 
 /*=============================
 // home styles
@@ -93,41 +89,45 @@
 =============================*/
 @import "pages/contactUs";
 
+/*=============================
+// Font styles
+=============================*/
+@import url('https://fonts.googleapis.com/css2?family=Port+Lligat+Slab&display=swap');
 
 html {
-    -webkit-overflow-scrolling: touch;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 19px;
-    scroll-behavior: smooth;
-    
-    @media #{$media_xl} {
-        font-size: 16px;
-    }
-    
-    @media #{$media_sm} {
-        font-size: 14px;
-    }
+  -webkit-overflow-scrolling: touch;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 19px;
+  scroll-behavior: smooth;
+
+  @media #{$media_xl} {
+    font-size: 16px;
+  }
+
+  @media #{$media_sm} {
+    font-size: 14px;
+  }
 }
 
 body {
-    @import url('https://fonts.googleapis.com/css2?family=Port+Lligat+Slab&display=swap');
-    min-width: 320px;
-    font-family: "Port Lligat Slab", serif;
-    margin: 0;
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0 30px #fff inset !important;
-    }
-    @media #{$media_xl} {
-        font-size: 16px;
-    }
-    
-    @media #{$media_sm} {
-        font-size: 14px;
-    }
+  min-width: 320px;
+  font-family: "Port Lligat Slab", serif;
+  margin: 0;
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+  }
+
+  @media #{$media_xl} {
+    font-size: 16px;
+  }
+
+  @media #{$media_sm} {
+    font-size: 14px;
+  }
 }
