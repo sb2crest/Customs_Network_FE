@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 .product_history {
   height: 100vh;
   width: 100%;
   &_container {
+    margin-top: 0.5vw;
+    // font-family:'Times New Roman', Times, serif;
+
     .product_history_heading {
       color: #000;
       margin-bottom: 0.1vw;
@@ -9,12 +13,13 @@
       justify-content: center;
       align-items: center;
       h2 {
+        font-family: "Nunito", sans-serif;
         margin: 0;
         background-color: #fff;
         border-radius: 10px;
         padding: 0.8rem;
         font-size: 0.9rem;
-        width: 76.5%;
+        width: 91.5%;
         text-align: start;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       }
@@ -30,15 +35,16 @@
       align-items: center;
       flex-direction: column;
       table {
-        width: 80%;
+        width: 95%;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         border-spacing: 0;
         border-radius: 5px;
+        font-family: "Nunito", sans-serif;
         thead {
           background-color: #007090;
           tr {
             th {
-              padding: 0.6rem 1rem;
+              padding: 0.8rem 1rem;
               font-size: 0.65rem;
               text-transform: uppercase;
               text-align: center;
@@ -55,7 +61,7 @@
               background-color: #ffffff;
             }
             td {
-              padding: 0.3086rem;
+              padding: 0.35rem 0.3086rem;
               font-size: 0.75rem;
               line-height: 1rem;
               color: #000;
@@ -100,7 +106,7 @@
   .pagination {
     display: flex;
     justify-content: flex-end;
-    width: 80%;
+    width: 95%;
     .css-10w330c-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
       background-color: rgb(203 213 225);
       min-width: 22px;
@@ -114,8 +120,6 @@
   }
 }
 
-ul {
-  .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
-    font-size: 12px;
-  }
+.css-ahj2mt-MuiTypography-root{
+  line-height: 1 !important;
 }

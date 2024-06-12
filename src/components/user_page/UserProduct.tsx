@@ -47,14 +47,23 @@ const partyModalStyle = {
 };
 
 const UserProduct = () => {
-  const { selectedProduct } = useProduct();
+  const { concatenatedProductCode, setInputProductCode } = useProductCode();
+  const { selectedProduct ,setSelectedProduct} = useProduct();
 
   useEffect(() => {
     if (selectedProduct) {
       setUserProductForm(selectedProduct);
+      setProductConstituentElements(Array.isArray(selectedProduct.productConstituentElements)? selectedProduct.productConstituentElements: []);
+      setAdditionalInformations(Array.isArray(selectedProduct.additionalInformations)? selectedProduct.additionalInformations: []);
+      setAffirmationOfComliance(Array.isArray(selectedProduct.affirmationOfComliance)? selectedProduct.affirmationOfComliance: []);
+      setAnticipatedArrivalInformationArray(Array.isArray(selectedProduct.anticipatedArrivalInformation)? selectedProduct.anticipatedArrivalInformation: []);
+      setContainerInformation(Array.isArray(selectedProduct.containerInformation)? selectedProduct.containerInformation: []);
+      setPartyDetails(Array.isArray(selectedProduct.partyDetails)? selectedProduct.partyDetails: []);
+      setProductCondition(Array.isArray(selectedProduct.productCondition)? selectedProduct.productCondition: []);
+      setProductOrigin(Array.isArray(selectedProduct.productOrigin)? selectedProduct.productOrigin: []);
+      setProductPackaging(Array.isArray(selectedProduct.productPackaging)? selectedProduct.productPackaging: []);
     }
   }, [selectedProduct]);
-  console.log(selectedProduct);
 
   const [dropdownStates, setDropdownStates] = useState<IDropdownStates>({
     recordIdentifier: true,
@@ -82,7 +91,6 @@ const UserProduct = () => {
     additionalInformation: false,
     dataSubstitution: false,
   });
-  const { concatenatedProductCode, setInputProductCode } = useProductCode();
   const [currentStep, setCurrentStep] = useState(1);
   const today = dayjs();
   const uniqueUserIdentifier = localStorage.getItem("uniqueUserIdentifier");
@@ -200,6 +208,7 @@ const UserProduct = () => {
     itemType,
     tradeOrBrandName,
     commercialDesc,
+    productCodeNumber,
     issuerOfLPCO,
     governmentGeographicCodeQualifier,
     locationOfIssuerOfTheLPCO,
@@ -361,12 +370,16 @@ const UserProduct = () => {
     });
   }
   const stateCodeApi = () => {
-    axiosPrivate.get(`/pgaIdentifier/get-state-codes?countryCode=${userProductForm.country}`).then((response) => {
-      setStateCodeData(response.data.stateCodes);
-    }).catch((err) => {
-      console.log(err);
-    });
-  };
+    if (userProductForm.country) {
+        axiosPrivate.get(`/pgaIdentifier/get-state-codes?countryCode=${userProductForm.country}`)
+            .then((response) => {
+                setStateCodeData(response.data.stateCodes);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+};
 
   const handleChangeFields = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -452,7 +465,7 @@ const UserProduct = () => {
 
   const saveInputFieldsData = () => {
     const payload = {
-      productCode: concatenatedProductCode,
+      productCode: concatenatedProductCode || productCodeNumber,
       uniqueUserIdentifier: uniqueUserIdentifier,
       productInfo: {
         baseUOM: "",
@@ -464,7 +477,7 @@ const UserProduct = () => {
         partyDetails,
         productPackaging,
         commodityDesc,
-        productCodeNumber: concatenatedProductCode,
+        productCodeNumber: concatenatedProductCode || productCodeNumber,
         productCodeQualifier,
         commercialDesc,
         priorNoticeNumber: 1,
@@ -499,14 +512,32 @@ const UserProduct = () => {
         substitutionNumber,
       },
     };
-    axiosPrivate.post(`/products/save`, payload).then((response) => {
-      console.log(response.data);
-      setUserProductForm(getInitialProductFormState());
-      setInputProductCode("")
-      setCurrentStep(1);
-    }).catch((error) => {
-      console.log(error);
-    });
+    if (selectedProduct) {
+      // Update existing product
+      axiosPrivate.put(`/products/update`, payload)
+          .then((response) => {
+              console.log(response.data);
+              setUserProductForm(getInitialProductFormState());
+              setInputProductCode("");
+              setSelectedProduct(null);
+              setCurrentStep(1);
+          })
+          .catch((error) => {
+              console.log(error);
+          });
+  } else {
+      // Save new product
+      axiosPrivate.post(`/products/save`, payload)
+          .then((response) => {
+              console.log(response.data);
+              setUserProductForm(getInitialProductFormState());
+              setInputProductCode("");
+              setCurrentStep(1);
+          })
+          .catch((error) => {
+              console.log(error);
+          });
+  }
   }
 
   const isAnyFieldFilled = (fields: string[]) => {
@@ -713,7 +744,7 @@ const UserProduct = () => {
                     <div className="items">
                       <InputField type="text" label="Item type" name="itemType" value={userProductForm.itemType} disabled />
                       <InputField type="text" label="Product Code Qualifier" name="productCodeQualifier" value={userProductForm.productCodeQualifier} disabled />
-                      <InputField type="text" label="Product Code Number" name="productCodeNumber" value={concatenatedProductCode} readOnly onClick={handleOpen} />
+                      <InputField type="text" label="Product Code Number" name="productCodeNumber"    value={concatenatedProductCode || userProductForm.productCodeNumber} readOnly onClick={handleOpen} />
                       <Modal
                         open={openProductCodeBuilder}
                         onClose={handleClose}
